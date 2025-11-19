@@ -22,7 +22,7 @@ function Login(){
                 <p className="name">비밀번호<span class="star">*</span></p>
                 <input className="write" type="password" placeholder="******"/>
                 <br/>
-                <input type="checkbox" name="fruit" value="apple"/>
+                <input type="checkbox" name="lg" value="mt"/>
 
                 <p className="maintain">로그인 유지</p>
                 <p className="findPwd">비밀번호 찾기</p>

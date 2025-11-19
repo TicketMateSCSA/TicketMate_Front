@@ -16,3 +16,139 @@
     padding-top: 20px;
     overflow-y: auto; /* 내용이 길면 스크롤 가능 */
 }
+
+div.box2{
+    margin: 0 auto;
+    position: relative;
+    top: 150px;
+    width: 50%;
+    height: 57%;
+
+    border: solid 2px;
+    box-shadow: 0px 0px 8px #d4bbff;
+    border-color: #5409DA;
+}
+
+
+p.title{
+    position: relative;
+    top: 20px;
+    text-align: center;
+    margin: 0 auto;
+    color:#5409DA;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+
+.star{
+    padding-left: 3px;
+    color:#5409DA;
+    font-weight: 900;
+}
+
+p.name{
+    position: relative;
+    left: 20px;
+    font-weight: 500;
+}
+
+.write{
+    position: relative;
+    left: 20px;
+    border-radius: 0%;
+    border-color:#5409DA;
+    padding: 5px 8px;
+    width: 90%;
+}
+
+.checkAll {
+    position: relative;
+    top: 20px;
+    left: 15px;
+    width: 20px;
+    height: 20px;
+    accent-color: #5409DA;
+}
+
+.allOK{
+    position: absolute;
+    top: 384px;
+    left: 48px;
+    font-size: 13px;
+}
+
+input.checkOne{
+    position: absolute;
+    top: 425px;
+    left: 40px;
+    width: 20px;
+    height: 20px;
+    accent-color: #5409DA;
+}
+
+p.oneOK{
+    position: absolute;
+    top: 415px;
+    left: 75px;
+    font-size: 13px;
+}
+
+input.checkTwo{
+    position: absolute;
+    top: 456px;
+    left: 40px;
+    width: 20px;
+    height: 20px;
+    accent-color: #5409DA;
+}
+
+p.twoOK{
+    position: absolute;
+    top: 445px;
+    left: 75px;
+    font-size: 13px;
+}
+
+input.checkThree{
+    position: absolute;
+    top: 486px;
+    left: 40px;
+    width: 20px;
+    height: 20px;
+    accent-color: #5409DA;
+}
+
+p.threeOK{
+    position: absolute;
+    top: 475px;
+    left: 75px;
+    font-size: 13px;
+}
+
+.signinBtn{
+    position: absolute;
+    left: 20px;
+    top: 530px;
+    background-color: #5409DA;
+    color: white;
+    width: 90%;
+    padding: 8px 0px;
+    font-size: 20px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+}
+
+.yesAccount{
+    position: relative;
+    top: 175px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.logIn{
+    font-size: 13px;
+    margin-left: 7px;
+    text-decoration: underline;
+    cursor: pointer;
+}
