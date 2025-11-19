@@ -1,5 +1,5 @@
 /* 0. 최상위 컨테이너 */
-.login-page-container {
+.signin-page-container {
     width: 100%;
      /* AppContainer의 높이를 꽉 채웁니다. */
     height: 100%;
@@ -17,17 +17,18 @@
     overflow-y: auto; /* 내용이 길면 스크롤 가능 */
 }
 
-div.box{
+div.box2{
     margin: 0 auto;
     position: relative;
     top: 150px;
     width: 50%;
-    height: 34%;
+    height: 57%;
 
     border: solid 2px;
     box-shadow: 0px 0px 8px #d4bbff;
     border-color: #5409DA;
 }
+
 
 p.title{
     position: relative;
@@ -60,8 +61,7 @@ p.name{
     width: 90%;
 }
 
-
-input[type="checkbox"] {
+.checkAll {
     position: relative;
     top: 20px;
     left: 15px;
@@ -70,25 +70,65 @@ input[type="checkbox"] {
     accent-color: #5409DA;
 }
 
-.maintain{
+.allOK{
     position: absolute;
-    top: 215px;
+    top: 384px;
     left: 48px;
     font-size: 13px;
 }
 
-.findPwd{
+input.checkOne{
     position: absolute;
-    top: 215px;
-    right: 20px;
-    font-size: 13px;
-    text-decoration: underline;
+    top: 425px;
+    left: 40px;
+    width: 20px;
+    height: 20px;
+    accent-color: #5409DA;
 }
 
-.loginBtn{
+p.oneOK{
+    position: absolute;
+    top: 415px;
+    left: 75px;
+    font-size: 13px;
+}
+
+input.checkTwo{
+    position: absolute;
+    top: 456px;
+    left: 40px;
+    width: 20px;
+    height: 20px;
+    accent-color: #5409DA;
+}
+
+p.twoOK{
+    position: absolute;
+    top: 445px;
+    left: 75px;
+    font-size: 13px;
+}
+
+input.checkThree{
+    position: absolute;
+    top: 486px;
+    left: 40px;
+    width: 20px;
+    height: 20px;
+    accent-color: #5409DA;
+}
+
+p.threeOK{
+    position: absolute;
+    top: 475px;
+    left: 75px;
+    font-size: 13px;
+}
+
+.signinBtn{
     position: absolute;
     left: 20px;
-    top: 270px;
+    top: 530px;
     background-color: #5409DA;
     color: white;
     width: 90%;
@@ -99,14 +139,14 @@ input[type="checkbox"] {
     cursor: pointer;
 }
 
-.noAccount{
+.yesAccount{
     position: relative;
-    top: 85px;
+    top: 175px;
     text-align: center;
     font-size: 13px;
 }
 
-.signIn{
+.logIn{
     font-size: 13px;
     margin-left: 7px;
     text-decoration: underline;
