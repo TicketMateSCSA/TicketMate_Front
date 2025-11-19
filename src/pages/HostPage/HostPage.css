@@ -335,6 +335,7 @@ input.searchShow{
 
     width: 96%;
     height: 150px;
+    resize: none;
 }
 
 .post > .tag{

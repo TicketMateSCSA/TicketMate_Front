@@ -6,7 +6,8 @@ function GetMatePage(){
     return(
         <div className="host-page-container">
             <Navigator/>
-            
+        
+
             {/* 1. 헤더 */}
             <div class='header'>
                 <p class="head">메이트 모집하기</p>
