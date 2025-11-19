@@ -2,17 +2,24 @@ import './Navigator.css';
 import logo from '../../assets/images/logo.png';
 import searchIcon from '../../assets/icons/searchIcon.png';
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Navigator(){
     const navigate = useNavigate();
+    const location = useLocation();
 
     const goToHomePage = () => {
         navigate("/");
     }
     const goToHostPage = () => {
         navigate("/host");
-    };
+    }
+    const goToLoginPage = () => {
+        navigate("/login");
+    }
+    const goToSigninPage = () => {
+        navigate("/signin");
+    }
 
     return (
         <nav>
@@ -27,13 +34,27 @@ function Navigator(){
 
             {/* 2. 네비게이터 */}
             <div class="navi">
-                <button class="home" onClick={goToHomePage}>홈</button>
+                <button className={location.pathname === "/" ? "home active" : "home"}
+                        onClick={goToHomePage}
+                        >홈</button>
+                
+                {/* onclick 설정 필요 */}
                 <button class="findMate">메이트 찾기</button>
-                <button class="host" onClick={goToHostPage} >메이트 모집하기</button>
+
+                <button className={location.pathname === "/host" ? "host active" : "host"}
+                        onClick={goToHostPage}
+                        >메이트 모집하기</button>
+
+                {/* onclick 설정 필요 */}
                 <button class="info">공연 정보</button>
 
-                <button class="logIn">로그인</button>
-                <button class="signIn">회원가입</button>
+                <button className={location.pathname == "/login" ? "login active" : "login"}
+                        onClick={goToLoginPage}
+                    >로그인</button>
+
+                <button className={location.pathname == "/signin" ? "signin active" : "signin" }
+                        onClick={goToSigninPage}
+                        >회원가입</button>
             </div>
         </nav>
         
