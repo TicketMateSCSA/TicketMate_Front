@@ -16,3 +16,60 @@
     padding-top: 20px;
     overflow-y: auto; /* 내용이 길면 스크롤 가능 */
 }
+
+img.background{
+    position: absolute;
+    top: 145px;
+    width: 100%;
+}
+
+.frontTitle{
+    position: relative;
+    top: 190px;
+    margin: 0 auto;
+    font-size: 28px;
+    font-weight: 500;
+}
+
+.frontBody{
+    position: relative;
+    top: 200px;
+    margin: 0 auto;
+    font-size: 20px;
+    color: gray;
+}
+
+button.background-findMate{
+    position: absolute;
+    left: 27%;
+    top: 350px;
+    width: 190px;
+    padding: 12px 0px;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    border: none;
+    background-color: #4E71FF;
+    color: white;
+    font-weight: 400;
+    cursor: pointer;
+    font-size: 20px;
+
+}
+
+button.background-postMate{
+    position: absolute;
+    right: 27%;
+    top: 350px;
+    width: 188px;
+
+    padding: 12px 0px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    border: none;
+    background-color: #5409DA;
+    color: white;
+    font-weight: 400;
+    cursor: pointer;
+    font-size: 20px;
+
+}
