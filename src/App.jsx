@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 // 페이지 import 
 import HomePage from "./pages/HomePage/HomePage" ; 
-
+import HostPage from "./pages/HostPage/HostPage" ;
 // Context Privider 
 import {AuthProvider} from "./contexts/AuthContext" ; 
 
@@ -17,6 +17,7 @@ function App() {
           <Routes>
             {/* 기본 경로 */ }
             <Route path = "/" element={<HomePage/>}/>
+            <Route path = "/host" element={<HostPage/>}/>
           </Routes>
         </AppContainer>
       </BrowserRouter>

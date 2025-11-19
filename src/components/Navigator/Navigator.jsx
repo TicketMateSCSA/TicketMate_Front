@@ -5,6 +5,7 @@ import searchIcon from '../../assets/icons/searchIcon.png';
 function Navigator(){
     return (
         <nav>
+            {/* 1. 좌상단 로고, 우상단 검색창 */}
             <div class="head">
                 <img src={logo}></img>
                 <input type="text" placeholder='공연, 메이트 검색'></input>
@@ -13,6 +14,7 @@ function Navigator(){
                 </button>
             </div>
 
+            {/* 2. 네비게이터 */}
             <div class="navi">
                 <button class="home">홈</button>
                 <button class="findMate">메이트 찾기</button>
