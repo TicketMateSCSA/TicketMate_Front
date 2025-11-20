@@ -20,6 +20,9 @@ function Navigator(){
     const goToSigninPage = () => {
         navigate("/signin");
     }
+    const goToSearchPage = () => {
+        navigate("/search");
+    }
 
     return (
         <nav>
@@ -38,8 +41,9 @@ function Navigator(){
                         onClick={goToHomePage}
                         >홈</button>
                 
-                {/* onclick 설정 필요 */}
-                <button className="findMate">메이트 찾기</button>
+                <button className={location.pathname === "/search" ? "search active" : "search"}
+                        onClick={goToSearchPage}
+                        >메이트 찾기</button>
 
                 <button className={location.pathname === "/host" ? "host active" : "host"}
                         onClick={goToHostPage}

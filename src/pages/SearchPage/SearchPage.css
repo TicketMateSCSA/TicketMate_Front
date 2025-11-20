@@ -1,0 +1,110 @@
+/* 0. 최상위 컨테이너 */
+.search-page-container {
+    width: 100%;
+     /* AppContainer의 높이를 꽉 채웁니다. */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    background-color: #ffffff; /* 배경색: 어두운 테마 */
+    color: #000000;
+    position: relative;
+    background: var(--White, #ffffff);
+    
+    /* 하단 네비게이터 영역을 피하기 위한 패딩 */
+    padding-bottom: 70px; 
+    padding-top: 20px;
+    overflow-y: auto; /* 내용이 길면 스크롤 가능 */
+}
+
+/* 1. 헤더 */
+.header > .head{
+    position: absolute;
+    top: 140px;
+    left: 20px;
+    font-weight: 500;
+    font-size: medium;
+}
+
+.header > .body{
+    position: absolute;
+    top: 175px;
+    left: 20px;
+    font-size: small;
+}   
+
+.search-box{ /* 여러 상자의 기본 양식 */
+    border: solid 2px;
+    width: 772px;
+    border-color: #5409DA;
+    box-shadow: 0px 0px 8px #d4bbff;
+}
+
+/* 2. 카테고리 */
+div.search-category{
+    position: absolute;
+    left: 20px;
+    top: 230px;
+    height: 105px;
+    font-size: 14px;
+}
+
+p.search-category{
+    position: absolute;
+    left: 20px;
+    font-weight: 500;
+}
+
+.search-btn-group{
+    position: absolute;
+    left: 20px;
+    top: 55px;
+}
+
+.search-btn-group input {
+  display: none;
+}
+
+.search-btn-group label {
+    color:#5409DA;
+    padding: 5px 7px;
+    border: 2px solid #5409DA;
+    border-radius: 0%;
+    cursor: pointer;
+    font-size: small;
+    margin-right: 13px;
+}
+
+.search-btn-group input:checked + label {
+  background-color: #5409DA;
+  color: white;
+  border-color: #5409DA;
+}
+
+/* 3. 선호사항 */
+/* 3-1. 모집상태 */
+p.search-state{
+    position: absolute;
+    left: 20px;
+    font-weight: 500;
+}
+
+div.search-prefer{
+    position: absolute;
+    left: 20px;
+    top: 360px;
+    height: 210px;
+    font-size: 14px;
+}
+
+/* 3-2. 연령대 */
+p.search-age{
+    position: absolute;
+    left: 51%;
+    font-weight: 500;
+}
+
+div.age-btn{
+    position: absolute;
+    left: 51%;
+}

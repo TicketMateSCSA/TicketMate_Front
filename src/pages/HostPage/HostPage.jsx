@@ -41,7 +41,7 @@ function GetMatePage(){
                 {/* 2-2. 글 관련 */}
                 
                 <div className='post'>
-                    <p className="title">제목<span className="star">*</span></p>
+                    <p className="post-title">제목<span className="star">*</span></p>
                     <input className="writeTitle" type='text' placeholder='함께 공연 보실 분 구합니다!'/>
                     
                     <p className="date">관람 날짜<span className="star">*</span></p>

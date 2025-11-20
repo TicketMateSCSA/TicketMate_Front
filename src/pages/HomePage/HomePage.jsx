@@ -58,6 +58,10 @@ function HomePage(){
         navigate("/host");
     }
 
+    const goToSearchPage = () => {
+        navigate("/search");
+    }
+
     // 1. API 요청
     const [data, setData] = useState(null); // 데이터를 담을 state
     const [loading, setLoading] = useState(true); // 로딩 상태
@@ -97,11 +101,10 @@ function HomePage(){
             <p className="frontTitle">함께 공연을 즐길 메이트를 찾아보세요!</p>
             <p className="frontBody">마음 맞는 메이트와 함께라면, 더 즐거운 관람을 경험할 수 있을 거예요.</p>
         
-            <button className="background-findMate">메이트 찾기</button>
+            <button className="background-findMate" onClick={goToSearchPage}>메이트 찾기</button>
             <button className="background-postMate" onClick={goToHostPage}>메이트 모집하기</button>
             
             {/* 목록 */}
-            
             <div className="homepage-content">
                 {list
                 ?.filter(item => item.mate_status === 1) // 모집 중인
