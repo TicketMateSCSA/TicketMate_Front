@@ -8,7 +8,7 @@ import background from '../../assets/images/home-background-image.png';
 import noImage from '../../assets/images/no-image.png';
 import noProfile from '../../assets/images/no-profile.png';
 
-const postsUrl = "http://10.10.0.104:8888/posts";
+const postsUrl = `${import.meta.env.VITE_POSTS_URL}/posts`;
 
 const ageMap = {0: '10대', 1: '20대', 2: '30대', 3: '40대', 4: '50대+'}
 const genderMap = {0: '무관', 1: '남성', 2: '여성'}
