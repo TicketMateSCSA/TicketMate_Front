@@ -24,7 +24,7 @@ function Navigator(){
     return (
         <nav>
             {/* 1. 좌상단 로고, 우상단 검색창 */}
-            <div class="head">
+            <div className="head">
                 <img src={logo}></img>
                 <input type="text" placeholder='공연, 메이트 검색'></input>
                 <button>
@@ -33,20 +33,20 @@ function Navigator(){
             </div>
 
             {/* 2. 네비게이터 */}
-            <div class="navi">
+            <div className="navi">
                 <button className={location.pathname === "/" ? "home active" : "home"}
                         onClick={goToHomePage}
                         >홈</button>
                 
                 {/* onclick 설정 필요 */}
-                <button class="findMate">메이트 찾기</button>
+                <button className="findMate">메이트 찾기</button>
 
                 <button className={location.pathname === "/host" ? "host active" : "host"}
                         onClick={goToHostPage}
                         >메이트 모집하기</button>
 
                 {/* onclick 설정 필요 */}
-                <button class="info">공연 정보</button>
+                <button className="info">공연 정보</button>
 
                 <button className={location.pathname == "/login" ? "login active" : "login"}
                         onClick={goToLoginPage}

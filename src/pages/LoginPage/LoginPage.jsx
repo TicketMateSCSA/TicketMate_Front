@@ -16,10 +16,10 @@ function Login(){
             <div className="box">
                 <p className="title">로그인</p>
 
-                <p className="name">이메일<span class="star">*</span></p>
+                <p className="name">이메일<span className="star">*</span></p>
                 <input className="write" type="email" placeholder="abc@gmail.com"/>
 
-                <p className="name">비밀번호<span class="star">*</span></p>
+                <p className="name">비밀번호<span className="star">*</span></p>
                 <input className="write" type="password" placeholder="******"/>
                 <br/>
                 <input type="checkbox" name="lg" value="mt"/>
