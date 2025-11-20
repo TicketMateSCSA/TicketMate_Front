@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
 import "./HomePage.css";
 
 import Navigator from "../../components/Navigator/Navigator";
@@ -17,6 +17,12 @@ function Section({item}){
     const tags = item.mate_hashtag ? item.mate_hashtag.split(" ") : [];
     const slicedTag = tags.slice(0, 5);
 
+    const dateNtime = item.mate_view_date ? item.mate_view_date.split("T") : [];
+    dateNtime[0] = dateNtime[0].split("-").splice(0, 3);
+    dateNtime[0] = dateNtime[0][0] + "년 " + dateNtime[0][1] + "월 " + dateNtime[0][2] + "일 "
+    dateNtime[1] = dateNtime[1].split(":").slice(0, 2).join(":");
+    const slicedDate = dateNtime.slice(0, 2).join(" ");
+
     return (
         <div className="homepage-section">
             <img className="section-img" 
@@ -27,7 +33,7 @@ function Section({item}){
                 <p className="section-title">{item.mate_title}</p>
                 <p className="section-body">
                     공연: {item.perf_name}<br/>
-                    일시: {item.mate_view_date}<br/>
+                    일시: {slicedDate}<br/>
                     장소: {item.perf_loc}<br/>
                     모집 인원: {item.mate_num_of_need} (현재 {item.mate_num_of_confirmed}/{item.mate_num_of_need})</p>
                 
@@ -103,6 +109,7 @@ function HomePage(){
                     <Section key={item.mate_post_id} item={item}/>
     
                 ))}
+                
             </div>
             
         

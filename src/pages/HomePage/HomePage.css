@@ -108,22 +108,36 @@ button.background-postMate{
     width: 147px;
 }
 
+.section-content{
+    min-width: 0;
+}
 
 .section-content > .section-body{
-    font-size: 15px;
+    font-size: 14px;
     line-height: 2;
+
+    display: inline-block;     /* inline-block 필요 */
+    width: 100%;   
+    white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis;
+    
     margin: 0px 0px;
     margin-bottom: 5px;
 }
 
 .section-content > .section-title{
     font-weight: 500;
-    line-height: 0.9;
-    font-size: 18px;
+    line-height: 1.2;
+    font-size: 17px;
     margin: 0px 0px;
-    margin-bottom: 7px;
+    margin-bottom: 3px;
+
+    display: inline-block;     /* inline-block 필요 */
+    width: 100%;   
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .section-accountInfo{
