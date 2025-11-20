@@ -44,7 +44,7 @@
 div.search-category{
     position: absolute;
     left: 20px;
-    top: 230px;
+    top: 225px;
     height: 105px;
     font-size: 14px;
 }
@@ -82,6 +82,14 @@ p.search-category{
 }
 
 /* 3. 선호사항 */
+div.search-prefer{
+    position: absolute;
+    left: 20px;
+    top: 350px;
+    height: 190px;
+    font-size: 14px;
+}
+
 /* 3-1. 모집상태 */
 p.search-state{
     position: absolute;
@@ -89,13 +97,6 @@ p.search-state{
     font-weight: 500;
 }
 
-div.search-prefer{
-    position: absolute;
-    left: 20px;
-    top: 360px;
-    height: 210px;
-    font-size: 14px;
-}
 
 /* 3-2. 연령대 */
 p.search-age{
@@ -107,4 +108,108 @@ p.search-age{
 div.age-btn{
     position: absolute;
     left: 51%;
+}
+
+/* 3-3. 공연 날짜 */
+p.search-per-date{
+    position: absolute;
+    left: 20px;
+    top: 88px;
+    font-weight: 500;
+}
+
+.search-start-date{
+    position: absolute;
+    top: 136px;
+    left: 20px;
+
+    height: 30px;
+    width: 20%;
+    border-radius: 0%;
+    border: none;
+    background-color: #BECBFF;
+
+    color: gray;
+    padding-left: 8px;
+    padding-right: 8px;
+
+}
+
+.search-end-date{
+    position: absolute;
+    top: 136px;
+    left: 205px;
+
+    height: 30px;
+    width: 20%;
+    border-radius: 0%;
+    border: none;
+    background-color: #BECBFF;
+
+    color: gray;
+    padding-left: 8px;
+    padding-right: 8px;
+
+}
+
+.search-bla{
+    position: absolute;
+    top: 140px;
+    left: 185px;
+}
+/* 3-4. 성별 */
+p.search-gender{
+    position: absolute;
+    left: 51%;
+    top: 88px;
+    font-weight: 500;
+}
+
+div.gender-btn{
+    position: absolute;
+    left: 51%;
+    top: 142px;
+}
+
+/* 4. 정렬 조건 */
+.sort-btn{
+    position: absolute;
+    top: 562px;
+    left: 516px;
+}
+
+/* 5. 페이지 */
+.search-paging {
+  display: flex;
+  margin: 0 auto;
+  font-size: small;
+}
+
+
+/* 6. 목록 */
+.search-whole-content{
+    position: relative;
+    top: 589px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-rows: repeat(4, 1fr); /* 2열 */
+    gap: 20px;
+
+    width: 95%;
+    height: 590px;
+    padding: 0px 0px 20px;
+    overflow: hidden;
+}
+
+.search-section-func{
+    display: flex;
+    padding: 13px 13px;
+    box-shadow: 0px 0px 8px #d4bbff;
+    border: 2px solid;
+    height: 100%;
+    width: 100%;
+    border-color:#5409DA;
+    overflow: hidden;
+    cursor: pointer;
 }
