@@ -204,7 +204,7 @@ div.gender-btn{
 
 .search-section-func{
     display: flex;
-    padding: 13px 13px;
+    padding: 7px 7px;
     box-shadow: 0px 0px 8px #d4bbff;
     border: 2px solid;
     height: 100%;
@@ -212,4 +212,110 @@ div.gender-btn{
     border-color:#5409DA;
     overflow: hidden;
     cursor: pointer;
+}
+
+.search-content-length{
+    position: absolute;
+    top: 554px;
+    left: 22px;
+    font-size: 13px;
+}
+
+.search-section-title{
+    font-size: 13px;
+
+    font-weight: 500;
+    line-height: 1;
+    margin-right: 0px;
+    margin-left: 10px;
+    margin-top: 15px;
+    margin-bottom: 0px;
+
+    display: inline-block;     /* inline-block 필요 */
+    width: 100%;   
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+span.search-section-category{
+    position: relative;
+    top: 4px;
+    left: 11px;
+    border: 2px solid;
+    font-size: 14px;
+    padding: 2px 5px;
+    margin-right: 10px;
+
+    border-color: #5409DA;
+    color:#5409DA;
+
+}
+
+span.search-section-state{
+    position: relative;
+    top: 4px;
+    left: 10px;
+    border: 2px solid;
+    font-size: 14px;
+    padding: 2px 5px;
+
+}
+
+.search-section-body1{
+    position: absolute;
+    margin: 0px;
+    left: 101px;
+    font-size: 12px;
+}
+
+.search-section-body2{
+    position: absolute;
+    margin: 0px;
+    left: 57%;
+    font-size: 12px;
+}
+
+.search-section-img{
+    height: 108px;
+    width: 81px;
+}
+
+.search-section-accountInfo{
+    display: flex;
+    margin-bottom: 5px;
+}
+
+.search-section-accountInfo img{
+    position: relative;
+    top: 3px;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+}
+
+.search-section-accountInfo p{
+    margin: 0;
+    position: relative;
+    top: 4px;
+    left: 10px;
+    font-size: 8px;
+    
+}
+
+.search-tag-container{
+    position: relative;
+    top: 30px;
+    width: 670px;
+    display: flex;
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    gap: 5px; /* 요소 사이 간격 */
+    flex-wrap: wrap; /* 필요하면 줄바꿈 */
+}
+.search-section-tag{
+    background-color: #4E71FF;
+    color: white;
+    font-weight: 400;
+    font-size: 13px;
+    padding: 0px 3px;
 }

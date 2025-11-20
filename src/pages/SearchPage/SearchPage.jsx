@@ -4,12 +4,62 @@ import "./SearchPage.css";
 import Navigator from "../../components/Navigator/Navigator";
 import Pagination from "../../components/Pagination/Pagination";
 
+import noImage from '../../assets/images/no-image.png';
+import noProfile from '../../assets/images/no-profile.png';
 
+// const filterUrl = `${import.meta.env.VITE_POSTS_URL}/posts/filter?${queryString}`;
+const filterUrl = `${import.meta.env.VITE_POSTS_URL}/posts`;
+
+const stateMapRev = {0: "전체", 1: "모집중", 2: "모집완료"};
+const ageMapRev = {0: '10대', 1: '20대', 2: '30대', 3: '40대', 4: '50대+'}
+const genderMapRev = {0: '무관', 1: '남성', 2: '여성'}
 
 function SearchSection({item}){
+    const tags = item.mate_hashtag ? item.mate_hashtag.split(" ") : [];
+    const slicedTag = tags.slice(0, 5);
+
+    const dateNtime = item.mate_view_date ? item.mate_view_date.split("T") : [];
+    dateNtime[0] = dateNtime[0].split("-").splice(0, 3);
+    dateNtime[0] = dateNtime[0][0] + "년 " + dateNtime[0][1] + "월 " + dateNtime[0][2] + "일 "
+    dateNtime[1] = dateNtime[1].split(":").slice(0, 2).join(":");
+    const slicedDate = dateNtime.slice(0, 2).join(" ");
+
     return (
         <div className="search-section-func">
+            <img className="search-section-img" 
+                src={item.perf_img_url ? item.perf_img_url : noImage}
+                alt={item.perf_name}/>
 
+            <div className="search-section-content">
+                <span className="search-section-category">{item.cat_name}</span>
+                <span className="search-section-state"
+                    style={
+                        {backgroundColor: item.mate_status === 1 ? "#A1FFA6" : "#E0E0E0",
+                        borderColor: item.mate_status === 1 ? "#40A646" : "#656565",
+                        color: item.mate_status === 1? "#40A646" : "#656565"
+                    }}>{stateMapRev[item.mate_status]}</span>
+                <p className="search-section-title">{item.mate_title}</p>
+                
+                <p className="search-section-body1">
+                    공연: {item.perf_name}<br/>
+                    일시: {slicedDate}
+                    <div className="search-section-accountInfo">
+                    <img src={item.mem_img_url ? item.mem_img_url : noProfile}/>
+                    <p>{item.mem_nn ? item.mem_nn : item.mem_name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ageMapRev[item.mem_age_range]} {genderMapRev[item.mem_gender]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;조회 {item.mate_view_cnt}</p>
+                </div>
+                    </p>
+                    
+                <p className="search-section-body2">
+                    장소: {item.perf_loc}<br/>
+                    모집 인원: {item.mate_num_of_need} (현재 {item.mate_num_of_confirmed}/{item.mate_num_of_need})</p>
+                
+                <div className="search-tag-container">
+                    {slicedTag.map((tag, idx) => (
+                    <span className="search-section-tag" key={idx}>{tag}</span>
+                    )) }
+                </div>
+                
+            </div>
         </div>
     )
 }
@@ -17,6 +67,7 @@ function SearchSection({item}){
 
 
 function Search(){
+    const [dataList, setDataList] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState(["전체"]);
     const [selectedState, setSelectedState] = useState("전체");
     const [selectedAge, setSelectedAge] = useState(["전체"]);
@@ -26,7 +77,6 @@ function Search(){
     const [selectedSort, setSelectedSort] = useState("최신순");
     const [page, setPage] = useState(1);
 
-    // 오늘 날짜(YYYY-MM-DD)
     const today = new Date().toISOString().split("T")[0];
 
     const handleChangeCategories = (event) => {
@@ -131,19 +181,16 @@ function Search(){
         return params.toString();
         };
 
-    let dataLength;
-
+    
     const fetchData = async () => {
         const queryString = buildQuery();
-        // const filterUrl = `${import.meta.env.VITE_POSTS_URL}/posts/filter?${queryString}`;
-        const filterUrl = `${import.meta.env.VITE_POSTS_URL}/posts`; // 테스트용
+
 
         try {
             const response = await fetch(filterUrl);
             const data = await response.json();
-            dataLength = Math.ceil(data.length / 4);
-            // console.log(data);
-            // 필요하면 setData(data) 해서 화면에 렌더
+            const list = data?.result?.postPreviewDTOList || [];
+            setDataList(list);  // 상태 업데이트
         } catch (err) {
             console.error(err);
         }
@@ -344,20 +391,21 @@ function Search(){
                 <label htmlFor="search-sort-btn4">조회순</label>
             </div>
 
-            
             {/* 5. 목록 */}
+            <p className="search-content-length">총 {dataList.length}개의 메이트 모집글</p>
             <div className="search-whole-content">
-                <SearchSection/>
-                <SearchSection/>
-                <SearchSection/>
-                <SearchSection/>
-
+                {dataList.map((item, idx) => (
+                    <SearchSection key={idx} item={item} />
+                ))}
                 {/* 6. 페이지 */}
                 <div className="search-paging">
-                    <Pagination page={page} setPage={setPage} totalPages={dataLength}/>
+                    <Pagination page={page} setPage={setPage} totalPages={Math.ceil(dataList.length / 4)} />
                 </div>
-            
             </div>
+
+            
+            
+            
         </div>
 
     )
