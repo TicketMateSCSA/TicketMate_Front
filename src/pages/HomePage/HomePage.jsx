@@ -5,13 +5,41 @@ import "./HomePage.css";
 
 import Navigator from "../../components/Navigator/Navigator";
 import background from '../../assets/images/home-background-image.png';
+import noImage from '../../assets/images/no-image.png';
 
 const postsUrl = "http://10.10.0.104:8888/posts";
 
-function Section(){
-    return (
-        <div>
+const ageMap = {0: '10대', 1: '20대', 2: '30대', 3: '40대', 4: '50대+'}
+const genderMap = {0: '무관', 1: '남성', 2: '여성'}
 
+function Section({item}){
+
+    const tags = item.mate_hashtag ? item.mate_hashtag.split(" ") : [];
+    const slicedTag = tags.slice(0, 5);
+
+    return (
+        <div className="homepage-section">
+            <img className="section-img" 
+                src={item.perf_img_url ? item.perf_img_url : noImage}
+                alt={item.perf_name}/>
+
+            <div className="section-content">
+                <p className="section-title">{item.mate_title}</p>
+                <p className="section-body">
+                    공연: {item.perf_name}<br/>
+                    일시: {item.mate_view_date}<br/>
+                    장소: {item.perf_loc}<br/>
+                    모집 인원: {item.mate_num_of_need} (현재 {item.mate_num_of_confirmed}/{item.mate_num_of_need})</p>
+                
+                <div className="section-accountInfo">
+                    <img src={item.mem_img_url ? item.mem_img_url : noImage}/>
+                    <p>{item.mem_nn ? item.mem_nn : item.mem_name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ageMap[item.mem_age_range]} {genderMap[item.mem_gender]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;조회 {item.mate_view_cnt}</p>
+                </div>
+
+                {slicedTag.map((tag, idx) => (
+                    <span className="section-tag" key={idx}>{tag}</span>
+                    )) }
+            </div>
         </div>
     )
 }
@@ -23,31 +51,36 @@ function HomePage(){
         navigate("/host");
     }
 
+    // 1. API 요청
     const [data, setData] = useState(null); // 데이터를 담을 state
     const [loading, setLoading] = useState(true); // 로딩 상태
     const [error, setError] = useState(null); // 에러 상태
-
-    useEffect(() => {
-    fetch(postsUrl) // API 주소
-    .then((response) => {
-        if (!response.ok) {
-        throw new Error("네트워크 응답 오류");
-        }
-        return response.json(); // JSON 변환
-    })
-    .then((jsonData) => {
-        setData(jsonData); // state에 저장
-        setLoading(false);
-    })
-    .catch((err) => {
-        setError(err);
-        setLoading(false);
-    });
-    }, []); // 빈 배열 = 마운트 시 1번만 실행
-
-    if (loading) return <div>로딩 중...</div>;
-    if (error) return <div>에러: {error.message}</div>;
     
+    useEffect(() => {
+        fetch(postsUrl)
+        .then((response) => {
+            if (!response.ok) {
+            throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then((data) => {
+            console.log(data);
+            setData(data);
+            setLoading(false);
+        })
+        .catch((error) => {
+            setError(error.message);
+            setLoading(false);
+        });
+    }, []);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
+    
+    const list = data?.result?.postPreviewDTOList;
+    console.log(list);
+
     return(
         <div className="home-page-container">
             <Navigator/>
@@ -61,14 +94,17 @@ function HomePage(){
             <button className="background-postMate" onClick={goToHostPage}>메이트 모집하기</button>
             
             {/* 목록 */}
-            <div>
-            {data && data.map((item) => (
-                <div key={item.mate_post_id}>
-                <h3>{item.mate_title}</h3>
-                <p>{item.hashtag}</p>
-                </div>
-            ))}
+            
+            <div className="homepage-content">
+                {list
+                ?.filter(item => item.mate_status === 1) // 모집 중인
+                .slice(0, 6) // 상위 6개
+                .map((item) => (
+                    <Section key={item.mate_post_id} item={item}/>
+    
+                ))}
             </div>
+            
         
         </div>
     )
