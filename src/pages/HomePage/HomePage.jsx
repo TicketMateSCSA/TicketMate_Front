@@ -6,6 +6,7 @@ import "./HomePage.css";
 import Navigator from "../../components/Navigator/Navigator";
 import background from '../../assets/images/home-background-image.png';
 import noImage from '../../assets/images/no-image.png';
+import noProfile from '../../assets/images/no-profile.png';
 
 const postsUrl = "http://10.10.0.104:8888/posts";
 
@@ -38,7 +39,7 @@ function Section({item}){
                     모집 인원: {item.mate_num_of_need} (현재 {item.mate_num_of_confirmed}/{item.mate_num_of_need})</p>
                 
                 <div className="section-accountInfo">
-                    <img src={item.mem_img_url ? item.mem_img_url : noImage}/>
+                    <img src={item.mem_img_url ? item.mem_img_url : noProfile}/>
                     <p>{item.mem_nn ? item.mem_nn : item.mem_name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ageMap[item.mem_age_range]} {genderMap[item.mem_gender]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;조회 {item.mate_view_cnt}</p>
                 </div>
 
