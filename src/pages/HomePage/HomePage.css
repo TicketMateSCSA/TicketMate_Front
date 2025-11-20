@@ -99,6 +99,7 @@ button.background-postMate{
     width: 100%;
     border-color:#5409DA;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .homepage-section > .section-img{
