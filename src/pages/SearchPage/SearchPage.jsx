@@ -8,7 +8,6 @@ import Pagination from "../../components/Pagination/Pagination";
 import noImage from '../../assets/images/no-image.png';
 import noProfile from '../../assets/images/no-profile.png';
 
-// const filterUrl = `${import.meta.env.VITE_POSTS_URL}/posts/filter?${queryString}`;
 const filterUrl = `${import.meta.env.VITE_POSTS_URL}/posts`;
 const catUrl = `${import.meta.env.VITE_POSTS_URL}/categories`;
 
@@ -165,6 +164,7 @@ function Search(){
         setLoading(true); // 새 데이터 로딩 시작
         setError(null);
         const queryString = buildQuery();
+
         try {
             // filterUrl에 쿼리스트링 추가
             const url = `${filterUrl}?${queryString}`;
@@ -175,10 +175,11 @@ function Search(){
             }
 
             const data = await response.json();
-            const list = data?.result?.postPreviewDTOList || [];
+            const list = data?.result?.postPreviewDTOList.slice(0, 4) || []; // 4개
+            console.log(list);
 
-            // 서버에서 총 개수 정보도 받아온다고 가정하고 처리
-            const totalCount = data?.result?.totalCount || list.length;
+            // TODO
+            const totalCount = 40;
             setTotalPostCount(totalCount); 
 
             setDataList(list);

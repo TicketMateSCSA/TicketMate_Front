@@ -198,7 +198,7 @@ div.gender-btn{
 
     display: grid;
     grid-template-rows: repeat(4, 1fr); /* 2열 */
-    gap: 20px;
+    gap: 12px;
 
     width: 95%;
     height: 590px;

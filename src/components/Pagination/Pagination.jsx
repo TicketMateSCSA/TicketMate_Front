@@ -20,28 +20,29 @@ function Pagination({ page, setPage, totalPages }) {
 
   const pageNumbers = createPageNumbers();
 
-  return (
-    <div className="pagination-container">
-      {/* 왼쪽 화살표 */}
+  return (<div className="pagination-container">
+      {/* 1. 왼쪽 화살표 */}
       <span
         className="nav-btn-left"
         onClick={() => page > 1 && setPage(page - 1)}
       ></span>
 
-      {/* 페이지 번호 */}
-      {pageNumbers.map((num, idx) => (
-        <span
-          key={idx}
-          className={`page-item ${num === page ? "active" : ""} ${
-            num === "..." ? "dots" : ""
-          }`}
-          onClick={() => num !== "..." && setPage(num)}
-        >
-          {num}
-        </span>
-      ))}
+      {/* 2. ✨ 페이지 번호 래퍼 추가: 이 영역의 너비를 고정할 것입니다. */}
+      <div className="page-numbers-wrapper"> 
+        {pageNumbers.map((num, idx) => (
+          <span
+            key={idx}
+            className={`page-item ${num === page ? "active" : ""} ${
+              num === "..." ? "dots" : ""
+            }`}
+            onClick={() => num !== "..." && setPage(num)}
+          >
+            {num}
+          </span>
+        ))}
+      </div>
 
-      {/* 오른쪽 화살표 */}
+      {/* 3. 오른쪽 화살표 */}
       <span
         className="nav-btn-right"
         onClick={() => page < totalPages && setPage(page + 1)}

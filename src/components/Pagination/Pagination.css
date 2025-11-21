@@ -1,9 +1,25 @@
+/* 최상위 컨테이너: flex 중앙 정렬 제거 */
 .pagination-container {
   display: flex;
-  justify-content: center;
+  justify-content: center; /* 전체 컴포넌트 자체를 중앙에 두려면 유지 */
   align-items: center;
-  gap: 6px;           /* 버튼과 번호 사이 간격 줄임 */
+  gap: 6px; 
 }
+
+/* ✨ 새로 추가된 페이지 번호 래퍼: 이 요소가 너비를 고정합니다. */
+.page-numbers-wrapper {
+  display: flex;
+  justify-content: center; /* 페이지 번호들을 가운데 정렬 */
+  align-items: center;
+  gap: 6px; 
+  
+  /* ❗ 중요: 페이지 번호가 최대로 표시될 때의 너비를 계산하여 고정합니다. */
+  /* 예시: '1 ... 99 100 ... 1000' 등 최대 길이의 텍스트에 맞게 설정 */
+  /* 여기서는 '1 ... 100 ... 9999'처럼 9개 요소가 최대로 나올 때의 너비를 추정해야 합니다. */
+  min-width: 170px; /* 실제 페이지 번호 수와 글자 크기에 맞춰 이 값을 조정하세요. */
+}
+
+/* 나머지 스타일 (nav-btn-left, nav-btn-right, page-item 등)은 이전과 동일 */
 
 /* 왼쪽 삼각형 */
 .nav-btn-left {
@@ -13,6 +29,7 @@
   border-bottom: 7px solid transparent;
   border-right: 14px solid #5409DA; /* 화살표 색상 */
   cursor: pointer;
+  flex-shrink: 0; /* 화살표가 찌그러지지 않도록 */
 }
 
 /* 오른쪽 삼각형 */
@@ -23,12 +40,15 @@
   border-bottom: 7px solid transparent;
   border-left: 14px solid #5409DA; /* 화살표 색상 */
   cursor: pointer;
+  flex-shrink: 0; /* 화살표가 찌그러지지 않도록 */
 }
 
 .page-item {
   cursor: pointer;
-  font-size: 14px;      /* 글자 작게 */
-  padding: 2px 4px;     /* 클릭 영역 조금 줄임 */
+  font-size: 14px;
+  padding: 2px 4px;
+  /* 글자가 바뀔 때 움직이지 않도록 고정 폭 글꼴을 사용할 수도 있습니다. */
+  /* font-family: monospace; */ 
 }
 
 .page-item.active {
