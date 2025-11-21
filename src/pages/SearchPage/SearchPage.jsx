@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import format from "date-format";
 
 import "./SearchPage.css";
 import Navigator from "../../components/Navigator/Navigator";
@@ -9,6 +10,7 @@ import noProfile from '../../assets/images/no-profile.png';
 
 // const filterUrl = `${import.meta.env.VITE_POSTS_URL}/posts/filter?${queryString}`;
 const filterUrl = `${import.meta.env.VITE_POSTS_URL}/posts`;
+const catUrl = `${import.meta.env.VITE_POSTS_URL}/categories`;
 
 const stateMapRev = {0: "전체", 1: "모집중", 2: "모집완료"};
 const ageMapRev = {0: '10대', 1: '20대', 2: '30대', 3: '40대', 4: '50대+'}
@@ -79,6 +81,126 @@ function Search(){
 
     const today = new Date().toISOString().split("T")[0];
 
+    // 카테고리 목록 상태를 별도로 관리
+    const [categoryList, setCategoryList] = useState([]); // catList를 대체
+    const [totalPostCount, setTotalPostCount] = useState(0); // 전체 게시글 수 (페이지네이션용)
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    
+    // 1. 초기 카테고리 데이터 Fetch (한 번만 실행)
+    useEffect(() => {
+        fetch(catUrl)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                // 카테고리 데이터를 전역 상태가 아닌 컴포넌트 상태로 저장
+                setCategoryList(data?.result?.getCategoryDTOList || []);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setError(error.message);
+                setLoading(false);
+            });
+    }, []);
+
+
+    // [백]
+    const buildQuery = useCallback(() => {
+        const params = new URLSearchParams();
+
+        // 카테고리 ID 매핑 생성
+        const categoryMap = {"전체": 0};
+        categoryList.forEach(item => {
+            categoryMap[item.cat_name] = item.cat_id;
+        });
+
+        selectedCategories.forEach(cat => {
+            const catId = categoryMap[cat];
+            params.append("cat_id", catId);
+        });
+
+        // 모집 상태
+        const stateMap = { "전체": 0, "모집중": 1, "모집완료": 2 };
+        params.append("mate_status", stateMap[selectedState] || 0);
+
+        // 연령대
+        const ageMap = { "전체": 1 << 0, "10대": 1 << 1, "20대": 1 << 2, "30대": 1 << 3, "40대": 1 << 4, "50대+": 1 << 5 };
+        let ageBit = 0;
+        // "전체"가 선택되지 않은 경우에만 비트 연산 수행
+        if (!selectedAge.includes("전체")) {
+            selectedAge.forEach(age => {
+                ageBit |= ageMap[age] || 0;
+            });
+        } else {
+            ageBit = 1 << 0; // "전체"에 해당하는 비트 값 (코드에 따라 0일 수도 있음)
+        }
+        params.append("mate_pref_age", ageBit);
+
+        // 성별
+        const genderMap = { "무관": 0, "남성": 1, "여성": 2 };
+        params.append("mate_gender", genderMap[selectedGender] || 0);
+
+        // 날짜
+        if (startDate) params.append("perf_sat", format("yyyy-MM-ddThh:MM:SS", new Date(startDate)));
+        else params.append("perf_sat", format("yyyy-MM-ddThh:MM:SS", new Date(today)));
+        if (endDate) params.append("perf_eat", format("yyyy-MM-ddThh:MM:SS", new Date(endDate)));
+        console.log(typeof(format("yyyy-MM-ddThh:MM:SS", new Date(today))));
+        
+        // 정렬
+        const sortMap = { "최신순": "latest", "마감임박순": "deadline", "인기순": "popular", "조회순": "views" };
+        params.append("sort", sortMap[selectedSort] || "latest");
+
+        // 페이지
+        params.append("page", page);
+        console.log(params.toString());
+        return params.toString();
+    }, [page, selectedCategories, selectedState, selectedAge, selectedGender, startDate, endDate, selectedSort, categoryList]);
+
+    
+    const fetchData = useCallback(async () => {
+        setLoading(true); // 새 데이터 로딩 시작
+        setError(null);
+        const queryString = buildQuery();
+        try {
+            // filterUrl에 쿼리스트링 추가
+            const url = `${filterUrl}?${queryString}`;
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const list = data?.result?.postPreviewDTOList || [];
+
+            // 서버에서 총 개수 정보도 받아온다고 가정하고 처리
+            const totalCount = data?.result?.totalCount || list.length;
+            setTotalPostCount(totalCount); 
+
+            setDataList(list);
+            setLoading(false);
+        } catch (err) {
+            console.error("데이터 fetching 오류:", err);
+            setError(err.message);
+            setDataList([]); // 오류 발생 시 목록 초기화
+            setLoading(false);
+        }
+    }, [buildQuery]); // buildQuery가 변경될 때만 fetchData 재정의
+
+    useEffect(() => {
+        fetchData();
+        // fetchData가 buildQuery를 의존하므로, buildQuery의 의존성(필터 조건들)이 변경되면
+        // fetchData가 새로운 쿼리로 재요청하게 됩니다.
+    }, [fetchData]);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
+    // console.log(catList);
+
     const handleChangeCategories = (event) => {
         const { value, checked } = event.target;
 
@@ -140,67 +262,6 @@ function Search(){
         setSelectedSort(event.target.value);
     };
 
-    // [백]
-    const buildQuery = () => {
-        const params = new URLSearchParams();
-
-        // 카테고리
-        const categoryMap = {"전체": 0, "콘서트": 1, "뮤지컬": 2, "연극": 3, "전시": 4, '기타': 5}
-        selectedCategories.forEach(cat => {
-            params.append("cat_id", categoryMap[cat] || 0);
-        });
-        
-        // 모집 상태
-        const stateMap = { "전체": 0, "모집중": 1, "모집완료": 2};
-        params.append("mate_status", stateMap[selectedState] || 0);
-
-        // 연령대
-        const ageMap = {"전체": 1 << 0, "10대": 1 << 1, "20대": 1 << 2, "30대": 1 << 3, "40대": 1 << 4, "50대+": 1 << 5 };
-        let ageBit = 0;
-        selectedAge.forEach(age => {
-            ageBit |= ageMap[age]; 
-        })
-        // console.log(ageBit);
-        params.append("mate_pref_age", ageBit);
-
-        // 성별
-        const genderMap = { "무관": 0, "남성": 1, "여성": 2 };
-        params.append("mate_gender", genderMap[selectedGender] || 0);
-
-        // 날짜
-        if (startDate) params.append("perf_sat", startDate);
-        if (endDate) params.append("perf_eat", endDate);
-
-        // 정렬
-        const sortMap = { "최신순": "latest", "마감임박순": "deadline", "인기순": "popular", "조회순": "views"};
-        params.append("sort", sortMap[selectedSort] || "latest");
-
-        // 페이지
-        params.append("page", page);
-
-        return params.toString();
-        };
-
-    
-    const fetchData = async () => {
-        const queryString = buildQuery();
-
-
-        try {
-            const response = await fetch(filterUrl);
-            const data = await response.json();
-            const list = data?.result?.postPreviewDTOList || [];
-            setDataList(list);  // 상태 업데이트
-        } catch (err) {
-            console.error(err);
-        }
-    };
-
-    useEffect(() => {
-        fetchData();
-        }, [page, selectedCategories, selectedState, selectedAge, selectedGender, startDate, endDate, selectedSort]);
-
-
     return (
         <div className="search-page-container">
             <Navigator/>
@@ -215,36 +276,30 @@ function Search(){
             <div className="search-box search-category">
                 <p className="search-category">카테고리</p>
                 <div className="search-btn-group category-btn">
-                    <input type="checkbox" id="search-category-btn1" value="전체"
-                        checked={selectedCategories.includes("전체")}
-                        onChange={handleChangeCategories}
-                    />
-                    <label htmlFor="search-category-btn1">{"전체"}</label>
-                    <input type="checkbox" id="search-category-btn2" value="콘서트"
-                        checked={selectedCategories.includes("콘서트")}
-                        onChange={handleChangeCategories}
-                    />
-                    <label htmlFor="search-category-btn2">{"콘서트"}</label>
-                    <input type="checkbox" id="search-category-btn3" value="뮤지컬"
-                        checked={selectedCategories.includes("뮤지컬")}
-                        onChange={handleChangeCategories}
-                    />
-                    <label htmlFor="search-category-btn3">{"뮤지컬"}</label>
-                    <input type="checkbox" id="search-category-btn4" value="연극"
-                        checked={selectedCategories.includes("연극")}
-                        onChange={handleChangeCategories}
-                    />
-                    <label htmlFor="search-category-btn4">{"연극"}</label>
-                    <input type="checkbox" id="search-category-btn5" value="전시"
-                        checked={selectedCategories.includes("전시")}
-                        onChange={handleChangeCategories}
-                    />
-                    <label htmlFor="search-category-btn5">{"전시"}</label>
-                    <input type="checkbox" id="search-category-btn6" value="기타"
-                        checked={selectedCategories.includes("기타")}
-                        onChange={handleChangeCategories}
-                    />
-                    <label htmlFor="search-category-btn6">{"기타"}</label>
+
+                    <div key="all-category"> 
+                        <input type="checkbox" id="search-category-btn1" value="전체"
+                            checked={selectedCategories.includes("전체")}
+                            onChange={handleChangeCategories}
+                            defaultChecked
+                        />
+                        <label htmlFor="search-category-btn1">{"전체"}</label>
+                    </div>
+
+                    {/* 고유한 key (cat_id) 사용 권장 */}
+                    {categoryList.map((item) => (
+                        <div key={item.cat_id || item.cat_name}> 
+                            <input
+                                type="checkbox"
+                                id={`search-category-btn-${item.cat_id}`}
+                                value={item.cat_name}
+                                checked={selectedCategories.includes(item.cat_name)}
+                                onChange={handleChangeCategories}
+                            />
+                            <label htmlFor={`search-category-btn-${item.cat_id}`}>{item.cat_name}</label>
+                        </div>
+                    ))}
+        
                 </div>
             </div>
 
@@ -392,20 +447,29 @@ function Search(){
             </div>
 
             {/* 5. 목록 */}
-            <p className="search-content-length">총 {dataList.length}개의 메이트 모집글</p>
-            <div className="search-whole-content">
-                {dataList.map((item, idx) => (
-                    <SearchSection key={idx} item={item} />
-                ))}
-                {/* 6. 페이지 */}
-                <div className="search-paging">
-                    <Pagination page={page} setPage={setPage} totalPages={Math.ceil(dataList.length / 4)} />
+            <p className="search-content-length">총 {totalPostCount}개의 메이트 모집글</p>
+            {loading ? (
+                <p>목록을 불러오는 중...</p>
+            ) : error ? (
+                <p>목록을 불러오는 데 오류가 발생했습니다: {error}</p>
+            ) : (
+                <div className="search-whole-content">
+                    {dataList.length > 0 ? (
+                        dataList.map((item) => (
+                            <SearchSection key={item.mate_id || item.mate_title} item={item} />
+                        ))
+                    ) : (
+                        <p>검색 조건에 맞는 결과가 없습니다.</p>
+                    )}
+                    
+                    {/* 6. 페이지 */}
+                    <div className="search-paging">
+                        {/* totalPages를 서버에서 받은 totalPostCount로 계산. 페이지당 4개라고 가정. */}
+                        <Pagination page={page} setPage={setPage} totalPages={Math.ceil(totalPostCount / 4)} />
+                    </div>
                 </div>
-            </div>
-
-            
-            
-            
+            )}
+    
         </div>
 
     )
