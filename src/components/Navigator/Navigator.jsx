@@ -41,7 +41,7 @@ function Navigator(){
                         onClick={goToHomePage}
                         >홈</button>
                 
-                <button className={location.pathname === "/search" ? "search active" : "search"}
+                <button className={location.pathname === "/search" || location.pathname == "/detail" ? "search active" : "search"}
                         onClick={goToSearchPage}
                         >메이트 찾기</button>
 

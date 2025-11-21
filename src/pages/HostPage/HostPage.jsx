@@ -1,11 +1,13 @@
 import {useState, useEffect} from "react";
+// import format from "data-format";
 
 import './HostPage.css';
 import Navigator from "../../components/Navigator/Navigator";
 import noImage from '../../assets/images/no-image.png';
+import { useNavigate } from "react-router-dom";
 
 const perfURL = `${import.meta.env.VITE_POSTS_URL}/performances`;
-
+const postURL = `${import.meta.env.VITE_POSTS_URL}/post`;
 
 function TransTime({startDate}){
     let dateNtime = "";
@@ -23,6 +25,10 @@ function TransTime({startDate}){
 
 
 function HostPage(){
+    const navigate = useNavigate();
+
+    const today = new Date().toISOString().split("T")[0];
+
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -31,8 +37,199 @@ function HostPage(){
     const [open, setOpen] = useState(false);
     const [selectedShow, setSelectedShow] = useState(null);
 
-    const today = new Date().toISOString().split("T")[0];
+    // 입력용 ---------------------------
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    const [viewDate, setViewDate] = useState(null);
+    const [viewTime, setViewTime] = useState(null);
+    const [locTime, setLocTime] = useState("");
+    const [numNeed, setNumNeed] = useState(1);
+    const [selectedGender, setSelectedGender] = useState("무관");
+    const [selectedAge, setSelectedAge] = useState(["전체"]);
+    const [hashTag, setHashTag] = useState("");
 
+    // 핸들러 ---------------------------
+    const handleTitle = (e) => {
+        setTitle(e.target.value);
+    }
+
+    const handleContent = (e) => {
+        setContent(e.target.value);
+    }
+
+    const handleViewDate = (e) => {
+        setViewDate(e.target.value);
+    }
+
+    const handleViewTime = (e) => {
+        setViewTime(e.target.value);
+    }
+
+    const handleLocTime = (e) => {
+        setLocTime(e.target.value);
+    }
+
+    const handleNumNeed = (e) => {
+        setNumNeed(e.target.value);
+    }
+
+    const handleSelectedGender = (e) => {
+        setSelectedGender(e.target.value);
+    }
+
+    const handleHashTag = (e) => {
+        setHashTag(e.target.value);
+    }
+
+    const handleChangeAge = (event) => {
+        const { value, checked } = event.target;
+
+        if (value === "전체") {
+        if (checked) {
+            setSelectedAge(["전체"]);
+        } else {
+            setSelectedAge([]);
+        }
+        } else {
+        if (checked) {
+            setSelectedAge([...selectedAge.filter(c => c !== "전체"), value]);
+        } else {
+            setSelectedAge(selectedAge.filter((c) => c !== value));
+        }
+        }
+    };
+
+    // 폼 초기화 로직 추가 ---------------------------
+    // const resetForm = () => {
+    //     setTitle('');
+    //     setContent('');
+    //     setViewDate(null);
+    //     setViewTime(null);
+    //     setLocTime("");
+    //     setNumNeed(1); // 기본값으로 설정
+    //     setSelectedGender("무관"); // 기본값으로 설정
+    //     setSelectedAge(["전체"]); // 기본값으로 설정
+    //     setHashTag("");
+    //     // 공연 선택 관련 초기화
+    //     setQuery("");
+    //     setOpen(false);
+    //     setSelectedShow(null);
+    // };
+
+    // 백 -------------------------------
+   const buildBody = () => {
+        // 0. 필수 값 검증 로직 추가
+        if (!selectedShow) {
+            throw new Error("공연을 선택해주세요.");
+        }
+        if (!title.trim()) {
+            throw new Error("제목을 입력해주세요.");
+        }
+        if (!viewDate || !viewTime) {
+            throw new Error("관람 날짜와 시간을 선택해주세요.");
+        }
+        if (!content.trim()) {
+            throw new Error("게시글 내용을 입력해주세요.");
+        }
+
+        if (!locTime.trim()) {
+            throw new Error("만남 장소/시간을 입력해주세요.");
+        }
+        
+        // 1. 필요한 모든 데이터를 객체로 구성합니다.
+        const bodyData = {
+            "mate_perf_id": selectedShow.perf_id,
+            "mate_title": title,
+            "mate_content": content,
+            // 날짜와 시간 형식을 그대로 사용합니다.
+            "mate_view_date": viewDate + "T" + viewTime + ":00", 
+            "mate_loc_time": locTime,
+            "mate_num_of_need": numNeed,
+        };
+
+        // 2. 성별 매핑 처리
+        const genderMap = { "무관": 0, "남성": 1, "여성": 2 };
+        bodyData.mate_pref_gender = genderMap[selectedGender];
+
+        // 3. 연령대 비트마스크 처리
+        const ageMap = {
+            "전체": 1 << 0, 
+            "10대": 1 << 1, 
+            "20대": 1 << 2, 
+            "30대": 1 << 3, 
+            "40대": 1 << 4, 
+            "50대+": 1 << 5 
+        };
+        let ageBit = 0;
+        selectedAge.forEach(age => {
+            ageBit |= ageMap[age]; 
+        });
+        bodyData.mate_pref_age = ageBit;
+        
+        // 4. 해시태그 처리
+        bodyData.mate_hashtag = hashTag;
+
+        // POST 요청 시, 이 객체를 보통 JSON.stringify()를 사용하여 문자열화하여 보냅니다.
+        return bodyData; 
+    };
+
+    // POST 함수 수정: 결과를 반환하도록 유지
+    const postData = async (url, dataToSend) => {
+        try {
+            const response = await fetch(url, {
+                method: 'POST', // POST 메소드 지정
+                headers: {
+                    // 서버가 JSON 데이터를 예상하고 있음을 알립니다.
+                    'Content-Type': 'application/json', 
+                    // 필요한 경우 다른 헤더 (예: 인증 토큰) 추가
+                },
+                // JavaScript 객체를 JSON 문자열로 변환하여 요청 본문에 넣습니다.
+                body: JSON.stringify(dataToSend), 
+            });
+
+            if (!response.ok) {
+                // 응답 본문을 읽어 더 상세한 오류 메시지 제공 시도
+                const errorBody = await response.text();
+                throw new Error(`HTTP error! status: ${response.status}. Body: ${errorBody}`);
+            }
+
+            const result = await response.json(); // 서버 응답 처리
+            return result;
+
+        } catch (error) {
+            console.error('Error posting data:', error);
+            throw error; // 에러를 호출자에게 다시 던져서 처리하도록 합니다.
+        }
+    };
+
+    // 버튼 클릭 핸들러 추가
+    const handleSubmit = async () => {
+        try {
+        // 1. 전송할 데이터를 준비합니다. (buildBody에서 유효성 검사 수행)
+        const dataToSend = buildBody(); 
+        
+        // 2. 서버로 데이터를 전송합니다.
+        const result = await postData(postURL, dataToSend); 
+        
+        console.log('Post Success:', result);
+        alert("메이트 모집글이 성공적으로 등록되었습니다!");
+
+        
+        navigate(`/detail?mate_post_id=${result.result}`)
+
+        // // 3. 성공적으로 전송되면 폼을 초기화합니다.
+        // resetForm(); 
+
+    } catch (error) {
+        console.error('Submission failed:', error);
+        
+        // buildBody에서 발생한 유효성 검사 에러 또는 POST 요청 에러를 사용자에게 보여줍니다.
+        // 유효성 검사 에러 메시지가 더 명확하므로 이를 활용합니다.
+        alert(`${error.message}`); 
+    }
+    };
+
+    
     useEffect(() => {
         fetch(perfURL)
         .then((response) => {
@@ -92,7 +289,7 @@ function HostPage(){
                 <p className="body">함께 공연을 즐길 메이트를 모집해볼까요?</p>
 
                 <button className="save">임시저장</button>
-                <button className="post">등록하기</button>
+                <button className="post" onClick={handleSubmit}>등록하기</button>
             </div>
             
             {/* 2. 양식 */}
@@ -152,7 +349,10 @@ function HostPage(){
                 
                 <div className='post'>
                     <p className="post-title">제목<span className="star">*</span></p>
-                    <input className="writeTitle" type='text' placeholder='함께 공연 보실 분 구합니다!'/>
+                    <input className="writeTitle" type='text'
+                        value={title}
+                        placeholder='함께 공연 보실 분 구합니다!'
+                        onChange={handleTitle}/>
                     
                     <p className="date">관람 날짜<span className="star">*</span></p>
                     <input
@@ -163,9 +363,10 @@ function HostPage(){
                                 ? (selectedShow.perf_start_date > today ? selectedShow.perf_start_date : today)
                                 : today}
                         max={selectedShow ? selectedShow.perf_end_date : ""}
-                        onChange={(e) =>
+                        onChange={(e) => {
+                            handleViewDate(e);
                             setSelectedShow(prev => ({ ...prev, perf_start_date: e.target.value }))
-                        }
+                        }}
                         />
                     
                     <p className="time">관람 시간<span className="star">*</span></p>
@@ -176,68 +377,94 @@ function HostPage(){
                         min={selectedShow ? selectedShow.perf_start_time : ""}
                         max={selectedShow ? selectedShow.perf_end_time : ""}
                         onChange={(e) =>
+                            {handleViewTime(e);
                             setSelectedShow(prev => ({ ...prev, perf_start_time: e.target.value }))
-                        }
+                            }}
                         />
 
                     <p className="peopleNum">모집 인원<span className="star">*</span></p>
-                    <input className="choosePeopleNum" type='number' min={1} placeholder='인원 수'></input>
+                    <input className="choosePeopleNum" type='number' min={1} 
+                        placeholder='인원 수'
+                        value={numNeed}
+                        onChange={handleNumNeed}></input>
                 
                     <p className="like">선호 조건</p>
 
                     <p className="age">연령대</p>
                     <div className="btn-group">
-                        <input type="radio" id="btn1" name="select" defaultChecked />
+                        <input type="checkbox" id="btn1" name="select" value="전체"
+                        checked={selectedAge.includes("전체")}
+                        onChange={handleChangeAge}
+                        defaultChecked />
                         <label htmlFor="btn1">전체</label>
 
-                        <input type="radio" id="btn2" name="select" />
+                        <input type="checkbox" id="btn2" name="select" value="10대"
+                        checked={selectedAge.includes("10대")}
+                        onChange={handleChangeAge}/>
                         <label htmlFor="btn2">10대</label>
 
-                        <input type="radio" id="btn3" name="select" />
+                        <input type="checkbox" id="btn3" name="select" value="20대"
+                        checked={selectedAge.includes("20대")}
+                        onChange={handleChangeAge}/>
                         <label htmlFor="btn3">20대</label>
 
-                        <input type="radio" id="btn4" name="select" />
+                        <input type="checkbox" id="btn4" name="select" value="30대"
+                        checked={selectedAge.includes("30대")}
+                        onChange={handleChangeAge}/>
                         <label htmlFor="btn4">30대</label>
 
-                        <input type="radio" id="btn5" name="select" />
+                        <input type="checkbox" id="btn5" name="select" value="40대"
+                        checked={selectedAge.includes("40대")}
+                        onChange={handleChangeAge}/>
                         <label htmlFor="btn5">40대</label>
 
-                        <input type="radio" id="btn6" name="select" />
+                        <input type="checkbox" id="btn6" name="select" value="50대+"
+                        checked={selectedAge.includes("50대+")}
+                        onChange={handleChangeAge}/>
                         <label htmlFor="btn6">50대+</label>
                     </div>
 
                     
                     <p className="gender">성별</p>
                         <div className="btn-group2">
-                            <input type="radio" id="btn7" name="select2" defaultChecked/>
+                            <input type="radio" id="btn7" name="select2"  value="무관"
+                            checked={selectedGender === "무관"}
+                            onChange={handleSelectedGender}
+                            defaultChecked/>
                             <label htmlFor="btn7">무관</label>
 
-                            <input type="radio" id="btn8" name="select2" />
+                            <input type="radio" id="btn8" name="select2" value="남성"
+                            checked={selectedGender === "남성"}
+                            onChange={handleSelectedGender}/>
                             <label htmlFor="btn8">남성</label>
 
-                            <input type="radio" id="btn9" name="select2" />
+                            <input type="radio" id="btn9" name="select2" value="여성"
+                            checked={selectedGender === "여성"}
+                            onChange={handleSelectedGender}/>
                             <label htmlFor="btn9">여성</label>
                         </div>
                 
                     <p className="meetLocTime">만남 장소/시간<span className="star">*</span></p>
-                    <input className="writeMeetLT" type="text" placeholder='공연장 입구에서, 공연 시작 30분 전에!'/>
+                    <input className="writeMeetLT" type="text" 
+                        placeholder='공연장 입구에서, 공연 시작 30분 전에!'
+                        onChange={handleLocTime}
+                        value={locTime}/>
 
-                    <p className="message">상세 내용</p>
-                    <textarea className="writeMessage" rows="10" placeholder="메이트에게 전하고 싶은 내용을 작성해주세요.
-매칭된 메이트와 연락할 수단(오픈채팅, 연락처)이 필요하다면, 이곳에 작성해도 좋아요."/>
+                    <p className="message" >상세 내용<span className="star">*</span></p>
+                    <textarea value={content} className="writeMessage" rows="10" placeholder="메이트에게 전하고 싶은 내용을 작성해주세요.
+매칭된 메이트와 연락할 수단(오픈채팅, 연락처)이 필요하다면, 이곳에 작성해도 좋아요."
+onChange={handleContent} />
 
                     <p className="tag">태그</p>
-                    <input className="writeTag" placeholder='#태그1 #태그2 #태그3'/>
+                    <input value={hashTag} className="writeTag" placeholder='#태그1 #태그2 #태그3'
+                    onChange={handleHashTag} />
 
                     
                 </div>
 
             <p className="warning1"><span className="star">*</span> 표시된 항목은 필수 입력 사항입니다.</p>
             <p className="warning2">허위 정보나 부적절한 내용은 삭제될 수 있습니다.</p>
-                
             </div>
-
-            
         </div>
     )
 }
