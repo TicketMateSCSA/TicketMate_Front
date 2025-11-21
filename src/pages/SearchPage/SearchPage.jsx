@@ -8,7 +8,7 @@ import Pagination from "../../components/Pagination/Pagination";
 import noImage from '../../assets/images/no-image.png';
 import noProfile from '../../assets/images/no-profile.png';
 
-const filterUrl = `${import.meta.env.VITE_POSTS_URL}/posts`;
+const filterUrl = `${import.meta.env.VITE_POSTS_URL}/filter`;
 const catUrl = `${import.meta.env.VITE_POSTS_URL}/categories`;
 
 const stateMapRev = {0: "전체", 1: "모집중", 2: "모집완료"};
