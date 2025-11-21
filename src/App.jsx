@@ -8,6 +8,7 @@ import HomePage from "./pages/HomePage/HomePage" ;
 import HostPage from "./pages/HostPage/HostPage" ;
 import LoginPage from "./pages/LoginPage/LoginPage" ;
 import SigninPage from "./pages/SigninPage/SigninPage";
+import SearchPage from "./pages/SearchPage/SearchPage";
 
 // Context Privider 
 import {AuthProvider} from "./contexts/AuthContext" ; 
@@ -23,6 +24,8 @@ function App() {
             <Route path = "/host" element={<HostPage/>}/>
             <Route path = "/login" element={<LoginPage/>}/>
             <Route path = "/signin" element={<SigninPage/>}/>
+            <Route path = "/search" element={<SearchPage/>}/>
+
           </Routes>
         </AppContainer>
       </BrowserRouter>
