@@ -1,0 +1,41 @@
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;           /* 버튼과 번호 사이 간격 줄임 */
+}
+
+/* 왼쪽 삼각형 */
+.nav-btn-left {
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-right: 14px solid #5409DA; /* 화살표 색상 */
+  cursor: pointer;
+}
+
+/* 오른쪽 삼각형 */
+.nav-btn-right {
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 14px solid #5409DA; /* 화살표 색상 */
+  cursor: pointer;
+}
+
+.page-item {
+  cursor: pointer;
+  font-size: 14px;      /* 글자 작게 */
+  padding: 2px 4px;     /* 클릭 영역 조금 줄임 */
+}
+
+.page-item.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.page-item.dots {
+  cursor: default;
+}

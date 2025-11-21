@@ -6,8 +6,9 @@ import "./HomePage.css";
 import Navigator from "../../components/Navigator/Navigator";
 import background from '../../assets/images/home-background-image.png';
 import noImage from '../../assets/images/no-image.png';
+import noProfile from '../../assets/images/no-profile.png';
 
-const postsUrl = "http://10.10.0.104:8888/posts";
+const postsUrl = `${import.meta.env.VITE_POSTS_URL}/posts`;
 
 const ageMap = {0: '10대', 1: '20대', 2: '30대', 3: '40대', 4: '50대+'}
 const genderMap = {0: '무관', 1: '남성', 2: '여성'}
@@ -38,7 +39,7 @@ function Section({item}){
                     모집 인원: {item.mate_num_of_need} (현재 {item.mate_num_of_confirmed}/{item.mate_num_of_need})</p>
                 
                 <div className="section-accountInfo">
-                    <img src={item.mem_img_url ? item.mem_img_url : noImage}/>
+                    <img src={item.mem_img_url ? item.mem_img_url : noProfile}/>
                     <p>{item.mem_nn ? item.mem_nn : item.mem_name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ageMap[item.mem_age_range]} {genderMap[item.mem_gender]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;조회 {item.mate_view_cnt}</p>
                 </div>
 
@@ -55,6 +56,10 @@ function HomePage(){
 
     const goToHostPage = () => {
         navigate("/host");
+    }
+
+    const goToSearchPage = () => {
+        navigate("/search");
     }
 
     // 1. API 요청
@@ -85,7 +90,7 @@ function HomePage(){
     if (error) return <p>Error: {error}</p>;
     
     const list = data?.result?.postPreviewDTOList;
-    console.log(list);
+    // console.log(list);
 
     return(
         <div className="home-page-container">
@@ -96,11 +101,10 @@ function HomePage(){
             <p className="frontTitle">함께 공연을 즐길 메이트를 찾아보세요!</p>
             <p className="frontBody">마음 맞는 메이트와 함께라면, 더 즐거운 관람을 경험할 수 있을 거예요.</p>
         
-            <button className="background-findMate">메이트 찾기</button>
+            <button className="background-findMate" onClick={goToSearchPage}>메이트 찾기</button>
             <button className="background-postMate" onClick={goToHostPage}>메이트 모집하기</button>
             
             {/* 목록 */}
-            
             <div className="homepage-content">
                 {list
                 ?.filter(item => item.mate_status === 1) // 모집 중인
