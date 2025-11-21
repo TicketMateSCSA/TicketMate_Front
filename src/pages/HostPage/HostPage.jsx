@@ -128,13 +128,14 @@ function HostPage(){
         if (!viewDate || !viewTime) {
             throw new Error("관람 날짜와 시간을 선택해주세요.");
         }
-        if (!content.trim()) {
-            throw new Error("게시글 내용을 입력해주세요.");
-        }
-
         if (!locTime.trim()) {
             throw new Error("만남 장소/시간을 입력해주세요.");
         }
+        if (!content.trim()) {
+            throw new Error("상세 내용을 입력해주세요.");
+        }
+
+
         
         // 1. 필요한 모든 데이터를 객체로 구성합니다.
         const bodyData = {
