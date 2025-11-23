@@ -29,7 +29,7 @@ function App() {
             <Route path = "/signin" element={<SigninPage/>}/>
             <Route path = "/search" element={<SearchPage/>}/>
             <Route path = "/detail" element={<DetailPage/>}/>
-            <Route path = "/myPage" element={<MyPage/>}/>
+            <Route path = "/myPage" element={<ProtectedRoute><MyPage/></ProtectedRoute>}/>
           </Routes>
         </AppContainer>
       </BrowserRouter>
