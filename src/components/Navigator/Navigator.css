@@ -96,3 +96,13 @@
     position: absolute;
     right: 95px;
 }
+
+.navi > .user-nickname{
+    position: absolute;
+    right: 95px;
+}
+
+.navi > .logout{
+    position: absolute;
+    right: 30px;
+}
