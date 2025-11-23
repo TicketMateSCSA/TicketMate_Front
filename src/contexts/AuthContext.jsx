@@ -1,14 +1,12 @@
-import React, { createContext, useState, useContext, useCallback, useEffect } from 'react'; // ⭐ useEffect 추가
+import React, { createContext, useState, useContext, useCallback, useEffect } from 'react';
 import { apiFetch } from '../utils/api';
 
 // GET members/me 호출(새로고침 시 세션 확인)
 const fetchMyProfile = async () => {
     const memUrl = `${import.meta.env.VITE_POSTS_URL}/members/me`;
-    // console.log(`${import.meta.env.VITE_POSTS_URL}`)
-    const member = await apiFetch(memUrl, {
-        method:"GET", 
-    }); 
-    return member
+    const res = await apiFetch(memUrl, { method: "GET" });
+    // 서버 응답 구조가 { code, result } 라면 result를 반환
+    return res.result || null;
 };
 
 // 1. Context 생성
@@ -18,8 +16,7 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userProfile, setUserProfile] = useState(null);
-    // ⭐ 로딩 상태 추가: 인증 정보 복구 중임을 나타냅니다.
-    const [isLoading, setIsLoading] = useState(true); 
+    const [isLoading, setIsLoading] = useState(true); // 로딩 상태
 
     const loginSuccess = useCallback((userData) => {
         setIsAuthenticated(true);
@@ -29,25 +26,24 @@ export const AuthProvider = ({ children }) => {
     const login = useCallback(async (email, password) => {
         try {
             const loginUrl = `${import.meta.env.VITE_POSTS_URL}/login`;
-            const body = {
-                mem_email: email,
-                mem_password: password
-            };
-            console.log("서버로 보내는 RequestBody:", JSON.stringify(body));
+            const body = { mem_email: email, mem_password: password };
 
             const res = await apiFetch(loginUrl, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(body) 
+                body: JSON.stringify(body)
             });
 
             if (res.code === "COMMON200") {
-                loginSuccess(res.data);
-            }else if (res.code === "NON_MEMBER400") {
-                alert(res.message) ; 
-            }else if (res.code === "WRONG_PASSWORD401") {
-                alert(res.message); 
+                // 로그인 성공 후 실제 회원 정보 가져오기
+                const memberProfile = await fetchMyProfile();
+                loginSuccess(memberProfile);
+            } else if (res.code === "NON_MEMBER400") {
+                alert(res.message);
+            } else if (res.code === "WRONG_PASSWORD401") {
+                alert(res.message);
             }
+
             return res;
         } catch (error) {
             console.error("예상치 못한 오류:", error);
@@ -66,42 +62,42 @@ export const AuthProvider = ({ children }) => {
             setUserProfile(null);
         }
     }, []);
-    
-    // ⭐ 3. 새로고침 시 로그인 상태 복구 useEffect
+
+    // 새로고침 시 로그인 상태 복구
     useEffect(() => {
         const loadUser = async () => {
             try {
-                // 1. /users/me Mock API 호출을 통해 사용자 정보 로드 시도
-                const member = await fetchMyProfile(); 
-
-                // 2. 응답 성공 시 로그인 상태 복구
-                setIsAuthenticated(true);
-                setUserProfile(member);
+                const memberProfile = await fetchMyProfile();
+                if (memberProfile) {
+                    setIsAuthenticated(true);
+                    setUserProfile(memberProfile);
+                } else {
+                    setIsAuthenticated(false);
+                    setUserProfile(null);
+                }
             } catch (error) {
-                // 3. 응답 실패 시 (세션 만료 등) 로그인 상태 유지 안 함
                 setIsAuthenticated(false);
                 setUserProfile(null);
             } finally {
-                // 4. 로딩 완료
-                setIsLoading(false); 
+                setIsLoading(false);
             }
         };
         loadUser();
-    }, []); // 마운트 시점에 단 한 번만 실행
+    }, []);
 
     return (
-        <AuthContext.Provider value={{ 
-            isAuthenticated, 
-            userProfile, 
-            isLoading, // ⭐ isLoading 상태 제공
+        <AuthContext.Provider value={{
+            isAuthenticated,
+            userProfile,
+            isLoading,
             loginSuccess,
-            login, 
-            logout 
+            login,
+            logout
         }}>
             {children}
         </AuthContext.Provider>
     );
 };
 
-// 4. 사용자 정의 훅 (Hook)
+// 4. 사용자 정의 훅
 export const useAuth = () => useContext(AuthContext);

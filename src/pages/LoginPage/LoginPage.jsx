@@ -1,13 +1,23 @@
 import "./LoginPage.css";
 import Navigator from "../../components/Navigator/Navigator";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 
 function Login(){
     const navigate = useNavigate();
-    
+    const location = useLocation(); 
+
+    const hasShownAlert = useRef(false);
+
+    useEffect(() => {
+        if (!hasShownAlert.current && location.state?.from) {
+            alert("해당 서비스는 로그인이 필요합니다.");
+            hasShownAlert.current = true;
+        }
+    }, []);
+        
     const goToSigninPage = () => {
         navigate("/signin");
     }
@@ -17,15 +27,17 @@ function Login(){
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
+    const from = location.state?.from?.pathname || "/";
+
     const handleLogin = async () => {
         try {
             const res = await login(email, password);
-            console.log("LoginPage-email=>", email);
-            console.log("LoginPage-password=>", password);
-            console.log(res.code) ; 
+            // console.log("LoginPage-email=>", email);
+            // console.log("LoginPage-password=>", password);
+            // console.log(res.code) ; 
             
             if (res.code === "COMMON200") {
-                navigate("/"); // 로그인 성공 시 홈으로
+                navigate(from, { replace: true }); // 이전 페이지로 이동
             } else {
                 setErrorMessage(res.message || "로그인 실패");
             }
@@ -52,8 +64,6 @@ function Login(){
 
                 <p className="maintain">로그인 유지</p>
                 <p className="findPwd">비밀번호 찾기</p>
-
-                {errorMessage && <p className="error">{errorMessage}</p>}
 
                 <button className="loginBtn" onClick={handleLogin}>로그인</button>
 
