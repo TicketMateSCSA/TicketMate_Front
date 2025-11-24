@@ -1,5 +1,6 @@
 import {useState, useEffect, useContext} from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 import "./DetailPage.css";
 import Navigator from "../../components/Navigator/Navigator";
@@ -8,6 +9,7 @@ import noProfile from '../../assets/images/no-profile.png';
 
 const matePostId = 32;
 const postURL = `${import.meta.env.VITE_POSTS_URL}/post`;
+const sendURL = `${import.meta.env.VITE_POSTS_URL}/posts`;
 
 const ageMap = {0: '10대', 1: '20대', 2: '30대', 3: '40대', 4: '50대+'}
 const genderMap = {0: '무관', 1: '남성', 2: '여성'}
@@ -28,8 +30,15 @@ function TransTime({startDate}){
 }
 
 function Detail(){
+    const navigate = useNavigate();
+
     const { isAuthenticated, userProfile } = useAuth();
     const [reqData, setReqData] = useState(null);
+    const [myContent, setMyContent] = useState(null);
+
+    const handleMyContent = (e) => {
+        setMyContent(e.target.value);
+    }
 
     const fetchData = async () => {
         try {
@@ -46,8 +55,54 @@ function Detail(){
         fetchData();
         }, []);
     
+
+    const postData = async (url) => {
+        const dataToSend = {
+            "req_post_id": obj.mem_post_id,
+            "req_msg": myContent
+        };
+        try {
+            const response = await fetch(url, {
+                method: 'POST', // POST 메소드 지정
+                headers: {
+                    // 서버가 JSON 데이터를 예상하고 있음을 알립니다.
+                    'Content-Type': 'application/json', 
+                    // 필요한 경우 다른 헤더 (예: 인증 토큰) 추가
+                },
+                // JavaScript 객체를 JSON 문자열로 변환하여 요청 본문에 넣습니다.
+                body: JSON.stringify(dataToSend), 
+            });
+
+            if (!response.ok) {
+                // 응답 본문을 읽어 더 상세한 오류 메시지 제공 시도
+                const errorBody = await response.text();
+                throw new Error(`HTTP error! status: ${response.status}. Body: ${errorBody}`);
+            }
+
+            const result = await response.json(); // 서버 응답 처리
+            return result;
+
+        } catch (error) {
+            console.error('Error posting data:', error);
+            throw error; // 에러를 호출자에게 다시 던져서 처리하도록 합니다.
+        }
+    };
+
+    // 버튼 클릭
+    const handleSubmit = async () => {
+        try {
+        const result = await postData(sendURL + `/${obj.mate_post_id}/apply`); 
+        
+        console.log('Post Success:', result);
+        navigate(`/regist?mate_post_id=${obj.mate_post_id}`);
+        } catch (error) {
+            console.error('Error posting data:', error);
+            throw error; // 에러를 호출자에게 다시 던져서 처리하도록 합니다.
+        }
+        
+    }
+
     const obj = reqData?.result;
-    
     
     const tags = obj?.mate_hashtag ? obj.mate_hashtag.split(" ") : [];
     const slicedTag = tags?.slice(0, 5);
@@ -129,7 +184,9 @@ function Detail(){
                     <div className="right-line"/>
                     <div className="right-message-box">
                         <p className="right-line-title">신청 메시지</p>
-                        <textarea row={10} className="right-message-content" placeholder="호스트에게 간단한 자기소개와 신청 의사를 전달해주세요. 연락 수단을 전달해도 좋습니다."/>
+                        <textarea row={10} className="right-message-content" 
+                            placeholder="호스트에게 간단한 자기소개와 신청 의사를 전달해주세요. 연락 수단을 전달해도 좋습니다."
+                            onChange={handleMyContent}/>
                     
 
                     { isAuthenticated ? (
@@ -148,12 +205,12 @@ function Detail(){
                         
                     </div>
 
-                    <button className="mate-apply-button">메이트 신청하기</button>
+                    <button className="mate-apply-button" onClick={handleSubmit}>메이트 신청하기</button>
                                </div>
                 
                
                 <p className="warning2">허위 정보나 부적절한 내용은 삭제될 수 있습니다.</p>
-
+                
             </div>
             
             )}
