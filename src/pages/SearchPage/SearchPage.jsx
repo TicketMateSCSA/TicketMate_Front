@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from "react";
-import format from "date-format";
 
 import "./SearchPage.css";
 import Navigator from "../../components/Navigator/Navigator";
@@ -8,7 +7,7 @@ import Pagination from "../../components/Pagination/Pagination";
 import noImage from '../../assets/images/no-image.png';
 import noProfile from '../../assets/images/no-profile.png';
 
-const filterUrl = `${import.meta.env.VITE_POSTS_URL}/filter`;
+const filterUrl = `${import.meta.env.VITE_POSTS_URL}/posts/filter`;
 const catUrl = `${import.meta.env.VITE_POSTS_URL}/categories`;
 
 const stateMapRev = {0: "전체", 1: "모집중", 2: "모집완료"};
@@ -44,10 +43,10 @@ function SearchSection({item}){
                 <p className="search-section-body1">
                     공연: {item.perf_name}<br/>
                     일시: {slicedDate}
-                    <div className="search-section-accountInfo">
+                    <span className="search-section-accountInfo">
                     <img src={item.mem_img_url ? item.mem_img_url : noProfile}/>
-                    <p>{item.mem_nn ? item.mem_nn : item.mem_name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ageMapRev[item.mem_age_range]} {genderMapRev[item.mem_gender]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;조회 {item.mate_view_cnt}</p>
-                </div>
+                    <span>{item.mem_nn ? item.mem_nn : item.mem_name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ageMapRev[item.mem_age_range]} {genderMapRev[item.mem_gender]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;조회 {item.mate_view_cnt}</span>
+                </span>
                     </p>
                     
                 <p className="search-section-body2">
@@ -83,8 +82,10 @@ function Search(){
     // 카테고리 목록 상태를 별도로 관리
     const [categoryList, setCategoryList] = useState([]); // catList를 대체
     const [totalPostCount, setTotalPostCount] = useState(0); // 전체 게시글 수 (페이지네이션용)
+    const [totalPage, setTotalPage] = useState(1); // 페이지 개수
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [errorMsg, setErrorMsg] = useState("");
     
     // 1. 초기 카테고리 데이터 Fetch (한 번만 실행)
     useEffect(() => {
@@ -119,7 +120,7 @@ function Search(){
 
         selectedCategories.forEach(cat => {
             const catId = categoryMap[cat];
-            params.append("cat_id", catId);
+            if (catId != 0) params.append("cat_id", catId);
         });
 
         // 모집 상태
@@ -144,10 +145,9 @@ function Search(){
         params.append("mate_gender", genderMap[selectedGender] || 0);
 
         // 날짜
-        if (startDate) params.append("perf_sat", format("yyyy-MM-ddThh:MM:SS", new Date(startDate)));
-        else params.append("perf_sat", format("yyyy-MM-ddThh:MM:SS", new Date(today)));
-        if (endDate) params.append("perf_eat", format("yyyy-MM-ddThh:MM:SS", new Date(endDate)));
-        console.log(typeof(format("yyyy-MM-ddThh:MM:SS", new Date(today))));
+        if (startDate) params.append("perf_sat", startDate+"T00:00:00");
+        else params.append("perf_sat", today+"T00:00:00");
+        if (endDate) params.append("perf_eat", endDate+"T00:00:00");
         
         // 정렬
         const sortMap = { "최신순": "latest", "마감임박순": "deadline", "인기순": "popular", "조회순": "views" };
@@ -155,7 +155,7 @@ function Search(){
 
         // 페이지
         params.append("page", page);
-        console.log(params.toString());
+        // console.log(params.toString());
         return params.toString();
     }, [page, selectedCategories, selectedState, selectedAge, selectedGender, startDate, endDate, selectedSort, categoryList]);
 
@@ -167,20 +167,23 @@ function Search(){
 
         try {
             // filterUrl에 쿼리스트링 추가
-            const url = `${filterUrl}?${queryString}`;
+            const url = `${filterUrl}?${queryString}`
             const response = await fetch(url);
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            
+            // if (!response.ok) {
+            //     throw new Error(`HTTP error! status: ${response.status}`);
+            // }
 
             const data = await response.json();
+
             const list = data?.result?.postPreviewDTOList.slice(0, 4) || []; // 4개
-            console.log(list);
+            // console.log(data);
 
             // TODO
-            const totalCount = 40;
+            const totalCount = data?.result?.totalElements;
             setTotalPostCount(totalCount); 
+            const tPage = data?.result?.totalPages;
+            setTotalPage(tPage);
 
             setDataList(list);
             setLoading(false);
@@ -282,7 +285,7 @@ function Search(){
                         <input type="checkbox" id="search-category-btn1" value="전체"
                             checked={selectedCategories.includes("전체")}
                             onChange={handleChangeCategories}
-                            defaultChecked
+                            // defaultChecked
                         />
                         <label htmlFor="search-category-btn1">{"전체"}</label>
                     </div>
@@ -448,25 +451,25 @@ function Search(){
             </div>
 
             {/* 5. 목록 */}
-            <p className="search-content-length">총 {totalPostCount}개의 메이트 모집글</p>
+            
+            <p className="search-content-length">총 {totalPostCount? totalPostCount:0}개의 메이트 모집글</p>
             {loading ? (
                 <p>목록을 불러오는 중...</p>
-            ) : error ? (
-                <p>목록을 불러오는 데 오류가 발생했습니다: {error}</p>
-            ) : (
+            ) : error ? (                
+                <p>목록을 불러오는 데 오류가 발생했습니다: {error.message || error}</p>
+            ) : (                
                 <div className="search-whole-content">
                     {dataList.length > 0 ? (
-                        dataList.map((item) => (
-                            <SearchSection key={item.mate_id || item.mate_title} item={item} />
+                        dataList.map((item, idx) => (
+                            <SearchSection key={`swc${idx}`} item={item} />
                         ))
                     ) : (
-                        <p>검색 조건에 맞는 결과가 없습니다.</p>
+                        <p className="swc-error">검색 조건에 맞는 결과가 없습니다.</p>
                     )}
-                    
+
                     {/* 6. 페이지 */}
                     <div className="search-paging">
-                        {/* totalPages를 서버에서 받은 totalPostCount로 계산. 페이지당 4개라고 가정. */}
-                        <Pagination page={page} setPage={setPage} totalPages={Math.ceil(totalPostCount / 4)} />
+                        <Pagination page={page} setPage={setPage} totalPages={totalPage} />
                     </div>
                 </div>
             )}

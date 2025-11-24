@@ -90,7 +90,7 @@ function HomePage(){
     if (error) return <p>Error: {error}</p>;
     
     const list = data?.result?.postPreviewDTOList;
-    console.log(list);
+    // console.log(list);
 
     return(
         <div className="home-page-container">

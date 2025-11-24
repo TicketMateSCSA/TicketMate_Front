@@ -172,14 +172,15 @@ p.search-gender{
 div.gender-btn{
     position: absolute;
     left: 51%;
-    top: 142px;
+    top: 135px;
 }
 
 /* 4. 정렬 조건 */
 .sort-btn{
     position: absolute;
     top: 562px;
-    left: 516px;
+    left: 505px;
+    margin: 0px;
 }
 
 /* 5. 페이지 */
@@ -298,7 +299,7 @@ span.search-section-state{
     border-radius: 50%;
 }
 
-.search-section-accountInfo p{
+.search-section-accountInfo span{
     margin: 0;
     position: relative;
     top: 4px;
@@ -322,4 +323,13 @@ span.search-section-state{
     font-weight: 400;
     font-size: 13px;
     padding: 0px 3px;
+}
+
+
+.swc-error{
+    color:#5409DA;
+    font-weight: 500;
+    position: relative;
+    top: 50px;
+    text-align: center;
 }

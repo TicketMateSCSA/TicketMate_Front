@@ -112,7 +112,7 @@ input.searchShow{
     
 }
 
-.show > .showImage{
+.showImage{
     position: absolute;
     top: 95px;
     background-color: #BECBFF;
@@ -122,14 +122,22 @@ input.searchShow{
 
 }
 
-.show > .showInfo{
+.showInfo{
     position: absolute;
-    top: 440px;
+    top: 430px;
     left: 20px;
 
     list-style: none;
+    line-height: 2;
     padding: 0;
     margin: 0;
+    font-size: 13px;
+
+    display: inline-block;     /* inline-block 필요 */
+    width: 100%;   
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
 
 }
 /* 2-2. 글 관련 */
@@ -372,4 +380,35 @@ input.searchShow{
     margin: auto;
     left: 29%;
 
+}
+
+.dropdown-list {
+    border: 1px solid #BECBFF;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    top: 61.5px;
+    left: 20px;
+    background-color: white;
+    width: 87%;
+    z-index: 10;
+    padding: 0;
+    list-style: none;
+
+    font-size: 13px;
+    padding: 2px 8px;
+}
+
+.dropdown-item {
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    font-weight: 500;
+    color:#5409DA;
+}
+
+.dropdown-item.disabled {
+    color: #999;
+    cursor: default;
 }
