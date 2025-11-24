@@ -61,12 +61,12 @@ function Signin() {
     const handleSignIn = async () => {
         // 필수 체크
         if (!formData.mem_name || !formData.mem_email || !formData.mem_pwd) {
-            setErrorMessage("필수 항목을 모두 입력해주세요.");
+            alert("필수 항목을 모두 입력해주세요.");
             return;
         }
 
         if (!checks.one || !checks.two) {
-            setErrorMessage("필수 약관에 동의해주세요.");
+            alert("필수 약관에 동의해주세요.");
             return;
         }
 
@@ -145,6 +145,7 @@ function Signin() {
                     type="password"
                     placeholder="******"
                     name="mem_pwd"
+                    autoComplete="new-password"
                     value={formData.mem_pwd}
                     onChange={handleInputChange}
                 />
