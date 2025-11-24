@@ -188,7 +188,7 @@ function Search(){
             setDataList(list);
             setLoading(false);
         } catch (err) {
-            console.error("데이터 fetching 오류:", err);
+            // console.error("데이터 fetching 오류:", err);
             setError(err.message);
             setDataList([]); // 오류 발생 시 목록 초기화
             setLoading(false);
