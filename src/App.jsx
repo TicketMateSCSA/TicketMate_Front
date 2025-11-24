@@ -10,11 +10,8 @@ import LoginPage from "./pages/LoginPage/LoginPage" ;
 import SigninPage from "./pages/SigninPage/SigninPage";
 import SearchPage from "./pages/SearchPage/SearchPage";
 import DetailPage from "./pages/DetailPage/DetailPage";
-<<<<<<< HEAD
 import RegistPage from './pages/RegistPage/RegistPage';
-=======
 import MyPage from "./pages/MyPage/MyPage";
->>>>>>> 1f70dab449317ab489e18e005b3e32b6f0985f51
 
 // Context Privider 
 import {AuthProvider} from "./contexts/AuthContext" ; 
@@ -33,11 +30,8 @@ function App() {
             <Route path = "/signin" element={<SigninPage/>}/>
             <Route path = "/search" element={<SearchPage/>}/>
             <Route path = "/detail" element={<DetailPage/>}/>
-<<<<<<< HEAD
-            <Route path = "/regist" element={<RegistPage/>}/>
-=======
+            <Route path = "/regist" element={<ProtectedRoute><RegistPage/></ProtectedRoute>}/>
             <Route path = "/myPage" element={<ProtectedRoute><MyPage/></ProtectedRoute>}/>
->>>>>>> 1f70dab449317ab489e18e005b3e32b6f0985f51
           </Routes>
         </AppContainer>
       </BrowserRouter>

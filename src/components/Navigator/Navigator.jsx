@@ -52,7 +52,7 @@ function Navigator(){
             {/* 2. 네비게이터 */}
             <div className="navi">
             <button className={location.pathname === "/" ? "home active" : "home"} onClick={goToHomePage}>홈</button>
-            <button className={location.pathname === "/search" || location.pathname === "/detail" ? "search active" : "search"} onClick={goToSearchPage}>메이트 찾기</button>
+            <button className={location.pathname === "/search" || location.pathname === "/detail" || location.pathname == "/regist" ? "search active" : "search"} onClick={goToSearchPage}>메이트 찾기</button>
             <button className={location.pathname === "/host" ? "host active" : "host"} onClick={goToHostPage}>메이트 모집하기</button>
             <button className="info">공연 정보</button>
 
