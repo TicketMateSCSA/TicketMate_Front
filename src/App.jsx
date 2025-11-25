@@ -12,6 +12,7 @@ import SearchPage from "./pages/SearchPage/SearchPage";
 import DetailPage from "./pages/DetailPage/DetailPage";
 import RegistPage from './pages/RegistPage/RegistPage';
 import MyPage from "./pages/MyPage/MyPage";
+import AdminLoginPage from "./pages/AdminPage/AdminLoginPage";
 
 // Context Privider 
 import {AuthProvider} from "./contexts/AuthContext" ; 
@@ -32,6 +33,7 @@ function App() {
             <Route path = "/detail" element={<DetailPage/>}/>
             <Route path = "/regist" element={<ProtectedRoute><RegistPage/></ProtectedRoute>}/>
             <Route path = "/myPage" element={<ProtectedRoute><MyPage/></ProtectedRoute>}/>
+            <Route path = "/admin/login" element={<ProtectedRoute><AdminLoginPage/></ProtectedRoute>}/>
           </Routes>
         </AppContainer>
       </BrowserRouter>
