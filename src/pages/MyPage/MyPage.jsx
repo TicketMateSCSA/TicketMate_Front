@@ -7,6 +7,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import noProfile from '../../assets/images/no-profile.png';
 
 const myPostURL = `${import.meta.env.VITE_POSTS_URL}/requests/recieved`;
+const myDelURL = `${import.meta.env.VITE_POSTS_URL}/post`;
 
 const ageMap = {0: '10대', 1: '20대', 2: '30대', 3: '40대', 4: '50대+'};
 const genderMap = {0: '무관', 1: '남성', 2: '여성'};
@@ -16,17 +17,38 @@ const ageMapRev = {0: '10대', 1: '20대', 2: '30대', 3: '40대', 4: '50대+'}
 const genderMapRev = {0: '무관', 1: '남성', 2: '여성'}
 
 
-function MyPageSectionMyPost({nn, na, item}){
+function MyPageSectionMyPost({item}){
     const navigate = useNavigate();
-
-    const tags = item.mate_hashtag ? item.mate_hashtag.split(" ") : [];
-    const slicedTag = tags.slice(0, 5);
 
     const dateNtime = item.mate_view_date ? item.mate_view_date.split("T") : [];
     dateNtime[0] = dateNtime[0].split("-").splice(0, 3);
     dateNtime[0] = dateNtime[0][0] + "년 " + dateNtime[0][1] + "월 " + dateNtime[0][2] + "일 "
     dateNtime[1] = dateNtime[1].split(":").slice(0, 2).join(":");
     const slicedDate = dateNtime.slice(0, 2).join(" ");
+
+    const handleDelete = async (mate_post_id) => {
+        if (!window.confirm("정말 삭제할까요?")) return;
+
+        try {
+            const response = await fetch(`${import.meta.env.VITE_POSTS_URL}/post/${mate_post_id}`, {
+                method: "DELETE",
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                alert(`삭제 실패: ${errorText}`);
+                return;
+            }
+
+            alert("삭제되었습니다!");
+            window.location.reload();
+            
+
+        } catch (err) {
+            console.error(err);
+            alert("서버 오류로 삭제하지 못했습니다.");
+        }
+    };
 
     // 버튼 클릭
     const handleClick = async (item) => {
@@ -35,37 +57,34 @@ function MyPageSectionMyPost({nn, na, item}){
 
     return (
         
-        <div className="myPageMyPost-section-func" onClick={() => handleClick(item)}>
+        <div className="myPageMyPost-section-func" >
             <img className="myPageMyPost-section-img" 
                 src={item.perf_img_url ? item.perf_img_url : noImage}
                 alt={item.perf_name}/>
 
             <div className="myPageMyPost-section-content">
-                <span className="myPageMyPost-section-category">{item.cat_name}</span>
-                <span className="myPageMyPost-section-state"
+                <div class="post-header">
+                <span className="myPageMyPost-section-category">{item.cat_name}</span> <span className="myPageMyPost-section-state"
                     style={
                         {backgroundColor: item.mate_status === 1 ? "#A1FFA6" : "#E0E0E0",
                         borderColor: item.mate_status === 1 ? "#40A646" : "#656565",
                         color: item.mate_status === 1? "#40A646" : "#656565"
-                    }}>{stateMapRev[item.mate_status]}</span>
+                    }}>
+                    {stateMapRev[item.mate_status]}
+                </span>
+
+                <span onClick={() => handleClick(item)} className="toDetailBtn">상세</span>
+                <span onClick={() => handleDelete(item.mate_post_id)}className="toDeleteBtn" style={{textAlign: "right"}}>삭제하기</span>
+                </div>
                 <p className="myPageMyPost-section-title">{item.mate_title}</p>
                 
                 <table className="mpmp-table">
                     <tbody>
-                        <tr className="myPageMyPost-section-body1"><td style={{width: "55%"}}>공연: {item.perf_name}</td><td style={{width: "45%"}}>장소: {item.perf_loc}</td></tr>
-                        <tr className="myPageMyPost-section-body1"><td style={{width: "55%"}}>일시: {slicedDate}</td><td style={{width: "45%"}}>모집 인원: {item.mate_num_of_need} (현재 {item.mate_num_of_confirmed}/{item.mate_num_of_need})</td></tr>
-                        <tr><td colSpan={2}><span className="myPageMyPost-section-accountInfo">
-                    <img src={item.mem_img_url ? item.mem_img_url : noProfile}/>
-                    <span>{nn ? nn : na}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ageMapRev[item.mem_age_range]} {genderMapRev[item.mem_gender]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;조회 {item.mate_view_cnt}</span>
-                </span></td></tr>
+                        <tr className="myPageMyPost-section-body1"><td style={{width: "53%"}}>공연: {item.perf_name}</td><td style={{width: "47%"}}>장소: {item.perf_loc}</td></tr>
+                        <tr className="myPageMyPost-section-body1"><td style={{width: "53%"}}>일시: {slicedDate}</td><td style={{width: "47%"}}>모집 인원: {item.mate_num_of_need} (현재 {item.mate_num_of_confirmed}/{item.mate_num_of_need})</td></tr>
                     </tbody>
                 </table>
-                      
-                <div className="myPageMyPost-tag-container">
-                    {slicedTag.map((tag, idx) => (
-                    <span className="myPageMyPost-section-tag" key={idx}>{tag}</span>
-                    )) }
-                </div>
+                    
                 
             </div>
         </div>
@@ -119,6 +138,8 @@ function MyPage(){
     const [loading, setLoading] = useState(null);
     const [error, setError] = useState(null); 
     
+    
+
     useEffect(() => {
         fetch(myPostURL)
             .then((response) => {
@@ -136,7 +157,7 @@ function MyPage(){
             setLoading(false);
 
             if (fetchedPosts.length > 0) {
-                 setContent(<MyPageMyPosts nn={userProfile.mem_nn} na={userProfile.mem_name} myPost={fetchedPosts}/>);
+                 setContent(<MyPageMyPosts  myPost={fetchedPosts}/>);
             } else {
                  setContent(<p style={{textAlign:"center"}}>내가 모집한 메이트가 없습니다.</p>);
             }
@@ -153,7 +174,7 @@ function MyPage(){
         setActiveIdx(idx);
         switch (idx) {
         case 0:
-            setContent(<MyPageMyPosts nn={userProfile.mem_nn} na={userProfile.mem_name} myPost={myPostList}/>);
+            setContent(<MyPageMyPosts  myPost={myPostList}/>);
             break;
         case 1:
             setContent(<MyPageGet/>);

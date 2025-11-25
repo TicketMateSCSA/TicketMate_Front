@@ -213,8 +213,6 @@ div.box{
     height: 132px;
     width: 410px;
     border-color:#5409DA;
-
-    cursor: pointer;
     margin-top: 10px;
     margin-left: 10px;
 }
@@ -233,8 +231,8 @@ div.box{
     line-height: 1;
     margin-right: 0px;
     margin-left: 12px;
-    margin-top: 15px;
-    margin-bottom: 0px;
+    margin-top: 20px;
+    margin-bottom: 4px;
 
     display: inline-block;     /* inline-block 필요 */
     width: 100%;   
@@ -245,8 +243,33 @@ div.box{
 
 span.myPageMyPost-section-category{
     position: relative;
-    top: 4px;
-    left: 11px;
+    top:2px;
+
+    border: 2px solid;
+    left: 10px;
+    font-size: 14px;
+    padding: 2px 5px;
+    margin-right: 10px;
+
+    border-color: #5409DA;
+    color:#5409DA;
+
+}
+
+span.myPageMyPost-section-state{
+    left: 5px;
+    top:2px;
+
+    position: relative;
+    border: 2px solid;
+    font-size: 14px;
+    padding: 2px 5px;
+
+}
+
+
+span.myPageMyPost-section-category{
+    /* position: relative; top: 4px; left: 11px; <- 제거 또는 수정 */
     border: 2px solid;
     font-size: 14px;
     padding: 2px 5px;
@@ -258,14 +281,46 @@ span.myPageMyPost-section-category{
 }
 
 span.myPageMyPost-section-state{
-    position: relative;
-    top: 4px;
-    left: 10px;
     border: 2px solid;
     font-size: 14px;
     padding: 2px 5px;
-
+    margin-right: 10px; /* 카테고리와 삭제 버튼 사이에 간격 추가 */
 }
+
+.toDetailBtn{
+    text-decoration: underline;
+    position: relative;
+
+    font-size: 13px;
+    padding: 2px 5px;
+
+    color: gray;
+    cursor: pointer;
+}
+.post-header {
+    display: flex; /* 자식 요소들을 한 줄에 배치하고 Flexbox 규칙을 적용 */
+    align-items: center; /* (선택 사항) 요소들을 세로 중앙에 정렬 */
+    /* 필요에 따라 width 값 설정 */
+}
+.toDeleteBtn{
+    /* 기존: position: relative; top: 5px; left: 100px; */
+    /* 위 세 줄은 제거하거나 주석 처리하세요. */
+    position: relative;
+    top: 2px; /* 세로 정렬이 필요하다면 Flexbox의 align-items를 사용하거나 margin/padding으로 미세 조정 */
+    
+    /* 🔥 이 부분이 핵심입니다! */
+    margin-left: auto; 
+    
+    border: 2px solid red;
+    font-size: 14px;
+    padding: 2px 5px;
+
+    background-color: red;
+    color: white;
+    cursor: pointer;
+}
+
+
 
 .myPageMyPost-section-body1{
     display: flex;
@@ -283,43 +338,4 @@ span.myPageMyPost-section-state{
 .myPageMyPost-section-img{
     height: 114px;
     width: 85.5px;
-}
-
-.myPageMyPost-section-accountInfo{
-    display: flex;
-    margin-bottom: 5px;
-}
-
-.myPageMyPost-section-accountInfo img{
-    position: relative;
-    top: 3px;
-    height: 15px;
-    width: 15px;
-    border-radius: 50%;
-}
-
-.myPageMyPost-section-accountInfo span{
-    margin: 0;
-    position: relative;
-    top: 4px;
-    left: 10px;
-    font-size: 8px;
-    
-}
-
-.myPageMyPost-tag-container{
-    position: relative;
-    top: 30px;
-    width: 670px;
-    display: flex;
-    justify-content: flex-end; /* 오른쪽 정렬 */
-    gap: 5px; /* 요소 사이 간격 */
-    flex-wrap: wrap; /* 필요하면 줄바꿈 */
-}
-.myPageMyPost-section-tag{
-    background-color: #4E71FF;
-    color: white;
-    font-weight: 400;
-    font-size: 13px;
-    padding: 0px 3px;
 }
