@@ -16,3 +16,155 @@
     padding-top: 20px;
     overflow-y: auto; /* 내용이 길면 스크롤 가능 */
 }
+
+img.background{
+    position: absolute;
+    top: 145px;
+    width: 100%;
+}
+
+.frontTitle{
+    position: relative;
+    top: 190px;
+    margin: 0 auto;
+    font-size: 28px;
+    font-weight: 500;
+}
+
+.frontBody{
+    position: relative;
+    top: 200px;
+    margin: 0 auto;
+    font-size: 20px;
+    color: gray;
+}
+
+button.background-findMate{
+    position: absolute;
+    left: 27%;
+    top: 350px;
+    width: 190px;
+    padding: 12px 0px;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    border: none;
+    background-color: #4E71FF;
+    color: white;
+    font-weight: 400;
+    cursor: pointer;
+    font-size: 20px;
+
+}
+
+button.background-postMate{
+    position: absolute;
+    right: 27%;
+    top: 350px;
+    width: 188px;
+
+    padding: 12px 0px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    border: none;
+    background-color: #5409DA;
+    color: white;
+    font-weight: 400;
+    cursor: pointer;
+    font-size: 20px;
+
+}
+
+.homepage-content {
+    position: relative;
+    top: 370px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2열 */
+    grid-template-rows: repeat(3, 1fr);   /* 3행 */
+    gap: 20px;
+
+    width: 95%;
+    height: 737px;
+    padding: 0px 0px 20px;
+    overflow: hidden;
+}
+
+.homepage-section {
+    display: flex;
+    padding: 13px 13px;
+    box-shadow: 0px 0px 8px #d4bbff;
+    border: 2px solid;
+    height: 100%;
+    width: 100%;
+    border-color:#5409DA;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.homepage-section > .section-img{
+    margin-right: 13px;
+    height: 196px;
+    width: 147px;
+}
+
+.section-content{
+    min-width: 0;
+}
+
+.section-content > .section-body{
+    font-size: 14px;
+    line-height: 2;
+
+    display: inline-block;     /* inline-block 필요 */
+    width: 100%;   
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+    margin: 0px 0px;
+    margin-bottom: 5px;
+}
+
+.section-content > .section-title{
+    font-weight: 500;
+    line-height: 1.2;
+    font-size: 17px;
+    margin: 0px 0px;
+    margin-bottom: 3px;
+
+    display: inline-block;     /* inline-block 필요 */
+    width: 100%;   
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.section-accountInfo{
+    display: flex;
+    margin-bottom: 5px;
+}
+
+.section-accountInfo img{
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+}
+
+.section-accountInfo p{
+    margin: 0;
+    position: relative;
+    top: 2px;
+    left: 13px;
+    font-size: 10px;
+    
+}
+
+.section-tag{
+    margin-right: 5px;
+    background-color:#4E71FF;
+    color: white;
+    font-weight: 400;
+    font-size: 13px;
+    padding: 0px 3px;
+}

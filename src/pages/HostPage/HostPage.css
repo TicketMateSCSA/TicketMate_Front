@@ -1,0 +1,414 @@
+/* 0. 최상위 컨테이너 */
+.host-page-container {
+    width: 100%;
+     /* AppContainer의 높이를 꽉 채웁니다. */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    background-color: #ffffff; /* 배경색: 어두운 테마 */
+    color: #000000;
+    position: relative;
+    background: var(--White, #ffffff);
+    
+    /* 하단 네비게이터 영역을 피하기 위한 패딩 */
+    padding-bottom: 70px; 
+    padding-top: 20px;
+    overflow-y: auto; /* 내용이 길면 스크롤 가능 */
+}
+
+/* 1. 헤더 */
+.header > .head{
+    position: absolute;
+    top: 140px;
+    left: 20px;
+    font-weight: 500;
+    font-size: medium;
+}
+
+.header > .body{
+    position: absolute;
+    top: 175px;
+    left: 20px;
+    font-size: small;
+}   
+
+.header > button{
+    position: absolute;
+    top: 165px;
+    border-color: #5409DA;
+    background-color: white;
+    color: #5409DA;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.header > button:hover{
+    background-color: #5409DA;
+    color: white;
+}
+
+.header > button.post{
+    right: 20px;
+  cursor: pointer;
+
+}
+
+.header > button.save{
+    right: 105px;
+  cursor: pointer;
+
+}
+
+/* 2. 양식 */
+.form{
+    position: absolute;
+    top: 225px;
+    left: 20px;
+
+    border: solid 2px;
+    width: 772px;
+    height: 79%;
+    border-color: #5409DA;
+
+    box-shadow: 0px 0px 8px #d4bbff;
+
+}
+
+.star{
+    padding-left: 3px;
+    color:#5409DA;
+    font-weight: 900;
+}
+
+/* 2-1. 공연 관련 */
+.form > div.show{
+    width: 40%;
+    height: 100%;
+    position: absolute;
+}
+
+.show > p.chooseShow{
+    position: absolute;
+    left: 20px;
+    font-weight: 500;
+}
+
+input.searchShow{
+    border: solid 2px;
+    border-color: #BECBFF;
+    background-color: #BECBFF;
+    border-radius: 0%;
+
+    position: absolute;
+    top: 50px;
+    left: 20px;
+    width: 87%;
+    padding: 3px;
+    padding-left: 8px;
+    padding-right: 8px;
+    
+}
+
+.showImage{
+    position: absolute;
+    top: 95px;
+    background-color: #BECBFF;
+    left: 20px;
+    width: 87%;
+    height: 34.3%;
+
+}
+
+.showInfo{
+    position: absolute;
+    top: 430px;
+    left: 20px;
+
+    list-style: none;
+    line-height: 2;
+    padding: 0;
+    margin: 0;
+    font-size: 13px;
+
+    display: inline-block;     /* inline-block 필요 */
+    width: 100%;   
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+/* 2-2. 글 관련 */
+.form > .post{
+    display: flex; 
+    width: 60%;
+    height: 100%;
+
+    position: absolute;
+    right: 0px;
+
+}
+
+.post > p.post-title{
+    font-weight: 500;
+}
+
+
+.post > input.writeTitle{
+    border: solid 2px;
+    border-radius: 0%;
+    border-color: #5409DA;
+
+    position: absolute;
+    top: 50px;
+    padding: 3px;
+    padding-left: 8px;
+    padding-right: 8px;
+
+    width: 96%;
+}
+
+.post > p.date{
+    position: absolute;
+    top: 75px;
+    font-weight: 500;
+}
+
+.post > p.time{
+    position: absolute;
+    top: 75px;
+    left: 50%;
+    font-weight: 500;
+}
+
+.post > .chooseDate{
+    position: absolute;
+    top: 125px;
+
+    height: 25px;
+    width: 46.1%;
+    border-radius: 0%;
+    border: none;
+    background-color: #BECBFF;
+
+    color: gray;
+    padding-left: 8px;
+    padding-right: 8px;
+
+}
+
+.post > .chooseTime{
+    position: absolute;
+    top: 125px;
+    left: 50%;
+    height: 25px;
+    width: 46.1%;
+    
+    border-radius: 0%;
+    border: none;
+    background-color: #BECBFF;
+
+    color: gray;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.post > p.peopleNum{
+    position: absolute;
+    top: 148px;
+    font-weight: 500;
+}
+
+.post > .choosePeopleNum{
+    position: absolute;
+    top: 198px;
+
+    height: 25px;
+    width: 46.1%;
+    
+    border-radius: 0%;
+    border: solid 2px;
+    border-color: #5409DA;
+
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.post > .like{
+    position: absolute;
+    top: 221px;
+    font-weight: 500;
+}
+
+.post > .age{
+    position: absolute;
+    top: 255px;
+    font-size: 15px;
+}
+
+.post > .gender{
+    position: absolute;
+    top: 338px;
+    font-size: 15px;
+}
+
+.btn-group{
+    position: absolute;
+    top: 308px;
+}
+
+.btn-group input {
+  display: none;
+}
+
+.btn-group label {
+    color:#5409DA;
+    padding: 5px 7px;
+    border: 2px solid #5409DA;
+    border-radius: 0%;
+    cursor: pointer;
+    font-size: small;
+    margin-right: 13px;
+}
+
+.btn-group input:checked + label {
+  background-color: #5409DA;
+  color: white;
+  border-color: #5409DA;
+}
+
+.btn-group2{
+    position: absolute;
+    top: 388px;
+}
+
+.btn-group2 input {
+  display: none;
+}
+
+.btn-group2 label {
+    color:#5409DA;
+    padding: 5px 7px;
+    border: 2px solid #5409DA;
+    border-radius: 0%;
+    cursor: pointer;
+    font-size: small;
+    margin-right: 13px;
+}
+
+.btn-group2 input:checked + label {
+  background-color: #5409DA;
+  color: white;
+  border-color: #5409DA;
+}
+
+.post > .meetLocTime{
+    position: absolute;
+    top: 418px;
+    font-weight: 500;
+}
+
+.post > input.writeMeetLT{
+    border: solid 2px;
+    border-radius: 0%;
+    border-color: #5409DA;
+
+    position: absolute;
+    top: 468px;
+    padding: 3px;
+    padding-left: 8px;
+    padding-right: 8px;
+
+    width: 96%;
+}
+
+.post > .message{
+    position: absolute;
+    top: 492px;
+    font-weight: 500;
+}
+
+.post > .writeMessage{
+        border: solid 2px;
+    border-radius: 0%;
+    border-color: #5409DA;
+
+    position: absolute;
+    top: 545px;
+    padding: 3px;
+    padding-left: 8px;
+    padding-right: 8px;
+
+    width: 96%;
+    height: 150px;
+    resize: none;
+}
+
+.post > .tag{
+    position: absolute;
+    top: 695px;
+    font-weight: 500;
+}
+
+.post > .writeTag{
+    border: solid 2px;
+    border-radius: 0%;
+    border-color: #5409DA;
+
+    position: absolute;
+    top: 750px;
+    padding: 3px;
+    padding-left: 8px;
+    padding-right: 8px;
+
+    width: 96%;
+}
+
+.warning1{
+    position: absolute;
+    bottom: 85px;
+    font-weight: 500;
+    left: 33%;
+}
+
+.warning2{
+    position: absolute;
+    bottom: 65px;
+    font-weight: 500;
+    margin: auto;
+    left: 29%;
+
+}
+
+.dropdown-list {
+    border: 1px solid #BECBFF;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    top: 61.5px;
+    left: 20px;
+    background-color: white;
+    width: 87%;
+    z-index: 10;
+    padding: 0;
+    list-style: none;
+
+    font-size: 13px;
+    padding: 2px 8px;
+}
+
+.dropdown-item {
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    font-weight: 500;
+    color:#5409DA;
+}
+
+.dropdown-item.disabled {
+    color: #999;
+    cursor: default;
+}

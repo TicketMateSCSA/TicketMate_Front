@@ -1,0 +1,308 @@
+/* 0. 최상위 컨테이너 */
+.detail-page-container {
+    width: 100%;
+     /* AppContainer의 높이를 꽉 채웁니다. */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    background-color: #ffffff; /* 배경색: 어두운 테마 */
+    color: #000000;
+    position: relative;
+    background: var(--White, #ffffff);
+    
+    /* 하단 네비게이터 영역을 피하기 위한 패딩 */
+    padding-bottom: 70px; 
+    padding-top: 20px;
+    overflow-y: auto; /* 내용이 길면 스크롤 가능 */
+}
+
+/* 1, 2는 HostPage.css와 같이 처리됨 */
+
+.detail-left{
+    float: left;
+    width: 47%;
+    height: 100%;
+}
+
+.detail-right{
+    float: right;
+    width: 53%;
+    height: 100%;
+}
+
+.detail-left img{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    height: 428px;
+    width: 321px;
+
+}
+
+.left-info{
+    position: absolute;
+    top: 468px;
+    left: 20px;
+    width: 321px;
+    border: 2px solid #5409DA;
+
+    padding: 5px 15px;
+    font-size: 13px;
+    line-height: 0.8;
+}
+
+.left-info button{
+    color: white;
+    background-color: #5409DA;
+    border-radius: 25px;
+    width: 97%;
+    margin: 10px 5px;
+    height: 40px;
+    border: none;
+    font-size: 18px;
+    padding-bottom: 5px;
+    cursor: pointer;
+}
+.bold{
+    font-weight: 500;
+}
+
+.left-host{
+    position: absolute;
+    top: 664px;
+    left: 20px;
+    width: 321px;
+    height: 150px;
+    border: 2px solid #5409DA;
+
+    padding: 3px 15px;
+    font-size: 13px;
+    line-height: 0.8;
+}
+
+.left-host img{
+    position: absolute;
+    top: 42px;
+    left: 20px;
+
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+}
+
+.lh-nn{
+    position: absolute;
+    left: 80px;
+    top: 47px;
+    margin: 0;
+    font-size: 13px;
+
+}
+
+.lh-gender{
+    position: absolute;
+    left: 80px;
+    top: 69px;
+    color: gray;
+    margin: 0;
+    font-size: 11px;
+}
+
+.lh-mate{
+    position:absolute;
+    top: 80px;
+    line-height: 1.6;
+    font-size: 13px;
+
+}
+
+.right-title{
+    font-weight: 500;
+    font-size: 20px;
+
+    display: inline-block; 
+    width: 290px;   
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.right-state{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    border: 2px solid;
+    width: 80px;
+    text-align: center;
+    font-size: 13px;
+    padding: 5px 0px;
+}
+
+.right-mini{
+    position: absolute;
+    top: 57px;
+    margin: 0;
+    margin-left: 5px;
+    font-size: 12px;
+}
+
+.right-perf-info{
+    position: absolute;
+    top: 90px;
+    width: 388px;
+    border: 2px solid #5409DA;
+    font-size: 13px;
+    padding: 3px 10px;
+    line-height: 1;
+}
+
+.right-right{
+    position: absolute;
+    left: 52%;
+    top: 3px;
+}
+
+.right-loctime{
+    font-size: 13px;
+    font-weight: 500;
+    
+    position: absolute;
+    top: 163px;
+}
+
+.right-meet-loctime{
+    position: absolute;
+    top: 209px;
+    width: 388px;
+    border: 2px solid #5409DA;
+    font-size: 13px;
+    padding: 10px;
+    line-height: 1;
+    height: 40px;
+    overflow-y: scroll;
+
+}
+
+.right-meet-content{
+    font-size: 13px;
+    font-weight: 500;
+    
+    position: absolute;
+    top: 248px;
+}
+
+.right-perf-content{
+    position: absolute;
+    top: 292px;
+    width: 388px;
+    border: 2px solid #5409DA;
+    font-size: 13px;
+    padding: 10px;
+
+    line-height: 1;
+    height: 100px;
+    overflow-y: scroll;
+}
+
+.right-tag-container{
+    position: relative;
+    top: 339px;
+    width: 300px;
+    display: flex;
+    gap: 5px; /* 요소 사이 간격 */
+    flex-wrap: wrap; /* 필요하면 줄바꿈 */
+}
+
+.right-section-tag{
+    background-color: #4E71FF;
+    color: white;
+    font-weight: 400;
+    font-size: 13px;
+    padding: 0px 3px;
+}
+
+.right-line{
+    position: absolute;
+    top: 450px;
+    width: 388px;
+    border: 1px solid #BECBFF;
+}
+
+.right-message-box{
+    font-size: 13px;
+    position: absolute;
+    top: 468px;
+    background-color: #BECBFF;
+    height: 270px;
+    width: 388px;
+}
+
+.right-message-content{
+    position: absolute;
+    top: 37px;
+    left: 15px;
+    width: 92%;
+    height: 50%;
+    resize: none;
+}
+
+.right-line-title{
+    position: absolute;
+    margin: 0;
+    top: 10px;
+    left: 15px;
+    font-size: 13px;
+    font-weight: 500;
+    
+}
+
+.right-content-my-info{
+    position: absolute;
+    top: 170px;
+    left: 15px;
+    line-height: 1;
+    font-size: 13px;
+    font-weight: 500;
+
+}
+
+.right-left-my-info{
+    position: absolute;
+    top: 200px;
+    left: 15px;
+    line-height: 1;
+    font-size: 13px;
+
+}
+
+.right-right-my-info{
+    position: absolute;
+    top: 200px;
+    left: 51%;
+    line-height: 1;
+}
+
+.mate-apply-button{
+    background-color:#5409DA;
+    border-radius: 25px;
+    color: white;
+    border: none;
+    
+    position: absolute;
+    top: 760px;
+    height: 50px;
+    width: 388px;
+    font-size: 19px;
+
+    cursor: pointer;
+}
+
+.right-needLogin{
+    position: absolute;
+    top: 195px;
+    left: 78px;
+    text-align: center;
+    color:#5409DA;
+    font-weight: 500;
+}

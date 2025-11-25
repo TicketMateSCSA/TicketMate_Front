@@ -1,0 +1,110 @@
+.head > img{
+    position: absolute;
+    width: 200px;
+    top: 30px;
+    left: 50px;
+    cursor: pointer;
+}
+.head > input{
+    position: absolute;
+    width: 450px;
+    height: 30px;
+    top: 30px;
+    right: 55px;
+    outline: none;
+    padding-left: 15px;
+    padding-right: 30px;
+    border-radius: 20px;
+    border-color: #5409DA;
+    border-width: 2.5px;
+}
+
+.head > button{
+    border-radius: 20px;
+    position: absolute;
+    top: 33px;
+    right: 80px;
+    width: 5px;
+    height: 5px;
+    border: none;
+    background-color: white;
+  cursor: pointer;
+
+}
+
+.head > button > img{
+    width: 20px;
+    
+
+}
+
+.navi {
+    position: absolute;
+    top: 90px;
+    height: 50px;
+    width: 100%;
+    background-color: #5409DA;
+}
+
+.navi > button {
+    position: absolute;
+    font-weight: 500;
+    top: 10px;
+    background-color: #5409DA;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+}
+
+.navi > button.active{
+    color: #5409DA;
+    background-color: white;
+    box-shadow: inset 5px 5px 10px rgb(178, 178, 178);
+    cursor: pointer;
+
+}
+
+.navi > .home{
+    position: absolute;
+    left: 15px;
+}
+
+.navi > .search{
+    position: absolute;
+    left: 60px;
+}
+
+.navi > .host{
+    position: absolute;
+    left: 157px;
+}
+
+.navi > .info{
+    position: absolute;
+    left: 277px;
+}
+
+.navi > .signin{
+    position: absolute;
+    right: 15px;
+}
+
+.navi > .login{
+    position: absolute;
+    right: 95px;
+}
+
+.navi > .user-nickname{
+    position: absolute;
+    right: 95px;
+}
+
+.navi > .logout{
+    position: absolute;
+    right: 30px;
+}
