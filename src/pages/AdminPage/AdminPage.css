@@ -1,0 +1,164 @@
+/* 전체 레이아웃 */
+.admin-page-container{
+    width: 100%;
+     /* AppContainer의 높이를 꽉 채웁니다. */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    background-color: #ffffff; /* 배경색: 어두운 테마 */
+    color: #000000;
+    position: relative;
+    background: var(--White, #ffffff);
+    
+    /* 하단 네비게이터 영역을 피하기 위한 패딩 */
+    padding-bottom: 70px; 
+    padding-top: 20px;
+    overflow-y: auto; /* 내용이 길면 스크롤 가능 */
+}
+
+/* 상단 헤더 */
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    background: #e1e1e1;
+    padding: 20px;
+    border-bottom: 3px solid #c0c0c0;
+}
+
+/* 관리자 정보 */
+.profile-box {
+    display: flex;
+    align-items: center;
+}
+
+.profile-img {
+    width: 60px;
+    height: 60px;
+    background: #c0c0c0;
+    border: 2px solid #999;
+    margin-right: 20px;
+}
+
+.profile-name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.profile-email {
+    font-size: 14px;
+    color: #444;
+}
+
+/* 상태 박스 */
+.status-box {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+}
+
+.status-item {
+    padding: 2px 0;
+}
+
+.status-item span {
+    font-weight: bold;
+}
+
+.status-item.warning span {
+    color: #b60000;
+}
+
+/* 섹션 공통 */
+.section-box {
+    margin: 25px;
+    border: 2px solid #c0c0c0;
+    background: white;
+    padding: 10px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #c0c0c0;
+}
+
+/* 탭 메뉴 */
+.tab-menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.tab {
+    padding: 6px 15px;
+    border: 1px solid #999;
+    background: #ddd;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.tab.active {
+    background: #bfbfbf;
+    font-weight: bold;
+}
+
+/* 검색 박스 */
+.search-box {
+    display: flex;
+    gap: 5px;
+}
+
+.search-box input {
+    padding: 5px;
+    border: 1px solid #999;
+    width: 200px;
+}
+
+.btn-search {
+    padding: 6px 12px;
+    border: 1px solid #777;
+    background: #cfcfcf;
+    cursor: pointer;
+}
+
+/* 테이블 */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.data-table th {
+    background: #d7d7d7;
+    border: 1px solid #999;
+    padding: 6px;
+}
+
+.data-table td {
+    border: 1px solid #ccc;
+    padding: 6px;
+}
+
+/* 버튼 */
+.btn-group {
+    display: flex;
+    gap: 4px;
+}
+
+.btn {
+    padding: 4px 10px;
+    border: 1px solid #555;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.btn.blue {
+    background: #d0d8e8;
+}
+
+.btn.red {
+    background: #e6b8b8;
+}
