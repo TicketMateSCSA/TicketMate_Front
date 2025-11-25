@@ -1,7 +1,7 @@
 import "./RegistPage.css";
 
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import Navigator from "../../components/Navigator/Navigator";
 
@@ -9,7 +9,6 @@ import successIcon from '../../assets/icons/request-success-icon.png';
 import noImage from '../../assets/images/no-image.png';
 import noProfile from '../../assets/images/no-profile.png'
 
-const reqId = 9;
 const postsUrl = `${import.meta.env.VITE_POSTS_URL}/posts`;
 const requestUrl = `${import.meta.env.VITE_POSTS_URL}/requests`;
 
@@ -69,6 +68,8 @@ function RegistSection({item}){
 }
 
 function Regist(){
+    const { matePostId } = useParams();
+
     // 버튼 클릭 -----------------------------
     const navigate = useNavigate();
 
@@ -109,7 +110,7 @@ function Regist(){
 
     const fetchData = async () => {
         try {
-            const response = await fetch(requestUrl + "/" + reqId);
+            const response = await fetch(requestUrl + "/" + matePostId);
             const data = await response.json();
             setReqData(data);
         } catch (err) {
@@ -128,57 +129,65 @@ function Regist(){
     const obj = reqData?.result;
 
     // ------------------------------------
-    
-    const dateNtime = obj.mate_view_date ? obj.mate_view_date.split("T") : [];
-    dateNtime[0] = dateNtime[0].split("-").splice(0, 3);
-    dateNtime[0] = dateNtime[0][0] + "년 " + dateNtime[0][1] + "월 " + dateNtime[0][2] + "일 "
-    dateNtime[1] = dateNtime[1].split(":").slice(0, 2).join(":");
-    const slicedDate = dateNtime.slice(0, 2).join(" ");
+    let slicedDate = "";
+
+    if (obj){
+        const dateNtime = obj.mate_view_date ? obj.mate_view_date.split("T") : [];
+        dateNtime[0] = dateNtime[0].split("-").splice(0, 3);
+        dateNtime[0] = dateNtime[0][0] + "년 " + dateNtime[0][1] + "월 " + dateNtime[0][2] + "일 "
+        dateNtime[1] = dateNtime[1].split(":").slice(0, 2).join(":");
+        slicedDate = dateNtime.slice(0, 2).join(" ");
+    }
 
     return (
+        
         <div className="regist-page-container">
             <Navigator/>
-            <div className="regist-done">
-                <div className="regist-done-header">
-                    <img className="regist-success-icon" src={successIcon}/>
-                    <p className="regist-success-text1">메이트 신청이 완료되었습니다!</p>
-                    <p className="regist-success-text2">호스트가 신청을 확인하면 알림을 보내드릴게요.</p>
-                </div>
 
-                <div className="regist-done-body">
-                    <p className="regist-done-body-title">신청 정보</p>
-                    <img className="regist-done-body-img" 
-                        src={obj.perf_img_url ? obj.perf_img_url : noImage}
-                        alt={obj.perf_name}/>
-                    <p className="rdb-title1">모집글</p>
-                    <p className="rdb-title2">{obj.mate_title}</p>
-                    
-                    <div className="rdb-body1">
-                        <p>공연</p>
-                        <p className="nn">{obj.perf_name}</p>
-                        <p>관람일시</p>
-                        <p className="nn">{slicedDate}</p>
-
-                    </div>
-                    <div className="rdb-body2">
-                        <p>호스트</p>
-                        <p className="nn">{obj.mem_nn}</p>
-                        <p>장소</p>
-                        <p className="nn">{obj.perf_loc}</p>
-                    </div>
-                    
-                    <p className="rdb-message1">신청 메시지</p>
-                    <div className="rdb-message2">
-                        {obj.req_msg}
+            { obj && (
+                <div className="regist-done">
+                    <div className="regist-done-header">
+                        <img className="regist-success-icon" src={successIcon}/>
+                        <p className="regist-success-text1">메이트 신청이 완료되었습니다!</p>
+                        <p className="regist-success-text2">호스트가 신청을 확인하면 알림을 보내드릴게요.</p>
                     </div>
 
+                    <div className="regist-done-body">
+                        <p className="regist-done-body-title">신청 정보</p>
+                        <img className="regist-done-body-img" 
+                            src={obj.perf_img_url ? obj.perf_img_url : noImage}
+                            alt={obj.perf_name}/>
+                        <p className="rdb-title1">모집글</p>
+                        <p className="rdb-title2">{obj.mate_title}</p>
+                        
+                        <div className="rdb-body1">
+                            <p>공연</p>
+                            <p className="nn">{obj.perf_name}</p>
+                            <p>관람일시</p>
+                            <p className="nn">{slicedDate}</p>
 
-                </div>
+                        </div>
+                        <div className="rdb-body2">
+                            <p>호스트</p>
+                            <p className="nn">{obj.mem_nn}</p>
+                            <p>장소</p>
+                            <p className="nn">{obj.perf_loc}</p>
+                        </div>
+                        
+                        <p className="rdb-message1">신청 메시지</p>
+                        <div className="rdb-message2">
+                            {obj.req_msg}
+                        </div>
+
+
+                    </div>
+                
 
                 <button className="regist-toMyPage" onClick={goToMyPage}>신청 현황 보기</button>
 
                 <button className="regist-toSearchPage" onClick={goToSearchPage}>다른 메이트 찾기</button>
             </div>
+            )}
 
             <div className="regist-line">
                 이런 메이트는 어떠세요?

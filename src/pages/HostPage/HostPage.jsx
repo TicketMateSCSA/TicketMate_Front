@@ -117,7 +117,7 @@ function HostPage(){
     // };
 
     // 백 -------------------------------
-   const buildBody = () => {
+    const buildBody = () => {
         // 0. 필수 값 검증 로직 추가
         if (!selectedShow) {
             throw new Error("공연을 선택해주세요.");

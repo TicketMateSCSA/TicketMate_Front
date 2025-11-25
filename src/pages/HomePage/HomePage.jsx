@@ -14,6 +14,7 @@ const ageMap = {0: '10대', 1: '20대', 2: '30대', 3: '40대', 4: '50대+'}
 const genderMap = {0: '무관', 1: '남성', 2: '여성'}
 
 function Section({item}){
+    const navigate = useNavigate();
 
     const tags = item.mate_hashtag ? item.mate_hashtag.split(" ") : [];
     const slicedTag = tags.slice(0, 5);
@@ -24,8 +25,13 @@ function Section({item}){
     dateNtime[1] = dateNtime[1].split(":").slice(0, 2).join(":");
     const slicedDate = dateNtime.slice(0, 2).join(" ");
 
+    // 버튼 클릭
+    const handleClick = async (item) => {
+        navigate(`/detail/${item.mate_post_id}`);  
+    }
+
     return (
-        <div className="homepage-section">
+        <div className="homepage-section" onClick={() => {handleClick(item)}}>
             <img className="section-img" 
                 src={item.perf_img_url ? item.perf_img_url : noImage}
                 alt={item.perf_name}/>

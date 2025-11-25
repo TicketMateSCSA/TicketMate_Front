@@ -47,6 +47,7 @@ div.search-category{
     top: 225px;
     height: 105px;
     font-size: 14px;
+
 }
 
 p.search-category{
@@ -59,6 +60,9 @@ p.search-category{
     position: absolute;
     left: 20px;
     top: 55px;
+
+    display: flex; 
+    gap: 3px; /* 버튼 간의 간격 조정 */
 }
 
 .search-btn-group input {
@@ -168,14 +172,15 @@ p.search-gender{
 div.gender-btn{
     position: absolute;
     left: 51%;
-    top: 142px;
+    top: 135px;
 }
 
 /* 4. 정렬 조건 */
 .sort-btn{
     position: absolute;
     top: 562px;
-    left: 516px;
+    left: 505px;
+    margin: 0px;
 }
 
 /* 5. 페이지 */
@@ -194,7 +199,7 @@ div.gender-btn{
 
     display: grid;
     grid-template-rows: repeat(4, 1fr); /* 2열 */
-    gap: 20px;
+    gap: 12px;
 
     width: 95%;
     height: 590px;
@@ -294,7 +299,7 @@ span.search-section-state{
     border-radius: 50%;
 }
 
-.search-section-accountInfo p{
+.search-section-accountInfo span{
     margin: 0;
     position: relative;
     top: 4px;
@@ -318,4 +323,13 @@ span.search-section-state{
     font-weight: 400;
     font-size: 13px;
     padding: 0px 3px;
+}
+
+
+.swc-error{
+    color:#5409DA;
+    font-weight: 500;
+    position: relative;
+    top: 50px;
+    text-align: center;
 }
