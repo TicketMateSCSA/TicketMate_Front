@@ -63,6 +63,37 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
 
+    const admin_login = useCallback(async (email, password, key) => {
+        try {
+            const loginUrl = `${import.meta.env.VITE_POSTS_URL}/admin/login`;
+            const body = { mem_email: email, mem_password: password, admin_key: key };
+
+            const res = await apiFetch(loginUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+
+            if (res.code === "COMMON200") {
+                // 로그인 성공 후 실제 회원 정보 가져오기
+                const memberProfile = await fetchMyProfile();
+                loginSuccess(memberProfile);
+            } else if (res.code === "NON_MEMBER400") {
+                alert(res.message);
+            } else if (res.code === "WRONG_PASSWORD401") {
+                alert(res.message);
+            } else if (res.code === "WRONG_KEY_VALUE404") {
+                alert(res.message);
+            }
+
+            return res;
+        } catch (error) {
+            console.error("예상치 못한 오류:", error);
+            throw error;
+        }
+    }, [loginSuccess]);
+
+
     // 새로고침 시 로그인 상태 복구
     useEffect(() => {
         const loadUser = async () => {
@@ -92,7 +123,8 @@ export const AuthProvider = ({ children }) => {
             isLoading,
             loginSuccess,
             login,
-            logout
+            logout, 
+            admin_login
         }}>
             {children}
         </AuthContext.Provider>
