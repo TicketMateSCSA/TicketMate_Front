@@ -1,0 +1,83 @@
+.admin-login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background: linear-gradient(#d0d0d0, #f3f3f3);
+}
+
+.admin-box {
+    margin-top: 100px;
+    width: 380px;
+    padding: 35px 40px;
+    background: #ffffff;
+    border: 1px solid #b5b5b5;
+    box-shadow: 4px 4px 0px #a5a5a5;
+    border-radius: 4px;
+}
+
+.admin-title {
+    font-size: 22px;
+    text-align: center;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    font-weight: 700;
+    color: #1b3c71;
+}
+
+.admin-sub {
+    font-size: 13px;
+    text-align: center;
+    color: #777;
+    margin-bottom: 25px;
+}
+
+.admin-form-group {
+    margin-bottom: 20px;
+}
+
+.admin-form-group label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.admin-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #9e9e9e;
+    background: #fafafa;
+    border-radius: 2px;
+    font-size: 14px;
+}
+
+.admin-input:focus {
+    outline: none;
+    border-color: #3b66aa;
+    background: #ffffff;
+}
+
+.admin-login-btn {
+    width: 100%;
+    padding: 12px 0;
+    background: #2f5597;
+    border: none;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.admin-login-btn:hover {
+    background: #24477e;
+}
+
+.admin-warn {
+    text-align: center;
+    color: #b00;
+    font-size: 12px;
+    margin-top: 15px;
+}
