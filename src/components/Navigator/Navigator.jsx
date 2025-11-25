@@ -1,6 +1,7 @@
 import './Navigator.css';
 import logo from '../../assets/images/logo.png';
 import searchIcon from '../../assets/icons/searchIcon.png';
+import noProfile from '../../assets/images/no-profile.png';
 
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from '../../contexts/AuthContext';
@@ -58,9 +59,9 @@ function Navigator(){
 
             {isAuthenticated ? (
                 <>  
-                    <button className="user-nickname" onClick={goToMyPage}>
-                        {userProfile?.mem_img_url && <img src={userProfile.mem_img_url} alt="profile" />}
-                        {userProfile?.mem_nn}님
+                    <button className={location.pathname === "/myPage" ? "user-nickname active" : "user-nickname"} onClick={goToMyPage}>
+                        <img className="nav-myImg" src={userProfile.mem_img_url? userProfile.mem_img_url : noProfile} alt="profile" />
+                        <span className="nav-myNN">{userProfile?.mem_nn? userProfile.mem_nn: userProfile.mem_name} 님</span>
                     </button>
                     <button className="logout" onClick={handleLogout}>로그아웃</button>
                 </>

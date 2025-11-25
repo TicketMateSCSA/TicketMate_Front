@@ -27,3 +27,299 @@ div.box{
     box-shadow: 0px 0px 8px #d4bbff;
     border-color: #5409DA;
 }
+
+.mypage-left{
+    width: 40%;
+    height: 100%;
+    float: left;
+}
+
+.mypage-right{
+    width: 60%;
+    height: 100%;
+    float: right;
+
+}
+
+.mypageForm{
+    position: relative;
+    top: 205px;
+    height: 87.8%;
+}
+
+.mp-left-box{
+    position: absolute;
+    left: 20px;
+    border: solid 2px;
+    width: 305px;
+    height: 400px;
+    border-color: #5409DA;
+}
+
+.mp-left-box img{
+    position: relative;
+    top: 30px;
+    left: 112.5px;
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+}
+
+.mp-left-box-name{
+    position: relative;
+    top: 20px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.mp-left-box-email{
+    position: relative;
+    top: 4px;
+    text-align: center;
+    color: gray;
+    font-size: 12px;
+}
+
+.mp-left-mate-temp{
+    position: relative;
+    top: 10px;
+    margin: 0 auto;
+    height: 72px;
+    width: 90%;
+    border: 2px solid #5409DA;
+}
+
+.mp-left-mate-temp > p{
+    position: absolute;
+    margin: 0;
+    top: 7px;
+    left: 15px;
+    font-size: 13px;
+}
+
+.mp-left-mate-temp > .temp{
+    position: absolute;
+    top: 33px;
+    left: 12px;
+
+    height: 20px;
+    border-radius: 25px;
+}
+
+.mp-left-mate-temp > .tempBack{
+    position: absolute;
+    top: 33px;
+    left: 12px;
+    
+    width: 90%;
+    height: 20px;
+    background-color: lightgray;
+    border-radius: 25px;
+}
+
+.mp-left-box > table{
+    position: relative;
+    top: 20px;
+    left: 14px;
+    font-size: 13px;
+    width: 90%;
+}
+
+.mp-left-box > button{
+    background-color: #5409DA;
+    border-radius: 25px;
+    border: none;
+    width: 90%;
+    height: 40px;
+    font-size: 18px;
+    padding-bottom: 4px;
+    color: white;
+
+    position: relative;
+    top: 30px;
+    left: 15px;
+
+    cursor: pointer;
+}
+
+.left-menu{
+
+    border: 2px solid #5409DA;
+    border-collapse: collapse;
+    position: relative;
+    top: 420px;
+    left: 20px;
+    width: 305px;
+    border-color:#5409DA;
+}
+
+.left-menu > tbody > tr > td {
+    font-size: 13px;
+    padding: 7px 13px;
+    border: 2px solid #5409DA; /* 테두리 굵기 2px */
+    color: #5409DA;
+    cursor: pointer;
+  }
+
+.left-menu > tbody > tr > td.active{
+    background-color: #BECBFF;
+
+}
+
+.mypage-right > table{
+    border: 2px solid #5409DA;
+    border-collapse: collapse;
+    position: relative;
+    left: 20px;
+    width: 447px;
+    border-color:#5409DA;   
+}
+
+.mr-boxno {
+
+    text-align: center;
+    font-size: 13px;
+    padding: 7px 13px;
+    border: 2px solid #5409DA; /* 테두리 굵기 2px */
+    width: 33.33%; /* 열 너비 고정 */
+    padding-bottom: 10px;
+    cursor: pointer;
+  }
+
+.mypage-right > table > tbody > tr > td > p{
+    margin: 2px;
+    font-size: 17px;
+}
+
+.mr-boxno.active{
+    background-color: #5409DA;
+    color: white;
+    
+}
+
+.mr-box{
+    height: 888px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+/* 목록 */
+.myPageMyPost-section-func{
+    display: flex;
+    padding: 7px 7px;
+    box-shadow: 0px 0px 8px #d4bbff;
+    border: 2px solid;
+    height: 132px;
+    width: 410px;
+    border-color:#5409DA;
+
+    cursor: pointer;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.myPageMyPost-content-length{
+    position: absolute;
+    top: 554px;
+    left: 22px;
+    font-size: 13px;
+}
+
+.myPageMyPost-section-title{
+    font-size: 13px;
+
+    font-weight: 500;
+    line-height: 1;
+    margin-right: 0px;
+    margin-left: 12px;
+    margin-top: 15px;
+    margin-bottom: 0px;
+
+    display: inline-block;     /* inline-block 필요 */
+    width: 100%;   
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+span.myPageMyPost-section-category{
+    position: relative;
+    top: 4px;
+    left: 11px;
+    border: 2px solid;
+    font-size: 14px;
+    padding: 2px 5px;
+    margin-right: 10px;
+
+    border-color: #5409DA;
+    color:#5409DA;
+
+}
+
+span.myPageMyPost-section-state{
+    position: relative;
+    top: 4px;
+    left: 10px;
+    border: 2px solid;
+    font-size: 14px;
+    padding: 2px 5px;
+
+}
+
+.myPageMyPost-section-body1{
+    display: flex;
+    position: relative;
+    margin: 0px;
+    font-size: 11px;
+}
+
+.mpmp-table{
+    position: relative;
+    left: 10px;
+    width: 300px;
+}
+
+.myPageMyPost-section-img{
+    height: 114px;
+    width: 85.5px;
+}
+
+.myPageMyPost-section-accountInfo{
+    display: flex;
+    margin-bottom: 5px;
+}
+
+.myPageMyPost-section-accountInfo img{
+    position: relative;
+    top: 3px;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+}
+
+.myPageMyPost-section-accountInfo span{
+    margin: 0;
+    position: relative;
+    top: 4px;
+    left: 10px;
+    font-size: 8px;
+    
+}
+
+.myPageMyPost-tag-container{
+    position: relative;
+    top: 30px;
+    width: 670px;
+    display: flex;
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    gap: 5px; /* 요소 사이 간격 */
+    flex-wrap: wrap; /* 필요하면 줄바꿈 */
+}
+.myPageMyPost-section-tag{
+    background-color: #4E71FF;
+    color: white;
+    font-weight: 400;
+    font-size: 13px;
+    padding: 0px 3px;
+}

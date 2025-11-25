@@ -1,13 +1,173 @@
 import "./MyPage.css";
 import Navigator from "../../components/Navigator/Navigator";
+
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import noProfile from '../../assets/images/no-profile.png';
+
+const myPostURL = `${import.meta.env.VITE_POSTS_URL}/requests/recieved`;
 
 const ageMap = {0: '10대', 1: '20대', 2: '30대', 3: '40대', 4: '50대+'};
 const genderMap = {0: '무관', 1: '남성', 2: '여성'};
 
+const stateMapRev = {0: "전체", 1: "모집중", 2: "모집완료"};
+const ageMapRev = {0: '10대', 1: '20대', 2: '30대', 3: '40대', 4: '50대+'}
+const genderMapRev = {0: '무관', 1: '남성', 2: '여성'}
+
+
+function MyPageSectionMyPost({nn, na, item}){
+    const navigate = useNavigate();
+
+    const tags = item.mate_hashtag ? item.mate_hashtag.split(" ") : [];
+    const slicedTag = tags.slice(0, 5);
+
+    const dateNtime = item.mate_view_date ? item.mate_view_date.split("T") : [];
+    dateNtime[0] = dateNtime[0].split("-").splice(0, 3);
+    dateNtime[0] = dateNtime[0][0] + "년 " + dateNtime[0][1] + "월 " + dateNtime[0][2] + "일 "
+    dateNtime[1] = dateNtime[1].split(":").slice(0, 2).join(":");
+    const slicedDate = dateNtime.slice(0, 2).join(" ");
+
+    // 버튼 클릭
+    const handleClick = async (item) => {
+        navigate(`/detail/${item.mate_post_id}`);  
+    }
+
+    return (
+        
+        <div className="myPageMyPost-section-func" onClick={() => handleClick(item)}>
+            <img className="myPageMyPost-section-img" 
+                src={item.perf_img_url ? item.perf_img_url : noImage}
+                alt={item.perf_name}/>
+
+            <div className="myPageMyPost-section-content">
+                <span className="myPageMyPost-section-category">{item.cat_name}</span>
+                <span className="myPageMyPost-section-state"
+                    style={
+                        {backgroundColor: item.mate_status === 1 ? "#A1FFA6" : "#E0E0E0",
+                        borderColor: item.mate_status === 1 ? "#40A646" : "#656565",
+                        color: item.mate_status === 1? "#40A646" : "#656565"
+                    }}>{stateMapRev[item.mate_status]}</span>
+                <p className="myPageMyPost-section-title">{item.mate_title}</p>
+                
+                <table className="mpmp-table">
+                    <tbody>
+                        <tr className="myPageMyPost-section-body1"><td style={{width: "55%"}}>공연: {item.perf_name}</td><td style={{width: "45%"}}>장소: {item.perf_loc}</td></tr>
+                        <tr className="myPageMyPost-section-body1"><td style={{width: "55%"}}>일시: {slicedDate}</td><td style={{width: "45%"}}>모집 인원: {item.mate_num_of_need} (현재 {item.mate_num_of_confirmed}/{item.mate_num_of_need})</td></tr>
+                        <tr><td colSpan={2}><span className="myPageMyPost-section-accountInfo">
+                    <img src={item.mem_img_url ? item.mem_img_url : noProfile}/>
+                    <span>{nn ? nn : na}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ageMapRev[item.mem_age_range]} {genderMapRev[item.mem_gender]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;조회 {item.mate_view_cnt}</span>
+                </span></td></tr>
+                    </tbody>
+                </table>
+                      
+                <div className="myPageMyPost-tag-container">
+                    {slicedTag.map((tag, idx) => (
+                    <span className="myPageMyPost-section-tag" key={idx}>{tag}</span>
+                    )) }
+                </div>
+                
+            </div>
+        </div>
+    )
+}
+
+function MyPageMyPosts({myPost}){
+    console.log(myPost);
+    return (
+        <div>
+            {myPost?.length > 0 && myPost.map((item, idx) => (
+                
+                <MyPageSectionMyPost key={`mpmp${idx}`} item={item} />
+            ))}
+        </div>
+    )
+}
+
+function MyPageGet(){
+    return (
+        <div style={{ padding: "10px", color: "green" }}>
+                <h3>내가 받은 신청</h3>
+                <ul>
+                <li>신청자 X</li>
+                <li>신청자 Y</li>
+                </ul>
+            </div>
+    )
+}
+
+function MyPageRegist(){
+    return (
+        <div style={{ padding: "10px", color: "orange" }}>
+                <h3>내가 신청한 메이트</h3>
+                <ul>
+                <li>메이트 M</li>
+                <li>메이트 N</li>
+                </ul>
+            </div>
+    )
+}
 function MyPage(){
+    const [myPostList, setMyPost] = useState([]);
+    const [myGetList, setMyGet] = useState([]);
+    const [myRegistList, setMyRegist] = useState([]);
+
     const { isAuthenticated, userProfile, logout } = useAuth();
+    const [content, setContent] = useState(null);
+    const [activeIdx, setActiveIdx] = useState(0);
+    
+    const [loading, setLoading] = useState(null);
+    const [error, setError] = useState(null); 
+    
+    useEffect(() => {
+        fetch(myPostURL)
+            .then((response) => {
+                if (!response.ok) {
+                    // throw new Error('Network response was not ok');
+                    setContent(<p style={{textAlign:"center"}}>내가 모집한 메이트가 없습니다.</p>)
+                    return null;
+                }
+                // console.log(response);
+                return response.json();
+            })
+            .then((data) => {
+                const fetchedPosts = data?.result || [];
+            setMyPost(fetchedPosts);
+            setLoading(false);
+
+            if (fetchedPosts.length > 0) {
+                 setContent(<MyPageMyPosts nn={userProfile.mem_nn} na={userProfile.mem_name} myPost={fetchedPosts}/>);
+            } else {
+                 setContent(<p style={{textAlign:"center"}}>내가 모집한 메이트가 없습니다.</p>);
+            }
+
+            })
+            .catch((error) => {
+                setError(error.message);
+                setLoading(false);
+            });
+    }, []);
+    
+
+    const handleClick = (idx) => {
+        setActiveIdx(idx);
+        switch (idx) {
+        case 0:
+            setContent(<MyPageMyPosts nn={userProfile.mem_nn} na={userProfile.mem_name} myPost={myPostList}/>);
+            break;
+        case 1:
+            setContent(<MyPageGet/>);
+            break;
+        case 2:
+            setContent(<MyPageRegist/>);
+            break;
+        default:
+            setContent(<p style={{textAlign: "center"}}>로딩 중 ...</p>);
+        }
+    };
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
 
     if (!isAuthenticated) {
         return (
@@ -17,27 +177,99 @@ function MyPage(){
         );
     }
 
+    let bgc;
+
+    if (userProfile.mem_score < 10){
+        bgc = "#0fae3f";
+    }else if(userProfile.mem_score < 20){
+        bgc = "#05ea4a";
+    }else if(userProfile.mem_score < 30){
+        bgc = "#40ff00";
+    }else if(userProfile.mem_score < 40){
+        bgc = "#fbff00";
+    }else if(userProfile.mem_score < 50){
+        bgc = "#ffd900";
+    }else if(userProfile.mem_score < 60){
+        bgc = "#ffa600";
+    }else if(userProfile.mem_score < 70){
+        bgc = "#ff8800";
+    }else if(userProfile.mem_score < 80){
+        bgc = "#ff3c00";
+    }else if(userProfile.mem_score < 90){
+        bgc = "#ff1100";
+    }else{
+        bgc = "#d40f0f";
+    }
+
     return(
         <div className="my-page-container">
             <Navigator />
-            <div className="box">
-                <h1>MY PAGE</h1>
-                <div className="user-info">
-                    <p>프로필 이미지: {userProfile?.mem_img_url && (
-                        <img 
-                            src={userProfile.mem_img_url} 
-                            alt="프로필 이미지" 
-                            className="profile-img"
-                        />
-                    )} </p>
-                    <p>닉네임: {userProfile?.mem_nn}님</p>
-                    <p>이메일: {userProfile?.mem_email}</p>
-                    <p>성별: {genderMap[userProfile?.mem_gender]}</p>
-                    <p>생년월일: {userProfile?.mem_bd}</p>
-                    <p>점수: {userProfile?.mem_score}</p>
-                    <p>메이트 수: {userProfile?.mem_num_of_mates}</p>
+
+            {/* 1. 헤더 */}
+            <div className='header'>
+                <p className="head">마이페이지</p>
+                <p className="body">회원 정보를 관리하세요.</p>
+
+           </div>
+
+           {/* 2. 양식 */}
+           <div className='mypageForm'>
+                <div className="mypage-left">
+                    <div className='mp-left-box'>
+                        <img src={userProfile?.mem_img_url? userProfile.mem_img_url: noProfile}/>
+                        <p className="mp-left-box-name">{userProfile?.mem_nn? userProfile.mem_nn : userProfile.mem_name}</p>
+                        <p className="mp-left-box-email">{userProfile?.mem_email}</p>
+                
+                        <div className="mp-left-mate-temp">
+                            <p>메이트 온도 <span style={{fontWeight:"500"}}>{userProfile.mem_score}°</span></p>
+                            <div className="tempBack"></div>
+                            <div className="temp"
+                                style={{backgroundColor: bgc, width: `${userProfile.mem_score}%`}}></div>
+                        </div>
+
+                        <table>
+                            <tbody>
+                                <tr><td>연령대</td><td style={{textAlign:"right"}}>{ageMap[userProfile.mem_age_range]}</td></tr>
+                                <tr><td>성별</td><td style={{textAlign:"right"}}>{genderMap[userProfile.mem_gender]}</td></tr>
+                                <tr><td>메이트 횟수</td><td style={{textAlign:"right"}}>{userProfile.mem_num_of_mates}회</td></tr>
+                            </tbody>
+                        </table>
+
+                        <button>프로필 수정</button>
+                    </div>
+
+                    <table className="left-menu">
+                        <tbody>
+                            <tr><td style={{color: "white", backgroundColor: "#5409DA", cursor:"default"}}>메뉴</td></tr>
+                            <tr><td className={activeIdx === 0 ? "active" : ""} onClick={() => handleClick(0)}>내가 모집한 메이트</td></tr>
+                            <tr><td className={activeIdx === 1 ? "active" : ""} onClick={() => handleClick(1)}>내가 받은 신청</td></tr>
+                            <tr><td className={activeIdx === 2 ? "active" : ""} onClick={() => handleClick(2)}>내가 신청한 메이트</td></tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
+
+                <div className="mypage-right">
+                    <table>
+                        <tbody>
+                            <tr>{["내가 모집한 메이트", "내가 받은 신청", "내가 신청한 메이트"].map(
+                                (text, idx) => (
+                                <td
+                                    key={idx}
+                                    className={activeIdx === idx ? "mr-boxno active" : "mr-boxno"}
+                                    onClick={() => handleClick(idx)}>
+                                    <p>{myPostList.length}</p>
+                                    {text}
+                                </td>
+                                )
+                            )}</tr>
+                            <tr><td  colSpan={3}>
+                                <div className="mr-box" >{content}
+                                    </div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+           </div>
+
         </div>
     )
 }

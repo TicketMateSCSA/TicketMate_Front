@@ -100,11 +100,27 @@
 }
 
 .navi > .user-nickname{
+    padding: 0;
+    display: flex;
     position: absolute;
     right: 95px;
 }
 
 .navi > .logout{
     position: absolute;
-    right: 30px;
+    right: 15px;
+}
+
+.nav-myImg{
+    margin-left: 7px;
+    margin-top: 6px;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+}
+
+.nav-myNN{
+    margin: 5px 0px;
+    margin-right: 7px;
+    margin-left: 4px;
 }
