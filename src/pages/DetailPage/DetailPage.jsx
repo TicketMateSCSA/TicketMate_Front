@@ -1,13 +1,12 @@
-import {useState, useEffect, useContext} from "react";
+import {useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import "./DetailPage.css";
 import Navigator from "../../components/Navigator/Navigator";
 import noImage from '../../assets/images/no-image.png';
 import noProfile from '../../assets/images/no-profile.png';
 
-const matePostId = 32;
 const postURL = `${import.meta.env.VITE_POSTS_URL}/post`;
 const sendURL = `${import.meta.env.VITE_POSTS_URL}/posts`;
 
@@ -31,6 +30,7 @@ function TransTime({startDate}){
 
 function Detail(){
     const navigate = useNavigate();
+    const { matePostId } = useParams();
 
     const { isAuthenticated, userProfile } = useAuth();
     const [reqData, setReqData] = useState(null);
@@ -44,8 +44,10 @@ function Detail(){
         try {
             const response = await fetch(`${postURL}/${matePostId}`);
             const data = await response.json();
+            
             setReqData(data);
             console.log(data);
+            
         } catch (err) {
             console.error(err);
         }
@@ -91,10 +93,15 @@ function Detail(){
     // 버튼 클릭
     const handleSubmit = async () => {
         try {
-        const result = await postData(sendURL + `/${obj.mate_post_id}/apply`); 
+            if (isAuthenticated){
+                const result = await postData(sendURL + `/${obj.mate_post_id}/apply`); 
+            
+                console.log('Post Success:', result);
+                navigate(`/regist?mate_post_id=${obj.mate_post_id}`);
+            }else{
+                alert('메이트를 신청하려면 로그인이 필요합니다.');
+            }
         
-        console.log('Post Success:', result);
-        navigate(`/regist?mate_post_id=${obj.mate_post_id}`);
         } catch (error) {
             console.error('Error posting data:', error);
             throw error; // 에러를 호출자에게 다시 던져서 처리하도록 합니다.

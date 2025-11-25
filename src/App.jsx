@@ -28,7 +28,7 @@ function App() {
             <Route path = "/login" element={<LoginPage/>}/>
             <Route path = "/signin" element={<SigninPage/>}/>
             <Route path = "/search" element={<SearchPage/>}/>
-            <Route path = "/detail" element={<DetailPage/>}/>
+            <Route path = "/detail/:matePostId" element={<DetailPage/>}/>
             <Route path = "/myPage" element={<ProtectedRoute><MyPage/></ProtectedRoute>}/>
           </Routes>
         </AppContainer>

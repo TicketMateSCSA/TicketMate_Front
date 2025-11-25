@@ -3,6 +3,7 @@
     width: 200px;
     top: 30px;
     left: 50px;
+    cursor: pointer;
 }
 .head > input{
     position: absolute;
@@ -33,6 +34,7 @@
 
 .head > button > img{
     width: 20px;
+    
 
 }
 

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 
 import "./SearchPage.css";
 import Navigator from "../../components/Navigator/Navigator";
@@ -15,6 +16,8 @@ const ageMapRev = {0: '10대', 1: '20대', 2: '30대', 3: '40대', 4: '50대+'}
 const genderMapRev = {0: '무관', 1: '남성', 2: '여성'}
 
 function SearchSection({item}){
+    const navigate = useNavigate();
+
     const tags = item.mate_hashtag ? item.mate_hashtag.split(" ") : [];
     const slicedTag = tags.slice(0, 5);
 
@@ -24,8 +27,13 @@ function SearchSection({item}){
     dateNtime[1] = dateNtime[1].split(":").slice(0, 2).join(":");
     const slicedDate = dateNtime.slice(0, 2).join(" ");
 
+    // 버튼 클릭
+    const handleClick = async (item) => {
+        navigate(`/detail/${item.mate_post_id}`);  
+    }
+
     return (
-        <div className="search-section-func">
+        <div className="search-section-func" onClick={() => handleClick(item)}>
             <img className="search-section-img" 
                 src={item.perf_img_url ? item.perf_img_url : noImage}
                 alt={item.perf_name}/>
