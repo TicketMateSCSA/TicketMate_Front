@@ -58,7 +58,15 @@ function Login(){
                 <input className="write" type="email" placeholder="abc@gmail.com" value={email} onChange={(e) => setEmail(e.target.value)}/>
 
                 <p className="name">비밀번호<span className="star">*</span></p>
-                <input className="write" type="password" placeholder="******" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                <input
+                    className="write"
+                    type="text"
+                    placeholder="******"
+                    value={password}
+                    autoComplete="off"
+                    style={{ WebkitTextSecurity: "disc" }}   // 비밀번호처럼 보이게
+                    onChange={(e) => setPassword(e.target.value)}
+                />
                 <br/>
                 <input type="checkbox" name="lg" value="mt"/>
 

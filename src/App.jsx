@@ -10,6 +10,7 @@ import LoginPage from "./pages/LoginPage/LoginPage" ;
 import SigninPage from "./pages/SigninPage/SigninPage";
 import SearchPage from "./pages/SearchPage/SearchPage";
 import DetailPage from "./pages/DetailPage/DetailPage";
+import RegistPage from './pages/RegistPage/RegistPage';
 import MyPage from "./pages/MyPage/MyPage";
 
 // Context Privider 
@@ -29,6 +30,7 @@ function App() {
             <Route path = "/signin" element={<SigninPage/>}/>
             <Route path = "/search" element={<SearchPage/>}/>
             <Route path = "/detail/:matePostId" element={<DetailPage/>}/>
+            <Route path = "/regist/:matePostId" element={<ProtectedRoute><RegistPage/></ProtectedRoute>}/>
             <Route path = "/myPage" element={<ProtectedRoute><MyPage/></ProtectedRoute>}/>
           </Routes>
         </AppContainer>

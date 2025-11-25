@@ -1,0 +1,322 @@
+/* 0. 최상위 컨테이너 */
+.regist-page-container {
+    width: 100%;
+     /* AppContainer의 높이를 꽉 채웁니다. */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    background-color: #ffffff; /* 배경색: 어두운 테마 */
+    color: #000000;
+    position: relative;
+    background: var(--White, #ffffff);
+    
+    /* 하단 네비게이터 영역을 피하기 위한 패딩 */
+    padding-bottom: 70px; 
+    padding-top: 20px;
+    overflow-y: auto; /* 내용이 길면 스크롤 가능 */
+}
+
+/* 1. 목록 */
+.regist-recommend{
+    position: relative;
+    top: 195px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-rows: repeat(2, 1fr); /* 2열 */
+    gap: 20px;
+
+    width: 95%;
+    height: 300px;
+    padding: 0px 0px 20px;
+    overflow: hidden;
+}
+
+.regist-section-func{
+    display: flex;
+    padding: 7px 7px;
+    box-shadow: 0px 0px 8px #d4bbff;
+    border: 2px solid;
+    height: 100%;
+    width: 100%;
+    border-color:#5409DA;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.regist-content-length{
+    position: absolute;
+    top: 554px;
+    left: 22px;
+    font-size: 13px;
+}
+
+.regist-section-title{
+    font-size: 13px;
+
+    font-weight: 500;
+    line-height: 1;
+    margin-right: 0px;
+    margin-left: 10px;
+    margin-top: 15px;
+    margin-bottom: 0px;
+
+    display: inline-block;     /* inline-block 필요 */
+    width: 100%;   
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+span.regist-section-category{
+    position: relative;
+    top: 4px;
+    left: 11px;
+    border: 2px solid;
+    font-size: 14px;
+    padding: 2px 5px;
+    margin-right: 10px;
+
+    border-color: #5409DA;
+    color:#5409DA;
+
+}
+
+span.regist-section-state{
+    position: relative;
+    top: 4px;
+    left: 10px;
+    border: 2px solid;
+    font-size: 14px;
+    padding: 2px 5px;
+
+}
+
+.regist-section-body1{
+    position: absolute;
+    margin: 0px;
+    left: 101px;
+    font-size: 12px;
+}
+
+.regist-section-body2{
+    position: absolute;
+    margin: 0px;
+    left: 57%;
+    font-size: 12px;
+}
+
+.regist-section-img{
+    height: 112px;
+    width: 84px;
+}
+
+.regist-section-accountInfo{
+    display: flex;
+    margin-bottom: 5px;
+}
+
+.regist-section-accountInfo img{
+    position: relative;
+    top: 5px;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+}
+
+.regist-section-accountInfo span{
+    margin: 0;
+    position: relative;
+    top: 5px;
+    left: 10px;
+    font-size: 8px;
+    
+}
+
+.regist-tag-container{
+    position: relative;
+    top: 30px;
+    width: 670px;
+    display: flex;
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    gap: 5px; /* 요소 사이 간격 */
+    flex-wrap: wrap; /* 필요하면 줄바꿈 */
+}
+.regist-section-tag{
+    background-color: #4E71FF;
+    color: white;
+    font-weight: 400;
+    font-size: 13px;
+    padding: 0px 3px;
+}
+
+/* 1-1. 선 */
+div.regist-line{
+    border-top: solid 2px #d4bbff;
+    width: 95%;
+
+    position: relative;
+    left: 20px;
+    top: 186px;
+    padding-top: 20px;
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+/* 2. 신청 완료 화면 */
+
+.regist-done{
+    position: relative;
+    top: 150px;
+    margin: 0 auto;
+    display: flex;
+    padding: 7px 7px;
+    box-shadow: 0px 0px 8px #d4bbff;
+    border: 2px solid;
+    height: 57%;
+    width: 55%;
+    border-color:#5409DA;
+    overflow: hidden;
+}
+
+.regist-done-header{
+    margin: 0 auto;
+    height: 40%;
+    width: 90%;
+}
+
+.regist-success-icon{
+    display: block;
+    margin: 30px auto 0;
+    height: 100px;
+    width: 100px;
+}
+
+.regist-success-text1{
+    display: block;
+    margin: 0px;
+    margin-top: 30px;    
+    font-size: 22px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.regist-success-text2{
+    display: block;
+    margin-top: 12px;
+    text-align: center;
+}
+
+.regist-done-body{
+    position: absolute;
+    top: 270px;
+    left: 22px;
+    height: 43%;
+    width: 90%;
+    border: 2px solid #5409DA;
+}
+
+.regist-done > button{
+    cursor: pointer;
+    position: absolute;
+    bottom: 25px;
+    height: 40px;
+    width: 43%;
+    border-radius: 20px;
+}
+.regist-toMyPage{
+    background-color: #5409DA;
+    border: none;
+    color: white;
+
+    position: absolute;
+    left: 22px;
+}
+
+.regist-toSearchPage{
+    border: solid 2px #5409DA;
+    background-color: white;
+    color:#5409DA;
+
+    position: absolute;
+    right: 22px;
+}
+
+.regist-done-body-title{
+    color:#5409DA;
+    font-weight: 500;
+    margin: 0;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.regist-done-body-img{
+    position: absolute;
+    top: 45px;
+    left: 20px;
+    height: 120px;
+    width: 90px;
+}
+
+.rdb-title1{
+    position: absolute;
+    margin: 0;
+    left: 125px;
+    top: 43px;
+    font-size: 11px;
+
+}
+
+.rdb-title2{
+    position: absolute;
+    margin: 0;
+
+    top: 63px;
+    left: 125px;
+
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.rdb-body1{
+    position: absolute;
+    left: 125px;
+    top: 85px;
+    line-height: 0.6;
+    font-size: 11px;
+}
+
+.rdb-body2{
+    position: absolute;
+    left: 250px;
+    top: 85px;
+    line-height: 0.6;
+    font-size: 11px;
+}
+
+.nn{
+    font-weight: 500;
+    line-height: 0.9;
+}
+
+.rdb-message1{
+    position: absolute;
+    top: 165px;
+    left: 20px;
+    font-size: 11px;
+    color:#5409DA;
+    font-weight: 500;
+}
+
+.rdb-message2{
+    position: absolute;
+    top: 203px;
+    left: 20px;
+    width: 90%;
+    height: 45px;
+    border: 2px solid #5409DA;
+    font-size: 10px;
+    padding: 5px;
+    overflow: scroll;
+}

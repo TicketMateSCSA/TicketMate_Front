@@ -46,7 +46,7 @@ function Detail(){
             const data = await response.json();
             
             setReqData(data);
-            console.log(data);
+            // console.log(data);
             
         } catch (err) {
             console.error(err);
@@ -67,9 +67,8 @@ function Detail(){
             const response = await fetch(url, {
                 method: 'POST', // POST 메소드 지정
                 headers: {
-                    // 서버가 JSON 데이터를 예상하고 있음을 알립니다.
+
                     'Content-Type': 'application/json', 
-                    // 필요한 경우 다른 헤더 (예: 인증 토큰) 추가
                 },
                 // JavaScript 객체를 JSON 문자열로 변환하여 요청 본문에 넣습니다.
                 body: JSON.stringify(dataToSend), 
@@ -78,14 +77,15 @@ function Detail(){
             if (!response.ok) {
                 // 응답 본문을 읽어 더 상세한 오류 메시지 제공 시도
                 const errorBody = await response.text();
-                throw new Error(`HTTP error! status: ${response.status}. Body: ${errorBody}`);
+                const msg = JSON.parse(errorBody).message
+                alert(`${msg}`);
             }
 
             const result = await response.json(); // 서버 응답 처리
             return result;
 
         } catch (error) {
-            console.error('Error posting data:', error);
+            // console.error('Error posting data:', error);
             throw error; // 에러를 호출자에게 다시 던져서 처리하도록 합니다.
         }
     };
@@ -97,13 +97,13 @@ function Detail(){
                 const result = await postData(sendURL + `/${obj.mate_post_id}/apply`); 
             
                 console.log('Post Success:', result);
-                navigate(`/regist?mate_post_id=${obj.mate_post_id}`);
+                navigate(`/regist/${obj.mate_post_id}`);
             }else{
                 alert('메이트를 신청하려면 로그인이 필요합니다.');
             }
         
         } catch (error) {
-            console.error('Error posting data:', error);
+            // console.error('Error posting data:', error);
             throw error; // 에러를 호출자에게 다시 던져서 처리하도록 합니다.
         }
         
