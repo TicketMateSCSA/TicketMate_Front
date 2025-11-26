@@ -1,100 +1,121 @@
 import "./AdminPage.css";
+import { useAuth } from "../../contexts/AuthContext";
+import { useEffect, useState } from "react";
+import { apiFetch } from "../../utils/api";
 
-function AdminPage(){
+function AdminPage() {
+    const {  isAuthenticated, userProfile, login, logout, adminProfile } = useAuth();
+    const [memberList, setMemberList] = useState([]);
+
+    // 회원 목록 가져오기
+    useEffect(() => {
+        const fetchMembers = async () => {
+            try {
+                const url = `${import.meta.env.VITE_POSTS_URL}/admin/members`;
+                const res = await apiFetch(url, { method: "GET" });
+
+                if (res.code === "COMMON200") {
+                    // 데이터가 많지 않으므로 임시로 5개만 표시
+                    setMemberList(res.result.slice(0, 5)); 
+                } else {
+                    console.error("회원 데이터 로드 실패:", res.message);
+                }
+            } catch (error) {
+                console.error("서버 오류:", error);
+            }
+        };
+
+        fetchMembers();
+    }, []);
+
     return (
         <div className='admin-page-container'>
-            <header class="admin-header">
-                <div class="profile-box">
-                    <div class="profile-img"></div>
-                    <div class="profile-info">
-                        <div class="profile-name">관리자</div>
-                        <div class="profile-email">admin@test.com</div>
-                        <div class="profile-role">인사팀 주임</div>
+            <header className="admin-header">
+                <div className="profile-box">
+                    <div className="profile-img"></div>
+                    <div className="profile-info">
+                        <div className="profile-name">{adminProfile?.mem_name}</div>
+                        <div className="profile-email">{adminProfile?.mem_email}</div>
+                        <div className="profile-role">
+                            {adminProfile?.team_name} {adminProfile?.admin_rank}
+                        </div>
                     </div>
                 </div>
 
-                <div class="status-box">
-                    <div class="status-item">전체 회원: <span>1234</span></div>
-                    <div class="status-item">신규 가입: <span>12</span></div>
-                    <div class="status-item">전체 게시글: <span>2341</span></div>
-                    <div class="status-item warning">미처리 신고: <span>31</span></div>
+                <div className="status-box">
+                    <div className="status-item">전체 회원: <span>1234</span></div>
+                    <div className="status-item">블랙리스트 회원: <span>24</span></div>
+                    <div className="status-item">전체 게시글: <span>2341</span></div>
+                    <div className="status-item warning">미처리 신고: <span>31</span></div>
+                    <div className="status-item">오늘 가입 회원: <span>12</span></div>
                 </div>
             </header>
 
             <main>
-                <section class="section-box">
-                    <div class="section-title">게시글 관리</div>
-
-                    <div class="tab-menu">
-                        <button class="tab active">전체</button>
-                        <button class="tab">신고글</button>
-                        <button class="tab">삭제글</button>
-
-                        <div class="search-box">
-                            <input type="text" placeholder="검색어 입력"/>
-                            <button class="btn-search">검색</button>
+                {/* 기존 게시글 테이블 유지 (이미지 데이터 반영) */}
+                <section className="section-box">
+                    <div className="section-title">게시글 관리</div>
+                    
+                    {/* 게시글 탭 및 검색 영역 추가 */}
+                    <div className="tab-menu post-menu">
+                        <div className="tab-group">
+                            <div className="tab active">전체</div>
+                            <div className="tab">신고된 글</div>
+                            <div className="tab">삭제된 글</div>
                         </div>
                     </div>
-
-                    <table class="data-table">
+                    
+                    <table className="data-table">
                         <thead>
-                            <tr>
+                            <tr className="table-header-row">
                                 <th>번호</th>
                                 <th>분류</th>
                                 <th>제목</th>
                                 <th>작성자</th>
+                                <th>작성자 이메일</th>
                                 <th>신고수</th>
                                 <th>작성일</th>
                                 <th>관리</th>
+                                <th>처리일</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>156</td>
-                                <td>뮤지컬</td>
-                                <td>레미제라블 같이 보실 분?</td>
-                                <td>미니멈123</td>
-                                <td>-</td>
-                                <td>2025.11.12</td>
-                                <td class="btn-group">
-                                    <button class="btn blue">상세</button>
-                                    <button class="btn red">삭제</button>
+                            <tr className="data-row">
+                                <td>(임시)156</td>
+                                <td>(임시)뮤지컬</td>
+                                <td>(임시)레미제라블 같이 보실 분?</td>
+                                <td>(임시)미니언123</td>
+                                <td>(임시)이메일</td>
+                                <td>(임시)13</td>
+                                <td>(임시)작성일</td>
+                                <td>(임시)처리일</td>
+                                <td className="btn-group">
+                                    <button className="btn blue">상세</button>
+                                    <button className="btn red">삭제</button>
                                 </td>
                             </tr>
-
-                            <tr>
-                                <td>157</td>
-                                <td>콘서트</td>
-                                <td>김동률 콘서트 가실 분 구해요!!</td>
-                                <td>김동률</td>
-                                <td>6</td>
-                                <td>2025.11.13</td>
-                                <td class="btn-group">
-                                    <button class="btn blue">상세</button>
-                                    <button class="btn red">삭제</button>
-                                </td>
-                            </tr>
-
                         </tbody>
                     </table>
+                    <div className="pagination">
+                        {/* 페이지네이션 버튼 영역 추가 */}
+                    </div>
                 </section>
 
-                <section class="section-box">
-                    <div class="section-title">회원 관리</div>
+                {/* 회원 관리 테이블 */}
+                {/* ------- 회원 관리 섹션 수정 ------- */}
+                <section className="section-box">
+                    <div className="section-title">회원 관리</div>
 
-                    <div class="tab-menu">
-                        <button class="tab active">전체</button>
-                        <button class="tab">블랙리스트</button>
-
-                        <div class="search-box">
-                            <input type="text" placeholder="닉네임 또는 이메일 입력"/>
-                            <button class="btn-search">검색</button>
+                    <div className="tab-menu member-menu">
+                        <div className="tab-group">
+                            <div className="tab active">전체</div>
+                            <div className="tab">블랙리스트</div>
                         </div>
                     </div>
 
-                    <table class="data-table">
+                    <table className="data-table">
                         <thead>
-                            <tr>
+                            <tr className="table-header-row">
                                 <th>번호</th>
                                 <th>닉네임</th>
                                 <th>이메일</th>
@@ -103,42 +124,53 @@ function AdminPage(){
                                 <th>사유</th>
                                 <th>등록일</th>
                                 <th>관리</th>
+                                <th>처리일</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>201</td>
-                                <td>윤용한</td>
-                                <td>dbswjd@abc.com</td>
-                                <td>-</td>
-                                <td>X</td>
-                                <td>-</td>
-                                <td>2025.11.10</td>
-                                <td class="btn-group">
-                                    <button class="btn blue">상세</button>
-                                    <button class="btn red">추가</button>
-                                </td>
-                            </tr>
 
-                            <tr>
-                                <td>202</td>
-                                <td>최득섭</td>
-                                <td>chithdcmf@abc.com</td>
-                                <td>9</td>
-                                <td>O</td>
-                                <td>욕설 및 비방</td>
-                                <td>2025.11.13</td>
-                                <td class="btn-group">
-                                    <button class="btn blue">상세</button>
-                                    <button class="btn red">해제</button>
-                                </td>
-                            </tr>
+                        <tbody>
+                            {memberList.length > 0 ? memberList.map((m, idx) => (
+                                <tr className="data-row" key={m.m_rep_id}>
+                                    <td>{m.m_rep_id}</td>
+                                    <td>{m.mem_nn}</td>
+                                    <td>{m.mem_email}</td>
+                                    <td>-</td>
+                                    <td>{m.mem_bl === 1 ? "O" : "X"}</td>
+                                    <td>{m.m_rep_cont || "-"}</td>
+                                    <td>{m.mem_created_at?.slice(0, 10) || "-"}</td>
+                                    <td className="btn-group">
+                                        <button className="btn blue">상세</button>
+                                        {m.mem_bl === 1 ? (
+                                            <button className="btn green">해제</button>
+                                        ) : (
+                                            <button className="btn red">추가</button>
+                                        )}
+                                    </td>
+                                    <td>
+                                        신고일
+                                    </td>
+                                </tr>
+                            )) : (
+                                <tr>
+                                    <td colSpan="8" style={{ textAlign: "center" }}>
+                                        회원 정보가 없습니다.
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
+
+                    <div className="pagination"></div>
+
+                    <div className="blacklist-add-box">
+                        <input type="text" placeholder="회원 닉네임 또는 이메일" />
+                        <input type="text" placeholder="사유" />
+                        <button className="btn btn-search red-bg">블랙리스트 추가</button>
+                    </div>
                 </section>
             </main>
-    </div>
-    )
+        </div>
+    );
 }
 
 export default AdminPage;
