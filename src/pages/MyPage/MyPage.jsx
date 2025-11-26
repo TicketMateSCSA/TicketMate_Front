@@ -97,6 +97,13 @@ function MyPageSectionGet({item}){
         try {
             const response = await fetch(`${import.meta.env.VITE_POSTS_URL}/requests/${item.req_id}/status`, {
                 method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    req_id: item.req_id,
+                    req_stat: item.req_stat
+                }),
             });
 
             if (!response.ok) {
@@ -308,10 +315,13 @@ function MyPage(){
             setMyPost(fetchedPosts);
             setLoading(false);
 
-            if (fetchedPosts.length > 0) {
-                 setContent(<MyPageMyPosts  myPost={fetchedPosts}/>);
-            } else {
-                 setContent(<p style={{textAlign:"center"}}>내가 모집한 메이트가 없습니다.</p>);
+            // 항상 첫 렌더에서 0번 탭 내용만 보여야 함
+            if (activeIdx === 0) {
+                if (fetchedPosts.length > 0) {
+                    setContent(<MyPageMyPosts myPost={fetchedPosts} />);
+                } else {
+                    setContent(<p style={{ textAlign: "center" }}>내가 모집한 메이트가 없습니다.</p>);
+                }
             }
 
             })

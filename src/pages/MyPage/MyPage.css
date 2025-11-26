@@ -386,8 +386,8 @@ span.myPageMyPost-section-state{
 .title-wrapper {
     display: flex;
     justify-content: space-between; /* 왼쪽 타이틀, 오른쪽 버튼 */
-    align-items: flex-start;        /* 타이틀 여러 줄이면 위쪽 정렬 */
-    width: 100%;                    /* 필요에 따라 조정 */
+    align-items: flex-start;        
+    width: 100%;                    
 }
 
 .sfOK, .sfNO {
@@ -398,6 +398,7 @@ span.myPageMyPost-section-state{
     font-size: 13px;
     padding: 2px 5px;
     height: fit-content; /* 버튼 높이 자동 */
+    white-space: nowrap;
 }
 
 .sfOK {
@@ -407,7 +408,7 @@ span.myPageMyPost-section-state{
 }
 
 .sfNO {
-    margin-left: 10px;
+    margin-left: 5px;
     border-color: red;
     background-color: red;
     cursor: pointer;
