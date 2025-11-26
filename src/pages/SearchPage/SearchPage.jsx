@@ -179,11 +179,12 @@ function Search(){
             const url = `${filterUrl}?${queryString}`
             const response = await fetch(url);
             
-            // if (!response.ok) {
-            //     throw new Error(`HTTP error! status: ${response.status}`);
-            // }
+            if (!response.ok) {
+                // throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
             const data = await response.json();
+            // console.log(data);
 
             const list = data?.result?.postPreviewDTOList.slice(0, 4) || []; // 4개
             // console.log(data);

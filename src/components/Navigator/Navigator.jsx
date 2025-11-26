@@ -40,11 +40,7 @@ function Navigator(){
     const location = useLocation();
     const searchRef = useRef(null);
     const { isAuthenticated, userProfile, logout } = useAuth();
-
     
-
-    
-
     const goToHomePage = () => {
         navigate("/");
     }
@@ -100,7 +96,7 @@ function Navigator(){
         })
         .then((data) => {
             setData(data);
-            console.log(data);
+            // console.log(data);
 
             if (data.code === "MATEPOST401:_NO_POST_LIST"){
                 setLoading(false); 
@@ -113,7 +109,7 @@ function Navigator(){
             }
         })
         .catch((error) => {
-            console.error("Fetch error:", error);
+            // console.error("Fetch error:", error);
             setError(error.message);
             setLoading(false); // 네트워크 에러 발생 시에도 로딩 종료
             setData(null); // 에러 발생 시 데이터 초기화
