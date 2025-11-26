@@ -1,10 +1,11 @@
+import React from "react"; // 함수형 컴포넌트용 React 임포트 추가 (필요시)
 import "./AdminPage.css";
 import { useAuth } from "../../contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { apiFetch } from "../../utils/api";
 
 function AdminPage() {
-    const {  isAuthenticated, userProfile, login, logout, adminProfile } = useAuth();
+    const { isAuthenticated, userProfile, login, logout, adminProfile } = useAuth();
     const [memberList, setMemberList] = useState([]);
 
     // 회원 목록 가져오기
@@ -15,8 +16,8 @@ function AdminPage() {
                 const res = await apiFetch(url, { method: "GET" });
 
                 if (res.code === "COMMON200") {
-                    // 데이터가 많지 않으므로 임시로 5개만 표시
-                    setMemberList(res.result.slice(0, 5)); 
+                    setMemberList(res.result.slice(0, 5));
+                    console.log("회원 데이터 로드 성공:", res.result);
                 } else {
                     console.error("회원 데이터 로드 실패:", res.message);
                 }
@@ -28,8 +29,51 @@ function AdminPage() {
         fetchMembers();
     }, []);
 
+    // 블랙리스트 상태 토글 함수 (추가 / 해제)
+    const toggleBlacklistStatus = async (m_rep_id, currentStatus) => {
+        // 현재 상태에 따라 메시지 변경
+        const message =
+            currentStatus === 1
+                ? "블랙리스트를 해제하시겠습니까?"
+                : "블랙리스트로 추가하시겠습니까?";
+
+        const confirmed = window.confirm(message);
+        if (!confirmed) return; // 취소하면 종료
+        
+        try {
+            const url = `${import.meta.env.VITE_POSTS_URL}/admin/report/${m_rep_id}/status`;
+            // 현재 상태를 토글: 0 -> 1, 1 -> 0
+            const newStatus = currentStatus === 1 ? 0 : 1;
+
+            const res = await apiFetch(url, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ mem_bl: newStatus }), // 서버 API 스펙에 맞춰 요청 바디 조정 필요
+            });
+
+            if (res.code === "COMMON200") {
+                // 상태 변경 성공 시 UI 반영
+                setMemberList((prevList) =>
+                    prevList.map((member) =>
+                        member.m_rep_id === m_rep_id
+                            ? { ...member, mem_bl: newStatus }
+                            : member
+                    )
+                );
+            } else {
+                console.error("상태 변경 실패:", res.message);
+                alert("상태 변경에 실패했습니다.");
+            }
+        } catch (error) {
+            console.error("서버 오류:", error);
+            alert("서버 오류가 발생했습니다.");
+        }
+    };
+
     return (
-        <div className='admin-page-container'>
+        <div className="admin-page-container">
             <header className="admin-header">
                 <div className="profile-box">
                     <div className="profile-img"></div>
@@ -102,7 +146,6 @@ function AdminPage() {
                 </section>
 
                 {/* 회원 관리 테이블 */}
-                {/* ------- 회원 관리 섹션 수정 ------- */}
                 <section className="section-box">
                     <div className="section-title">회원 관리</div>
 
@@ -122,7 +165,7 @@ function AdminPage() {
                                 <th>신고수</th>
                                 <th>블랙 여부</th>
                                 <th>사유</th>
-                                <th>등록일</th>
+                                <th>회원가입일</th>
                                 <th>관리</th>
                                 <th>처리일</th>
                             </tr>
@@ -134,25 +177,33 @@ function AdminPage() {
                                     <td>{m.m_rep_id}</td>
                                     <td>{m.mem_nn}</td>
                                     <td>{m.mem_email}</td>
-                                    <td>-</td>
+                                    <td>{m.report_cnt || "-"}</td>
                                     <td>{m.mem_bl === 1 ? "O" : "X"}</td>
                                     <td>{m.m_rep_cont || "-"}</td>
                                     <td>{m.mem_created_at?.slice(0, 10) || "-"}</td>
                                     <td className="btn-group">
                                         <button className="btn blue">상세</button>
                                         {m.mem_bl === 1 ? (
-                                            <button className="btn green">해제</button>
+                                            <button
+                                                className="btn green"
+                                                onClick={() => toggleBlacklistStatus(m.m_rep_id, 1)}
+                                            >
+                                                해제
+                                            </button>
                                         ) : (
-                                            <button className="btn red">추가</button>
+                                            <button
+                                                className="btn red"
+                                                onClick={() => toggleBlacklistStatus(m.m_rep_id, 0)}
+                                            >
+                                                추가
+                                            </button>
                                         )}
                                     </td>
-                                    <td>
-                                        신고일
-                                    </td>
+                                    <td>신고일</td>
                                 </tr>
                             )) : (
                                 <tr>
-                                    <td colSpan="8" style={{ textAlign: "center" }}>
+                                    <td colSpan="9" style={{ textAlign: "center" }}>
                                         회원 정보가 없습니다.
                                     </td>
                                 </tr>
