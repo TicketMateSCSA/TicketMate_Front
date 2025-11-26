@@ -1,0 +1,71 @@
+.Overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+}
+
+.cart-container {
+  background-color: #ffffff;
+  width: 350px;
+  height: 250px;
+  border: 1px solid #cccccc;
+  border-radius: 0%;
+  padding: 20px;
+  position: relative;
+  font-weight: 600;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  position: fixed;
+  z-index: 100;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.product-name {
+  display: inline-block;
+  font-size: 14px;
+  position: absolute;
+}
+
+.product-reason {
+    position: relative;
+    top: 30px;
+    width: 100%;
+    height: 60%;
+    resize: none;
+
+}
+
+.cancle {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  width: 145px;
+  padding: 7px 0;
+  background-color: white;
+  color: rgb(255, 44, 44);
+  font-weight: 600;
+  border: 1px solid ;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.add-cart {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  width: 145px;
+  padding: 7px 0;
+  background-color: rgb(255, 44, 44);
+  color: white;
+  font-weight: 600;
+  border: 1px solid rgb(255, 44, 44);
+  border-radius: 25px;
+  cursor: pointer;
+}
