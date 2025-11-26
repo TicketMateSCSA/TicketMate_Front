@@ -1,0 +1,361 @@
+/* 전체 레이아웃 */
+.body{
+    background: #E8F0F0; 
+}
+
+.admin-page-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    background-color: #E8F0F0; /* 연한 청록색 계열 배경 */
+    color: #000000;
+    position: absolute;
+    background: #E8F0F0; 
+    
+    padding-bottom: 70px; 
+    padding-top: 10px; 
+    overflow-y: auto; 
+    font-family: Tahoma, 'Malgun Gothic', sans-serif; 
+}
+
+/* 상단 헤더 */
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    background: #E8F0F0; 
+    padding: 10px 25px; 
+    border: none; 
+}
+
+/* 관리자 정보 박스 */
+.profile-box {
+    display: flex;
+    align-items: center;
+    border: 2px outset #A0B0B0; 
+    background: #D0E0E0; 
+    padding: 10px;
+    margin-right: 20px;
+    border-right: none;
+    border-left: none;
+}
+
+.profile-img {
+    width: 50px; 
+    height: 50px;
+    background: #A0B0B0; 
+    border: 2px outset #A0B0B0; 
+    margin-right: 15px;
+}
+
+.profile-name {
+    font-size: 16px; 
+    font-weight: bold;
+    color: #000080; 
+}
+
+.profile-email {
+    font-size: 13px;
+    color: #2F4F4F; 
+}
+
+.profile-role {
+    font-size: 13px;
+    color: #2F4F4F; 
+}
+
+/* 상태 박스 */
+.status-box {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 5px 15px; 
+    font-size: 13px;
+    padding: 10px;
+    border: 2px inset #A0B0B0; 
+    background: #FFFFFF; 
+    flex-grow: 1;
+}
+
+.status-item {
+    padding: 0;
+}
+
+.status-item span {
+    font-weight: bold;
+    color: #000080; 
+    display: inline-block;
+    padding: 0 3px;
+    border: 1px solid #2F4F4F; 
+    background: #D0E0E0; 
+    margin-left: 5px;
+}
+
+.status-item.warning span {
+    color: #B60000; 
+    background: #FFD0D0; 
+}
+
+/* 섹션 공통 */
+.section-box {
+    margin: 10px 25px; 
+    border: 2px outset #A0B0B0; 
+    background: #E8F0F0; 
+    padding: 10px;
+}
+
+/* 섹션 제목 */
+.section-title {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 0 5px; 
+    margin-bottom: 5px;
+    border: none;
+    display: inline-block;
+    background: #E8F0F0; 
+    transform: translateY(-5px); 
+    margin-left: 5px;
+    color: #000080; 
+}
+
+/* 탭 메뉴 */
+.tab-menu {
+    display: flex;
+    align-items: flex-end; 
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+    border-bottom: 2px solid #A0B0B0; 
+}
+
+.tab-group {
+    display: flex;
+    gap: 0;
+}
+
+.tab {
+    padding: 4px 12px; 
+    border: 1px solid #2F4F4F; 
+    border-bottom: none; 
+    background: #B0C4DE; 
+    margin-right: 2px;
+    cursor: pointer;
+    font-size: 13px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    box-shadow: 1px 1px 0 #FFFFFF inset, -1px -1px 0 #2F4F4F inset; 
+    margin-bottom: -1px; 
+    color: #2F4F4F; 
+}
+
+.tab.active {
+    background: #E8F0F0; 
+    font-weight: bold;
+    border-color: #2F4F4F;
+    border-bottom: 1px solid #E8F0F0; 
+    z-index: 1; 
+    position: relative;
+    box-shadow: 1px 1px 0 #FFFFFF inset, -1px -1px 0 #2F4F4F inset;
+    color: #000080; 
+}
+
+/* 검색 박스 */
+.search-box {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.search-box input {
+    padding: 3px;
+    border: 2px inset #A0B0B0; 
+    width: 150px;
+    background: #FFFFFF;
+    color: #2F4F4F;
+}
+
+/* 테이블 */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    border: 2px inset #A0B0B0; 
+    margin-top: 10px;
+    background: #FFFFFF;
+}
+
+.data-table th {
+    background: #B0C4DE; 
+    border: 1px solid #2F4F4F; 
+    padding: 5px;
+    color: #000080; 
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 1px 1px 0 #FFFFFF inset, -1px -1px 0 #2F4F4F inset; 
+}
+
+.data-table td {
+    border: 1px solid #D0E0E0; 
+    padding: 5px;
+    text-align: center;
+    background-color: #FFFFFF;
+    color: #2F4F4F;
+}
+
+.data-table tbody tr:hover {
+    background-color: #F0F5F5; 
+}
+
+.data-table .data-row.active-row td {
+    background-color: #D0E0E0; 
+}
+
+/* *** 버튼 깨짐 해결을 위한 '관리' 열 너비 고정 *** */
+.data-table td:last-child {
+    width: 100px; /* 2개 버튼이 깨지지 않도록 너비 고정 */
+    min-width: 100px;
+    text-align: center; 
+}
+/* ****************************************** */
+
+
+/* 뱃지 스타일 */
+.count-badge {
+    display: inline-block;
+    padding: 1px 5px;
+    font-size: 11px;
+    font-weight: bold;
+    color: white;
+    background-color: #2F4F4F; 
+    border: 1px solid #000080; 
+}
+
+.count-badge.red-bg {
+    background-color: #B60000; 
+    border-color: #800000;
+}
+
+/* 버튼 */
+.btn-group {
+    display: flex;            /* inline-block → flex */
+    position: inherit;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;                 /* 버튼 간 간격 */
+    flex-wrap: nowrap;        /* 줄바꿈 방지 */
+    width: 100%;              /* 컨테이너가 충분한 공간 사용 */
+}
+
+.btn {
+    padding: 3px 6px; /* *** 패딩 조정 *** */
+    border: 2px outset #A0B0B0; 
+    cursor: pointer;
+    font-size: 11px; 
+    font-weight: bold;
+    background: #D0E0E0; 
+    color: #000080; 
+    transition: none; 
+    white-space: nowrap; /* *** 텍스트 줄 바꿈 방지 (깨짐 해결) *** */
+    height: 24px;
+}
+
+.btn:active {
+    border-style: inset; 
+    box-shadow: none;
+    transform: none;
+}
+
+/* 파란색 대체 (상세 버튼) */
+.btn.blue {
+    background: #D0E0E0; 
+    color: #000080; 
+}
+
+/* 빨간색 (삭제/추가 버튼) */
+.btn.red {
+    background: #D0E0E0; 
+    color: #B60000; 
+}
+
+/* 녹색 (해제 버튼) */
+.btn.green {
+    background: #D0E0E0;
+    color: #008000; 
+}
+
+/* 검색 버튼 */
+.btn.grey-btn {
+    background: #D0E0E0;
+    color: #000080;
+}
+
+.btn.red-bg {
+    background: #B0C4DE; 
+    color: #B60000;
+    border-color: #2F4F4F;
+}
+
+.btn-search {
+    padding: 4px 10px;
+}
+
+/* 페이지네이션 (간단한 스타일) */
+.pagination {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #2F4F4F;
+}
+
+/* 블랙리스트 추가 영역 */
+.blacklist-add-box {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    padding: 8px;
+    border: 2px inset #A0B0B0; 
+    background-color: #D0E0E0; 
+}
+
+.blacklist-add-box input {
+    padding: 3px;
+    border: 2px inset #A0B0B0; 
+    flex-grow: 1;
+    background: #FFFFFF;
+    color: #2F4F4F;
+}
+
+/* 홈으로 돌아가기 버튼 스타일 */
+.btn-home {
+    background-color: #4CAF50;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-home:hover {
+    background-color: #45a049;
+}
+
+/* 버튼 안 아이콘 크기 조정 */
+.btn-home svg, .btn-home span {
+    font-size: 14px;
+}
+
+.loading {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 10px;
+    font-weight: bold;
+    color: #ff0000;
+}
+
