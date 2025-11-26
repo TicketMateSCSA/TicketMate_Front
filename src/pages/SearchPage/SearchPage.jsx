@@ -9,6 +9,7 @@ import noImage from '../../assets/images/no-image.png';
 import noProfile from '../../assets/images/no-profile.png';
 
 const filterUrl = `${import.meta.env.VITE_POSTS_URL}/posts/filter`;
+const searchUrl = `${import.meta.env.VITE_POSTS_URL}/posts/search`;
 const catUrl = `${import.meta.env.VITE_POSTS_URL}/categories`;
 
 const stateMapRev = {0: "전체", 1: "모집중", 2: "모집완료"};
@@ -215,22 +216,17 @@ function Search(){
 
     const handleChangeCategories = (event) => {
         const { value, checked } = event.target;
-
-        if (value === "전체") {
-        if (checked) {
-            // 전체 체크하면 나머지 해제
+        if (value === "전체") {             
             setSelectedCategories(["전체"]);
         } else {
-            setSelectedCategories([]);
+            if (checked) {
+                setSelectedCategories([...selectedCategories.filter(c => c !== "전체"), value]);
+            } else {
+                const newSelected = selectedCategories.filter((c) => c !== value);
+                setSelectedCategories(newSelected.length === 0 ? ["전체"] : newSelected);
+            }
         }
-        } else {
-        if (checked) {
-            // 나머지 선택하면 전체 해제
-            setSelectedCategories([...selectedCategories.filter(c => c !== "전체"), value]);
-        } else {
-            setSelectedCategories(selectedCategories.filter((c) => c !== value));
-        }
-        }
+        
     };
 
     const handleChangeState = (event) => {
@@ -241,19 +237,17 @@ function Search(){
         const { value, checked } = event.target;
 
         if (value === "전체") {
-        if (checked) {
             setSelectedAge(["전체"]);
         } else {
-            setSelectedAge([]);
-        }
-        } else {
-        if (checked) {
-            setSelectedAge([...selectedAge.filter(c => c !== "전체"), value]);
-        } else {
-            setSelectedAge(selectedAge.filter((c) => c !== value));
-        }
+            if (checked) {
+                setSelectedAge([...selectedAge.filter(c => c !== "전체"), value]);
+            } else {
+                const newSelected = selectedAge.filter((c) => c !== value);
+                setSelectedAge(newSelected.length === 0 ? ["전체"] : newSelected);
+            }
         }
     };
+
 
      const handleChangeGender = (event) => {
         setSelectedGender(event.target.value);
