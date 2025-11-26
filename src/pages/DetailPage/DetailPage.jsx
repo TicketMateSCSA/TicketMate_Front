@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import "./DetailPage.css";
 import Navigator from "../../components/Navigator/Navigator";
+import { Modal } from "../../components/Modal/Modal";
+import { ModalPost } from "../../components/ModalPost/ModalPost";
 import noImage from '../../assets/images/no-image.png';
 import noProfile from '../../assets/images/no-profile.png';
 
@@ -35,6 +37,9 @@ function Detail(){
     const { isAuthenticated, userProfile } = useAuth();
     const [reqData, setReqData] = useState(null);
     const [myContent, setMyContent] = useState(null);
+    
+    const [openModal, setOpenModal] = useState(false);
+    const [openModalPost, setOpenModalPost] = useState(false);
 
     const handleMyContent = (e) => {
         setMyContent(e.target.value);
@@ -122,7 +127,13 @@ function Detail(){
             <div className='header'>
                 <p className="head">메이트 찾기</p>
                 <p className="body">함께 공연을 즐길 메이트를 찾아보세요!</p>
+                
             </div>
+
+            <button className="reportPost" onClick={() => {
+                    setOpenModalPost(true);
+                    }}>게시글 신고</button>
+                {openModalPost ? <ModalPost postId={obj.mate_post_id} openModal={openModalPost} setOpenModal={setOpenModalPost} /> : null} 
 
             {/* 2. 양식 */}
             { obj && (
@@ -138,7 +149,12 @@ function Detail(){
                     </div>
 
                     <div className='left-host'>
+                        <button className="reportHost" onClick={() => {
+                            setOpenModal(true);
+                            }}>회원 신고</button>
+                        {openModal ? <Modal userId={obj.host_id} openModal={openModal} setOpenModal={setOpenModal} /> : null} 
                         <p className="bold">호스트 정보</p>
+                        
                         <img src={obj.host_img_url ? obj.host_img_url : noProfile}/>
                         <p className="lh-nn">{obj.host_nn ? obj.host_nn : obj.host_name}</p>
                         <p className="lh-gender"> {ageMap[obj.host_age_range]} {genderMap[obj.host_gender]}</p>
