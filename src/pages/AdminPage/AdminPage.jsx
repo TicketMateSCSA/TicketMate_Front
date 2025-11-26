@@ -136,11 +136,11 @@ function AdminPage() {
                                 <td>(임시)이메일</td>
                                 <td>(임시)13</td>
                                 <td>(임시)작성일</td>
-                                <td>(임시)처리일</td>
                                 <td className="btn-group">
                                     <button className="btn blue">상세</button>
                                     <button className="btn red">삭제</button>
                                 </td>
+                                <td>(임시)처리일</td>
                             </tr>
                         </tbody>
                     </table>
