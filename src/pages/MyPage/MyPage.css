@@ -27,3 +27,407 @@ div.box{
     box-shadow: 0px 0px 8px #d4bbff;
     border-color: #5409DA;
 }
+
+.mypage-left{
+    width: 40%;
+    height: 100%;
+    float: left;
+}
+
+.mypage-right{
+    width: 60%;
+    height: 100%;
+    float: right;
+
+}
+
+.mypageForm{
+    position: relative;
+    top: 205px;
+    height: 87.8%;
+}
+
+.mp-left-box{
+    position: absolute;
+    left: 20px;
+    border: solid 2px;
+    width: 305px;
+    height: 400px;
+    border-color: #5409DA;
+}
+
+.mp-left-box img{
+    position: relative;
+    top: 30px;
+    left: 112.5px;
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+}
+
+.mp-left-box-name{
+    position: relative;
+    top: 20px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.mp-left-box-email{
+    position: relative;
+    top: 4px;
+    text-align: center;
+    color: gray;
+    font-size: 12px;
+}
+
+.mp-left-mate-temp{
+    position: relative;
+    top: 10px;
+    margin: 0 auto;
+    height: 72px;
+    width: 90%;
+    border: 2px solid #5409DA;
+}
+
+.mp-left-mate-temp > p{
+    position: absolute;
+    margin: 0;
+    top: 7px;
+    left: 15px;
+    font-size: 13px;
+}
+
+.mp-left-mate-temp > .temp{
+    position: absolute;
+    top: 33px;
+    left: 12px;
+
+    height: 20px;
+    border-radius: 25px;
+}
+
+.mp-left-mate-temp > .tempBack{
+    position: absolute;
+    top: 33px;
+    left: 12px;
+    
+    width: 90%;
+    height: 20px;
+    background-color: lightgray;
+    border-radius: 25px;
+}
+
+.mp-left-box > table{
+    position: relative;
+    top: 20px;
+    left: 14px;
+    font-size: 13px;
+    width: 90%;
+}
+
+.mp-left-box > button{
+    background-color: #5409DA;
+    border-radius: 25px;
+    border: none;
+    width: 90%;
+    height: 40px;
+    font-size: 18px;
+    padding-bottom: 4px;
+    color: white;
+
+    position: relative;
+    top: 30px;
+    left: 15px;
+
+    cursor: pointer;
+}
+
+.left-menu{
+
+    border: 2px solid #5409DA;
+    border-collapse: collapse;
+    position: relative;
+    top: 420px;
+    left: 20px;
+    width: 305px;
+    border-color:#5409DA;
+}
+
+.left-menu > tbody > tr > td {
+    font-size: 13px;
+    padding: 7px 13px;
+    border: 2px solid #5409DA; /* 테두리 굵기 2px */
+    color: #5409DA;
+    cursor: pointer;
+  }
+
+.left-menu > tbody > tr > td.active{
+    background-color: #BECBFF;
+
+}
+
+.mypage-right > table{
+    border: 2px solid #5409DA;
+    border-collapse: collapse;
+    position: relative;
+    left: 20px;
+    width: 447px;
+    border-color:#5409DA;   
+}
+
+.mr-boxno {
+
+    text-align: center;
+    font-size: 13px;
+    padding: 7px 13px;
+    border: 2px solid #5409DA; /* 테두리 굵기 2px */
+    width: 33.33%; /* 열 너비 고정 */
+    padding-bottom: 10px;
+    cursor: pointer;
+  }
+
+.mypage-right > table > tbody > tr > td > p{
+    margin: 2px;
+    font-size: 17px;
+}
+
+.mr-boxno.active{
+    background-color: #5409DA;
+    color: white;
+    
+}
+
+.mr-box{
+    height: 888px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+/* 목록 */
+.myPageMyPost-section-func{
+    display: flex;
+    padding: 7px 7px;
+    box-shadow: 0px 0px 8px #d4bbff;
+    border: 2px solid;
+    height: 132px;
+    width: 410px;
+    border-color:#5409DA;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.myPageMyPost-content-length{
+    position: absolute;
+    top: 554px;
+    left: 22px;
+    font-size: 13px;
+}
+
+.myPageMyPost-section-title{
+    font-size: 13px;
+
+    font-weight: 500;
+    line-height: 1;
+    margin-right: 0px;
+    margin-left: 12px;
+    margin-top: 20px;
+    margin-bottom: 4px;
+
+    display: inline-block;     /* inline-block 필요 */
+    width: 100%;   
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+span.myPageMyPost-section-category{
+    position: relative;
+    top:2px;
+
+    border: 2px solid;
+    left: 10px;
+    font-size: 14px;
+    padding: 2px 5px;
+    margin-right: 10px;
+
+    border-color: #5409DA;
+    color:#5409DA;
+
+}
+
+span.myPageMyPost-section-state{
+    left: 5px;
+    top:2px;
+
+    position: relative;
+    border: 2px solid;
+    font-size: 14px;
+    padding: 2px 5px;
+
+}
+
+
+span.myPageMyPost-section-category{
+    /* position: relative; top: 4px; left: 11px; <- 제거 또는 수정 */
+    border: 2px solid;
+    font-size: 14px;
+    padding: 2px 5px;
+    margin-right: 10px;
+
+    border-color: #5409DA;
+    color:#5409DA;
+
+}
+
+span.myPageMyPost-section-state{
+    border: 2px solid;
+    font-size: 14px;
+    padding: 2px 5px;
+    margin-right: 10px; /* 카테고리와 삭제 버튼 사이에 간격 추가 */
+}
+
+.toDetailBtn{
+    text-decoration: underline;
+    position: relative;
+
+    font-size: 13px;
+    padding: 2px 5px;
+
+    color: gray;
+    cursor: pointer;
+}
+.post-header {
+    display: flex; /* 자식 요소들을 한 줄에 배치하고 Flexbox 규칙을 적용 */
+    align-items: center; /* (선택 사항) 요소들을 세로 중앙에 정렬 */
+    /* 필요에 따라 width 값 설정 */
+}
+.toDeleteBtn{
+    /* 기존: position: relative; top: 5px; left: 100px; */
+    /* 위 세 줄은 제거하거나 주석 처리하세요. */
+    position: relative;
+    top: 2px;
+    margin-left: auto; 
+    
+    border: 2px solid red;
+    font-size: 14px;
+    padding: 2px 5px;
+
+    background-color: red;
+    color: white;
+    cursor: pointer;
+}
+
+.db-state{
+    position: relative;
+    top: 2px;
+    margin-left: auto; 
+
+    border: 2px solid;
+    font-size: 14px;
+    padding: 2px 5px;
+}
+
+.myPageMyPost-section-body1{
+    display: flex;
+    position: relative;
+    margin: 0px;
+    font-size: 11px;
+}
+
+.mpmp-table{
+    position: relative;
+    left: 10px;
+    width: 300px;
+}
+
+.myPageMyPost-section-img{
+    height: 114px;
+    width: 85.5px;
+}
+
+.sftitle {
+    display: block; /* 줄 전체 사용 */
+    width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 13px;
+    font-weight: 500;
+    margin: 4px 0 2px 10px; /* 아래 여백 약간 */
+}
+
+
+.sfaccount {
+    display: block;
+    font-size: 10px;
+    margin-left: 10px; /* 타이틀과 동일한 들여쓰기 */
+}
+
+.sfmsg{
+    margin: 0;
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    margin-left: 10px; /* 타이틀과 동일한 들여쓰기 */
+}
+
+.sfmsgreal{
+    margin-top: 7px;
+    height: 29px;
+    width: 372px;
+    border: 2px solid #5409DA;
+    display: block;
+    font-size: 11px;
+    margin-left: 10px; /* 타이틀과 동일한 들여쓰기 */
+    overflow-y: scroll;
+}
+
+.title-wrapper {
+    display: flex;
+    justify-content: space-between; /* 왼쪽 타이틀, 오른쪽 버튼 */
+    align-items: flex-start;        
+    width: 100%;                    
+}
+
+.sfOK, .sfNO {
+    position: relative;
+    top: 2px;
+    border: 2px solid;
+    color: white;
+    font-size: 13px;
+    padding: 2px 5px;
+    height: fit-content; /* 버튼 높이 자동 */
+    white-space: nowrap;
+}
+
+.sfOK {
+    border-color: #40A646;
+    background-color: #40A646;
+    cursor: pointer;
+}
+
+.sfNO {
+    margin-left: 5px;
+    border-color: red;
+    background-color: red;
+    cursor: pointer;
+}
+
+.sfOKState{
+    border: 2px solid;
+    border-color: #40A646;
+    color: #40A646;
+    font-size: 13px;
+    padding: 2px 5px;
+    height: fit-content; /* 버튼 높이 자동 */
+}
+
+.sfNOState{
+    border: 2px solid;
+    border-color: red;
+    color: red;
+    font-size: 13px;
+    padding: 2px 5px;
+    height: fit-content; /* 버튼 높이 자동 */
+}
