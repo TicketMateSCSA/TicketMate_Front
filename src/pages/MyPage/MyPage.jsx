@@ -1,7 +1,7 @@
 import "./MyPage.css";
 import Navigator from "../../components/Navigator/Navigator";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, act } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import noProfile from '../../assets/images/no-profile.png';
@@ -62,7 +62,7 @@ function MyPageSectionMyPost({item}){
                 alt={item.perf_name}/>
 
             <div className="myPageMyPost-section-content">
-                <div class="post-header">
+                <div className="post-header">
                 <span className="myPageMyPost-section-category">{item.cat_name}</span> <span className="myPageMyPost-section-state"
                     style={
                         {backgroundColor: item.mate_status === 1 ? "#A1FFA6" : "#E0E0E0",
@@ -102,7 +102,7 @@ function MyPageSectionGet({item}){
                 },
                 body: JSON.stringify({
                     req_id: item.req_id,
-                    req_stat: item.req_stat
+                    req_stat: 1
                 }),
             });
 
@@ -133,10 +133,11 @@ function MyPageSectionGet({item}){
                 },
                 body: JSON.stringify({
                     req_id: item.req_id,
-                    req_stat: item.req_stat
+                    req_stat: 2
                 }),
             });
-
+            
+            
             if (!response.ok) {
                 const errorText = await response.text();
                 alert(`거절 실패: ${errorText}`);
@@ -149,14 +150,14 @@ function MyPageSectionGet({item}){
 
         } catch (err) {
             console.error(err);
-            alert("서버 오류로 승인하지 못했습니다.");
+            alert("서버 오류로 거절하지 못했습니다.");
         }
     }
 
     return (
         <div className="myPageMyPost-section-func" >
             <div>
-            <div class="title-wrapper">
+            <div className="title-wrapper">
             <p className="sftitle">{item.mate_title}</p>
             {item.req_stat == 0 && (
                 <div>
@@ -215,7 +216,7 @@ function MyPageSectionRegist({item}){
                 alt={item.perf_name}/>
 
             <div className="myPageMyPost-section-content">
-                <div class="post-header">
+                <div className="post-header">
                 <span className="myPageMyPost-section-category">{item.cat_name}</span> <span className="myPageMyPost-section-state"
                     style={
                         {backgroundColor: item.mate_status === 1 ? "#A1FFA6" : "#E0E0E0",
@@ -353,12 +354,13 @@ function MyPage(){
                 const fetchedPosts = data?.result || [];
                 setMyGet(fetchedPosts);
                 setLoading(false);
-
-            if (fetchedPosts.length > 0) {
+            
+            if (activeIdx == 1){
+                if (fetchedPosts.length > 0) {
                  setContent(<MyPageGet  myPost={fetchedPosts}/>);
-            } else {
+                } else {
                 //  setContent(<p style={{textAlign:"center"}}>내가 받은 신청이 없습니다.</p>);
-            }
+            }}
 
             })
             .catch((error) => {
@@ -383,12 +385,14 @@ function MyPage(){
                 const fetchedPosts = data?.result || [];
                 setMyRegist(fetchedPosts);
                 setLoading(false);
-
-            if (fetchedPosts.length > 0) {
-                 setContent(<MyPageRegist  myPost={fetchedPosts}/>);
-            } else {
-                //  setContent(<p style={{textAlign:"center"}}>내가 신청한 메이트가 없습니다.</p>);
-            }
+            
+            
+            if (activeIdx == 2){
+                if (fetchedPosts.length > 0) {
+                    setContent(<MyPageRegist  myPost={fetchedPosts}/>);
+                } else {
+                    //  setContent(<p style={{textAlign:"center"}}>내가 신청한 메이트가 없습니다.</p>);
+                }}
 
             })
             .catch((error) => {
