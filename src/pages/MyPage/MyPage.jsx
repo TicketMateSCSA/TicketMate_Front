@@ -128,7 +128,13 @@ function MyPageSectionGet({item}){
         try {
             const response = await fetch(`${import.meta.env.VITE_POSTS_URL}/requests/${item.req_id}/status`, {
                 method: "PATCH",
-                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    req_id: item.req_id,
+                    req_stat: item.req_stat
+                }),
             });
 
             if (!response.ok) {
