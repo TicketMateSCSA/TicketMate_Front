@@ -321,3 +321,37 @@
     background: #FFFFFF;
     color: #2F4F4F;
 }
+
+/* 홈으로 돌아가기 버튼 스타일 */
+.btn-home {
+    background-color: #4CAF50;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-home:hover {
+    background-color: #45a049;
+}
+
+/* 버튼 안 아이콘 크기 조정 */
+.btn-home svg, .btn-home span {
+    font-size: 14px;
+}
+
+.loading {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 10px;
+    font-weight: bold;
+    color: #ff0000;
+}
+

@@ -1,12 +1,18 @@
-import React from "react"; // 함수형 컴포넌트용 React 임포트 추가 (필요시)
+import React, { useEffect, useState } from "react"; 
 import "./AdminPage.css";
 import { useAuth } from "../../contexts/AuthContext";
-import { useEffect, useState } from "react";
 import { apiFetch } from "../../utils/api";
+import { useNavigate } from "react-router-dom";
 
 function AdminPage() {
     const { isAuthenticated, userProfile, login, logout, adminProfile } = useAuth();
     const [memberList, setMemberList] = useState([]);
+    const [loadingMap, setLoadingMap] = useState({}); // 회원별 로딩 상태
+    const navigate = useNavigate();
+
+    const goToHomePage = () => {
+        navigate("/");
+    }
 
     // 회원 목록 가져오기
     useEffect(() => {
@@ -31,58 +37,59 @@ function AdminPage() {
 
     // 블랙리스트 상태 토글 함수 (추가 / 해제)
     const toggleBlacklistStatus = async (m_rep_id, currentStatus) => {
-        // 현재 상태에 따라 메시지 변경
         const message =
             currentStatus === 1
                 ? "블랙리스트를 해제하시겠습니까?"
                 : "블랙리스트로 추가하시겠습니까?";
-
         const confirmed = window.confirm(message);
-        if (!confirmed) return; // 취소하면 종료
-        
+        if (!confirmed) return;
+
+        // 로딩 시작
+        setLoadingMap(prev => ({ ...prev, [m_rep_id]: true }));
+
         try {
             const url = `${import.meta.env.VITE_POSTS_URL}/admin/report/${m_rep_id}/status`;
-            // 현재 상태를 토글: 0 -> 1, 1 -> 0
             const newStatus = currentStatus === 1 ? 0 : 1;
 
             const res = await apiFetch(url, {
                 method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ mem_bl: newStatus }), // 서버 API 스펙에 맞춰 요청 바디 조정 필요
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ mem_bl: newStatus }),
             });
 
             if (res.code === "COMMON200") {
-                // 상태 변경 성공 시 UI 반영
-                setMemberList((prevList) =>
-                    prevList.map((member) =>
+                setMemberList(prevList =>
+                    prevList.map(member =>
                         member.m_rep_id === m_rep_id
                             ? { ...member, mem_bl: newStatus }
                             : member
                     )
                 );
             } else {
-                console.error("상태 변경 실패:", res.message);
                 alert("상태 변경에 실패했습니다.");
             }
         } catch (error) {
-            console.error("서버 오류:", error);
+            console.error(error);
             alert("서버 오류가 발생했습니다.");
+        } finally {
+            // 로딩 종료를 3초로 지연
+            setTimeout(() => {
+                setLoadingMap(prev => ({ ...prev, [m_rep_id]: false }));
+            }, 3000);
         }
     };
 
     return (
         <div className="admin-page-container">
+            <button className="btn btn-home" onClick={goToHomePage}>유저 화면으로 이동</button>
+
             <header className="admin-header">
                 <div className="profile-box">
                     <div className="profile-img"></div>
                     <div className="profile-info">
                         <div className="profile-name">{adminProfile?.mem_name}</div>
                         <div className="profile-email">{adminProfile?.mem_email}</div>
-                        <div className="profile-role">
-                            {adminProfile?.team_name} {adminProfile?.admin_rank}
-                        </div>
+                        <div className="profile-role">{adminProfile?.team_name} {adminProfile?.admin_rank}</div>
                     </div>
                 </div>
 
@@ -96,11 +103,9 @@ function AdminPage() {
             </header>
 
             <main>
-                {/* 기존 게시글 테이블 유지 (이미지 데이터 반영) */}
+                {/* 게시글 관리 */}
                 <section className="section-box">
                     <div className="section-title">게시글 관리</div>
-                    
-                    {/* 게시글 탭 및 검색 영역 추가 */}
                     <div className="tab-menu post-menu">
                         <div className="tab-group">
                             <div className="tab active">전체</div>
@@ -108,7 +113,6 @@ function AdminPage() {
                             <div className="tab">삭제된 글</div>
                         </div>
                     </div>
-                    
                     <table className="data-table">
                         <thead>
                             <tr className="table-header-row">
@@ -140,22 +144,17 @@ function AdminPage() {
                             </tr>
                         </tbody>
                     </table>
-                    <div className="pagination">
-                        {/* 페이지네이션 버튼 영역 추가 */}
-                    </div>
                 </section>
 
-                {/* 회원 관리 테이블 */}
+                {/* 회원 관리 */}
                 <section className="section-box">
                     <div className="section-title">회원 관리</div>
-
                     <div className="tab-menu member-menu">
                         <div className="tab-group">
                             <div className="tab active">전체</div>
                             <div className="tab">블랙리스트</div>
                         </div>
                     </div>
-
                     <table className="data-table">
                         <thead>
                             <tr className="table-header-row">
@@ -170,7 +169,6 @@ function AdminPage() {
                                 <th>처리일</th>
                             </tr>
                         </thead>
-
                         <tbody>
                             {memberList.length > 0 ? memberList.map((m, idx) => (
                                 <tr className="data-row" key={m.m_rep_id}>
@@ -183,20 +181,12 @@ function AdminPage() {
                                     <td>{m.mem_created_at?.slice(0, 10) || "-"}</td>
                                     <td className="btn-group">
                                         <button className="btn blue">상세</button>
-                                        {m.mem_bl === 1 ? (
-                                            <button
-                                                className="btn green"
-                                                onClick={() => toggleBlacklistStatus(m.m_rep_id, 1)}
-                                            >
-                                                해제
-                                            </button>
+                                        {loadingMap[m.m_rep_id] ? (
+                                            <span className="loading">로딩중...</span>
+                                        ) : m.mem_bl === 1 ? (
+                                            <button className="btn green" onClick={() => toggleBlacklistStatus(m.m_rep_id, 1)}>해제</button>
                                         ) : (
-                                            <button
-                                                className="btn red"
-                                                onClick={() => toggleBlacklistStatus(m.m_rep_id, 0)}
-                                            >
-                                                추가
-                                            </button>
+                                            <button className="btn red" onClick={() => toggleBlacklistStatus(m.m_rep_id, 0)}>추가</button>
                                         )}
                                     </td>
                                     <td>신고일</td>
