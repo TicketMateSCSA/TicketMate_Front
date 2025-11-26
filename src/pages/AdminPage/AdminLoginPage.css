@@ -1,8 +1,9 @@
 .admin-login-container {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
+    position: absolute;
     background: linear-gradient(#d0d0d0, #f3f3f3);
 }
 
