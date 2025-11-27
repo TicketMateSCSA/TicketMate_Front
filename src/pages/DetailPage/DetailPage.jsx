@@ -106,6 +106,7 @@ function Detail(){
             } else{
 
             const result = await response.json(); // 서버 응답 처리
+            console.log(result);
             navigate(`/regist/${obj.mate_post_id}`);
             return result;
             }

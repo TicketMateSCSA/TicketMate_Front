@@ -149,7 +149,7 @@ function Search(){
 
         // 성별
         const genderMap = { "무관": 0, "남성": 1, "여성": 2 };
-        params.append("mate_gender", genderMap[selectedGender] || 0);
+        params.append("mate_pref_gender", genderMap[selectedGender] || 0);
 
         // 날짜
         if (startDate) params.append("perf_sat", startDate+"T00:00:00");
@@ -178,6 +178,7 @@ function Search(){
             const response = await axios.get(url); 
             
             const data = response.data;
+            // console.log(url);
             // console.log(data);
             const list = data?.result?.postPreviewDTOList || []; 
             
@@ -209,7 +210,7 @@ function Search(){
             setLoading(false);
         } finally{
             
-            console.clear();
+            // console.clear();
         }
     }, [buildQuery]);
 
@@ -226,8 +227,7 @@ function Search(){
         } else {
             if (checked) {
                 setSelectedCategories([...selectedCategories.filter(c => c !== "전체"), value]);
-                setSelectedCategories(newSelected.length === 5 ? ["전체"] : newSelected);
-                
+
             } else {
                 const newSelected = selectedCategories.filter((c) => c !== value);
                 setSelectedCategories(newSelected.length === 0 ? ["전체"] : newSelected);
