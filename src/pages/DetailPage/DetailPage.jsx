@@ -12,9 +12,23 @@ import noProfile from '../../assets/images/no-profile.png';
 const postURL = `${import.meta.env.VITE_POSTS_URL}/post`;
 const sendURL = `${import.meta.env.VITE_POSTS_URL}/posts`;
 
-const ageMap = {0: '10대', 1: '20대', 2: '30대', 3: '40대', 4: '50대+'}
+const ageMap = {1: '전체', 2: '10대', 4: '20대', 8: '30대', 16: '40대', 32: '50대+'}
 const genderMap = {0: '무관', 1: '남성', 2: '여성'}
 const stateMapRev = {0: "전체", 1: "모집중", 2: "모집완료"};
+
+function DecodeAgeMask({mask}) {
+  const result = [];
+
+  for (const [bit, label] of Object.entries(ageMap)) {
+    const bitValue = Number(bit);
+
+    if (mask & bitValue) {
+      result.push(label);
+    }
+  }
+
+  return result.join(" ");
+}
 
 function TransTime({startDate}){
     let dateNtime = "";
@@ -82,16 +96,24 @@ function Detail(){
             if (!response.ok) {
                 // 응답 본문을 읽어 더 상세한 오류 메시지 제공 시도
                 const errorBody = await response.text();
-                const msg = JSON.parse(errorBody).message
+                let msg;
+
+                
+                if (JSON.parse(errorBody).code == "REQUEST400:_ALREADY_END") msg = "이미 마감된 게시물입니다.";
+                else msg = JSON.parse(errorBody).message;
+
                 alert(`${msg}`);
-            }
+            } else{
 
             const result = await response.json(); // 서버 응답 처리
+            navigate(`/regist/${obj.mate_post_id}`);
             return result;
-
+            }
         } catch (error) {
-            // console.error('Error posting data:', error);
-            throw error; // 에러를 호출자에게 다시 던져서 처리하도록 합니다.
+            console.error('Error posting data:', error);
+            // throw error; // 에러를 호출자에게 다시 던져서 처리하도록 합니다.
+        } finally {
+            console.clear();
         }
     };
 
@@ -99,10 +121,12 @@ function Detail(){
     const handleSubmit = async () => {
         try {
             if (isAuthenticated){
-                const result = await postData(sendURL + `/${obj.mate_post_id}/apply`); 
-            
-                console.log('Post Success:', result);
-                navigate(`/regist/${obj.mate_post_id}`);
+                
+                if (!myContent){
+                    alert('신청 메시지를 입력해주세요.')
+                }else{
+                    postData(sendURL + `/${obj.mate_post_id}/apply`);
+                }
             }else{
                 alert('메이트를 신청하려면 로그인이 필요합니다.');
             }
@@ -145,7 +169,7 @@ function Detail(){
                         <p>{obj.perf_name}</p>
                         <p><TransTime startDate={obj.perf_sat}/> ~ <TransTime startDate={obj.perf_eat}/></p>
                         <p>{obj.perf_loc}</p>
-                        <button>상세 정보 보기</button>
+                        {/* <button>상세 정보 보기</button> */}
                     </div>
 
                     <div className='left-host'>
@@ -179,12 +203,9 @@ function Detail(){
                     
                     <div className="right-perf-info">
                         <div className="right-left">
-                            <p>관람일시&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<TransTime startDate={obj.mate_view_date}/>}</p>
+                            <p>관람일시&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<TransTime startDate={obj.mate_view_date}/>} {obj.mate_view_date.split("T")[1].split(":").slice(0, 2).join(":")}</p>
                             <p>모집인원&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{obj.mate_num_of_need} (현재 {obj.mate_num_of_confirmed}/{obj.mate_num_of_need})</p>
-                        </div>
-                        <div className="right-right">
-                            <p>관람시간&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{obj.mate_view_date.split("T")[1].split(":").slice(0, 2).join(":")}</p>
-                            <p>선호사항&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ageMap[obj.mate_pref_age]} {genderMap[obj.mate_pref_gender]}</p>
+                            <p>선호사항&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<DecodeAgeMask mask={obj.mate_pref_age}/>} {genderMap[obj.mate_pref_gender]}</p>
                         </div>                    
                     </div>
 
@@ -206,7 +227,7 @@ function Detail(){
 
                     <div className="right-line"/>
                     <div className="right-message-box">
-                        <p className="right-line-title">신청 메시지</p>
+                        <p className="right-line-title">신청 메시지<span className="star">*</span></p>
                         <textarea row={10} className="right-message-content" 
                             placeholder="호스트에게 간단한 자기소개와 신청 의사를 전달해주세요. 연락 수단을 전달해도 좋습니다."
                             onChange={handleMyContent}/>
@@ -231,8 +252,8 @@ function Detail(){
                     <button className="mate-apply-button" onClick={handleSubmit}>메이트 신청하기</button>
                                </div>
                 
-               
-                <p className="warning2">허위 정보나 부적절한 내용은 삭제될 수 있습니다.</p>
+                <p className="warning3"><span className="star">*</span> 표시된 항목은 필수 입력 사항입니다.</p>
+                <p className="warning4">허위 정보나 부적절한 내용은 삭제될 수 있습니다.</p>
                 
             </div>
             

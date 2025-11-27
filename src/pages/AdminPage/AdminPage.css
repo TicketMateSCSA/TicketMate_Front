@@ -1,0 +1,239 @@
+/* 전체 레이아웃 */
+.admin_body{
+    background: #E8F0F0; 
+}
+
+.admin_admin-page-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    background-color: #E8F0F0; 
+    color: #000000;
+    position: absolute;
+    padding-bottom: 70px; 
+    padding-top: 10px; 
+    overflow-y: auto; 
+    font-family: Tahoma, 'Malgun Gothic', sans-serif; 
+}
+
+/* 상단 헤더 */
+.admin_admin-header {
+    display: flex;
+    justify-content: space-between;
+    background: #E8F0F0; 
+    padding: 10px 25px; 
+    border: none; 
+}
+
+/* 관리자 정보 박스 */
+.admin_profile-box {
+    display: flex;
+    align-items: center;
+    border: 2px outset #A0B0B0; 
+    background: #D0E0E0; 
+    padding: 10px;
+    margin-right: 20px;
+    border-right: none;
+    border-left: none;
+}
+
+.admin_profile-img {
+    width: 50px; 
+    height: 50px;
+    background: #A0B0B0; 
+    border: 2px outset #A0B0B0; 
+    margin-right: 15px;
+}
+
+.admin_profile-name {
+    font-size: 16px; 
+    font-weight: bold;
+    color: #000080; 
+}
+
+.admin_profile-email {
+    font-size: 13px;
+    color: #2F4F4F; 
+}
+
+.admin_profile-role {
+    font-size: 13px;
+    color: #2F4F4F; 
+}
+
+/* 상태 박스 */
+.admin_status-box {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 5px 15px; 
+    font-size: 13px;
+    padding: 10px;
+    border: 2px inset #A0B0B0; 
+    background: #FFFFFF; 
+    flex-grow: 1;
+}
+
+.admin_status-item {
+    padding: 0;
+}
+
+.admin_status-item span {
+    font-weight: bold;
+    color: #000080; 
+    display: inline-block;
+    padding: 0 3px;
+    border: 1px solid #2F4F4F; 
+    background: #D0E0E0; 
+    margin-left: 5px;
+}
+
+.admin_status-item.warning span {
+    color: #B60000; 
+    background: #FFD0D0; 
+}
+
+/* 섹션 공통 */
+.admin_section-box {
+    margin: 10px 25px; 
+    border: 2px outset #A0B0B0; 
+    background: #E8F0F0; 
+    padding: 10px;
+}
+
+/* 섹션 제목 */
+.admin_section-title {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 0 5px; 
+    margin-bottom: 5px;
+    border: none;
+    display: inline-block;
+    background: #E8F0F0; 
+    transform: translateY(-5px); 
+    margin-left: 5px;
+    color: #000080; 
+}
+
+/* 테이블 */
+.admin_data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    border: 2px inset #A0B0B0; 
+    margin-top: 10px;
+    background: #FFFFFF;
+}
+
+.admin_data-table th {
+    background: #B0C4DE; 
+    border: 1px solid #2F4F4F; 
+    padding: 5px;
+    color: #000080; 
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 1px 1px 0 #FFFFFF inset, -1px -1px 0 #2F4F4F inset; 
+}
+
+.admin_data-table td {
+    border: 1px solid #D0E0E0; 
+    padding: 5px;
+    text-align: center;
+    background-color: #FFFFFF;
+    color: #2F4F4F;
+}
+
+.admin_data-table tbody tr:hover {
+    background-color: #F0F5F5; 
+}
+
+.admin_data-table .admin_data-row.active-row td {
+    background-color: #D0E0E0; 
+}
+
+.admin_data-table td:last-child {
+    width: 100px;
+    min-width: 100px;
+    text-align: center; 
+}
+
+/* 버튼 */
+.admin_btn-group {
+    display: flex;
+    position: inherit;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex-wrap: nowrap;
+    width: 100%;
+}
+
+.admin_btn {
+    padding: 3px 6px; 
+    border: 2px outset #A0B0B0; 
+    cursor: pointer;
+    font-size: 11px; 
+    font-weight: bold;
+    background: #D0E0E0; 
+    color: #000080; 
+    transition: none; 
+    white-space: nowrap; 
+    height: 24px;
+}
+
+.admin_btn:active {
+    border-style: inset; 
+    box-shadow: none;
+    transform: none;
+}
+
+.admin_btn.blue {
+    background: #D0E0E0; 
+    color: #000080; 
+}
+
+.admin_btn.admin_red {
+    background: #D0E0E0; 
+    color: #B60000; 
+}
+
+.admin_btn.admin_green {
+    background: #D0E0E0;
+    color: #008000; 
+}
+
+.admin_loading {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 10px;
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.admin_deleted-text {
+    color: #ff0000;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+/* 홈으로 돌아가기 버튼 */
+.admin_btn-home {
+    background-color: #4CAF50;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.2s ease;
+}
+
+.admin_btn-home:hover {
+    background-color: #45a049;
+}

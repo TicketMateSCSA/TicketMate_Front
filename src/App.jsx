@@ -12,6 +12,8 @@ import SearchPage from "./pages/SearchPage/SearchPage";
 import DetailPage from "./pages/DetailPage/DetailPage";
 import RegistPage from './pages/RegistPage/RegistPage';
 import MyPage from "./pages/MyPage/MyPage";
+import AdminLoginPage from "./pages/AdminPage/AdminLoginPage";
+import AdminPage from "./pages/AdminPage/AdminPage";
 
 // Context Privider 
 import {AuthProvider} from "./contexts/AuthContext" ; 
@@ -32,8 +34,11 @@ function App() {
             <Route path = "/detail/:matePostId" element={<DetailPage/>}/>
             <Route path = "/regist/:matePostId" element={<ProtectedRoute><RegistPage/></ProtectedRoute>}/>
             <Route path = "/myPage" element={<ProtectedRoute><MyPage/></ProtectedRoute>}/>
+            <Route path = "/admin/login" element={<ProtectedRoute><AdminLoginPage/></ProtectedRoute>}/>
+            <Route path = "/admin" element={<ProtectedRoute><AdminPage/></ProtectedRoute>}/>
           </Routes>
         </AppContainer>
+
       </BrowserRouter>
     </AuthProvider>
   )

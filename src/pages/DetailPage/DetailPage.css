@@ -50,6 +50,7 @@
     padding: 5px 15px;
     font-size: 13px;
     line-height: 0.8;
+    padding-bottom: 7px;
 }
 
 .left-info button{
@@ -70,7 +71,7 @@
 
 .left-host{
     position: absolute;
-    top: 664px;
+    top: 608px;
     left: 20px;
     width: 321px;
     height: 150px;
@@ -153,14 +154,8 @@
     width: 388px;
     border: 2px solid #5409DA;
     font-size: 13px;
-    padding: 3px 10px;
+    padding: 0px 10px;
     line-height: 1;
-}
-
-.right-right{
-    position: absolute;
-    left: 52%;
-    top: 3px;
 }
 
 .right-loctime{
@@ -168,12 +163,12 @@
     font-weight: 500;
     
     position: absolute;
-    top: 163px;
+    top: 182px;
 }
 
 .right-meet-loctime{
     position: absolute;
-    top: 209px;
+    top: 225px;
     width: 388px;
     border: 2px solid #5409DA;
     font-size: 13px;
@@ -189,12 +184,12 @@
     font-weight: 500;
     
     position: absolute;
-    top: 248px;
+    top: 262px;
 }
 
 .right-perf-content{
     position: absolute;
-    top: 292px;
+    top: 307px;
     width: 388px;
     border: 2px solid #5409DA;
     font-size: 13px;
@@ -207,7 +202,7 @@
 
 .right-tag-container{
     position: relative;
-    top: 339px;
+    top: 345px;
     width: 300px;
     display: flex;
     gap: 5px; /* 요소 사이 간격 */
@@ -329,4 +324,20 @@
     right: 20px;
     padding: 2px 5px;
     cursor: pointer;
+}
+
+.warning3{
+    position: absolute;
+    bottom: 65px;
+    font-weight: 500;
+    left: 33%;
+}
+
+.warning4{
+    position: absolute;
+    bottom: 45px;
+    font-weight: 500;
+    margin: auto;
+    left: 29%;
+
 }
