@@ -242,11 +242,13 @@ function HostPage(){
         navigate(`/detail/${result.result}`)
 
     } catch (error) {
-        console.error('Submission failed:', error);
+        // console.error('Submission failed:', error);
         
         // buildBody에서 발생한 유효성 검사 에러 또는 POST 요청 에러를 사용자에게 보여줍니다.
         // 유효성 검사 에러 메시지가 더 명확하므로 이를 활용합니다.
         alert(`${error.message}`); 
+    } finally {
+        // console.clear();
     }
     };
 

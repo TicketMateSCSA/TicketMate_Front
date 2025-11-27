@@ -210,7 +210,7 @@ function Search(){
             setLoading(false);
         } finally{
             
-            // console.clear();
+            console.clear();
         }
     }, [buildQuery]);
 
