@@ -1,0 +1,46 @@
+.info-page-container {
+    width: 100%;
+     /* AppContainer의 높이를 꽉 채웁니다. */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    background-color: #ffffff; /* 배경색: 어두운 테마 */
+    color: #000000;
+    position: relative;
+    background: var(--White, #ffffff);
+    
+    /* 하단 네비게이터 영역을 피하기 위한 패딩 */
+    padding-bottom: 70px; 
+    padding-top: 20px;
+    overflow-y: auto; /* 내용이 길면 스크롤 가능 */
+}
+
+.infoform{
+    /* border: none; */
+    /* box-shadow: none; */
+    overflow-y: scroll;
+    overflow-x: hidden;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3열 */
+    gap: 20px; /* 아이템 사이 간격 */
+}
+
+.info-showImage{
+    position: relative;
+    left: 8px;
+    width: 225px;
+    height: 300px;
+   
+}
+
+.info-showInfo{
+    position: relative;
+    left: 10px;
+    list-style: none;
+    line-height: 2;
+    padding: 0;
+    margin: 0;
+    font-size: 11px;
+
+}
