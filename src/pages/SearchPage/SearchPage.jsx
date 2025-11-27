@@ -13,23 +13,8 @@ const filterUrl = `${import.meta.env.VITE_POSTS_URL}/posts/filter`;
 const catUrl = `${import.meta.env.VITE_POSTS_URL}/categories`;
 
 const stateMapRev = {0: "전체", 1: "모집중", 2: "모집완료"};
-const ageMapRev = {2: '10대', 4: '20대', 8: '30대', 16: '40대', 32: '50대+'}
+const ageMapRev = {1: '전체', 2: '10대', 4: '20대', 8: '30대', 16: '40대', 32: '50대+'}
 const genderMapRev = {0: '무관', 1: '남성', 2: '여성'}
-
-function DecodeAgeMask({mask}) {
-  const result = [];
-
-  for (const [bit, label] of Object.entries(ageMapRev)) {
-    const bitValue = Number(bit);
-
-    if (mask & bitValue) {
-      result.push(label);
-    }
-  }
-
-  return result.join(" ");
-}
-{/* <DecodeAgeMask mask= {item.mem_age_range}/> */}
 
 function SearchSection({item}){
     const navigate = useNavigate();
