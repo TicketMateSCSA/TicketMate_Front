@@ -41,6 +41,8 @@ function Navigator(){
     const searchRef = useRef(null);
     const { isAuthenticated, userProfile, logout } = useAuth();
     
+    const abortRef = useRef(null);
+
     const goToHomePage = () => {
         navigate("/");
     }
@@ -72,49 +74,59 @@ function Navigator(){
     };
     
     useEffect(() => {
-        // 검색어가 비어있거나, 드롭다운이 닫혀있으면 호출하지 않습니다.
         if (query.trim() === "" || !open) {
-            setData(null); 
+            setData(null);
             setLoading(false);
             setError(null);
             return;
         }
 
-        setLoading(true); // 새 검색 시작 시 로딩 상태 설정
-        setError(null);
-        
-        fetch(searchURL + `?keyword=${query}&page=${page}`)
-        .then(async (response) => {
-            // 2. ⚠️ HTTP 404/500 에러 처리 추가
-            if (!response.ok) { // 얘를 형식적으로도 잡아줘야 함..
-                // HTTP 에러인 경우, JSON을 파싱하기 전에 에러를 던집니다.
-                // 에러 본문이 JSON일 수 있으므로, 응답을 텍스트로 읽어 에러 메시지에 포함할 수 있습니다.
-                // const errorText = await response.text(); 
-                // throw new Error(`HTTP error! status: ${response.status} - ${errorText.substring(0, 100)}`);
-            }
-            return response.json();
-        })
-        .then((data) => {
-            setData(data);
-            // console.log(data);
+        // 🔥 이전 요청 취소
+        if (abortRef.current) abortRef.current.abort();
+        const controller = new AbortController();
+        abortRef.current = controller;
 
-            if (data.code === "MATEPOST401:_NO_POST_LIST"){
-                setLoading(false); 
-                setPage(1); // 첫 페이지로 초기화는 유지
-                setTotalPage(1); // 페이지 개수도 1로 설정
-            } else {
-                setLoading(false);
-                const tPage = data?.result?.totalPages || 1;
-                setTotalPage(tPage);
+        const fetchData = async () => {
+            setLoading(true);
+            setError(null);
+
+            try {
+                const response = await fetch(
+                    `${searchURL}?keyword=${query}&page=${page}`,
+                    { signal: controller.signal }
+                );
+
+                if (!response.ok) {
+                    throw new Error("HTTP Error: " + response.status);
+                }
+
+                const json = await response.json();
+                setData(json);
+
+                if (json.code === "MATEPOST401:_NO_POST_LIST") {
+                    setTotalPage(1);
+                    setPage(1);
+                } else {
+                    const tPage = json?.result?.totalPages || 1;
+                    setTotalPage(tPage);
+                }
+
+            } catch (err) {
+                if (err.name === "AbortError") return; // 🔥 취소된 요청은 무시
+                setError(err.message);
+                setData(null);
+            } finally {
+                console.clear();
             }
-        })
-        .catch((error) => {
-            // console.error("Fetch error:", error);
-            setError(error.message);
-            setLoading(false); // 네트워크 에러 발생 시에도 로딩 종료
-            setData(null); // 에러 발생 시 데이터 초기화
-        });
-    }, [query, page, open]); // open 상태가 true일 때만 호출되도록 의존성 추가
+
+            setLoading(false);
+        };
+
+        fetchData();
+
+        return () => controller.abort();
+    }, [query, page, open]);
+
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -132,12 +144,20 @@ function Navigator(){
 
     const handleSelect = (opt) => {
         setOpen(false);
-        navigate(`detail/${opt.mate_post_id}`)
+        navigate(`/detail/${opt.mate_post_id}`)
+        window.location.reload();
     }
 
     const handleKeyDown = (e) => {
         const currentList = data?.result?.postPreviewDTOList; // 최신 list를 가져옴
         if (e.key === "Enter" && currentList?.length > 0) {
+            handleSelect(currentList[0]);
+        }
+    }
+
+    const handleButton = () => {
+        const currentList = data?.result?.postPreviewDTOList; // 최신 list를 가져옴
+        if (currentList?.length > 0) {
             handleSelect(currentList[0]);
         }
     }
@@ -222,8 +242,8 @@ function Navigator(){
                     </ul>
                 )}
 
-                <button onClick={handleSelect}>
-                    <img src={searchIcon}></img>
+                <button >
+                    <img src={searchIcon} onClick={handleButton}></img>
                 </button>
             </div>
 
