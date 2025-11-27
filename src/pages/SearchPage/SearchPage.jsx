@@ -228,8 +228,10 @@ function Search(){
     }, [buildQuery]);
 
     useEffect(() => {
+    if (categoryList.length > 0) {
         fetchData();
-    }, [fetchData]);
+    }
+    }, [fetchData, categoryList]); // 카테고리 불러와진 후 실행되도록
 
     const handleChangeCategories = (event) => {
         const { value, checked } = event.target;

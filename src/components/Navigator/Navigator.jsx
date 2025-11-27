@@ -242,8 +242,8 @@ function Navigator(){
                     </ul>
                 )}
 
-                <button >
-                    <img src={searchIcon} onClick={handleButton}></img>
+                <button className="searchsearchbutton" onClick={handleButton}>
+                    <img src={searchIcon}></img>
                 </button>
             </div>
 
