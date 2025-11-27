@@ -112,23 +112,24 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const restore = async () => {
             try {
-                // 관리자 세션이 우선
                 const admin = await fetchAdminProfile();
                 if (admin) {
                     setAdminProfile(admin);
                     setIsAuthenticated(true);
-                    return;
                 }
 
                 const member = await fetchMyProfile();
                 if (member) {
                     setUserProfile(member);
                     setIsAuthenticated(true);
-                    return;
                 }
 
-                setIsAuthenticated(false);
-
+                // 둘 다 없으면 로그아웃 상태
+                if (!admin && !member) {
+                    setIsAuthenticated(false);
+                    setUserProfile(null);
+                    setAdminProfile(null);
+                }
             } catch (e) {
                 setIsAuthenticated(false);
                 setUserProfile(null);
@@ -140,6 +141,7 @@ export const AuthProvider = ({ children }) => {
 
         restore();
     }, []);
+
 
     return (
         <AuthContext.Provider value={{
