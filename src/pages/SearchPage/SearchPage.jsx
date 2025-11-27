@@ -174,6 +174,7 @@ function Search(){
 
         try {
             const url = `${filterUrl}?${queryString}`
+
             const response = await axios.get(url); 
             
             const data = response.data;
@@ -225,6 +226,8 @@ function Search(){
         } else {
             if (checked) {
                 setSelectedCategories([...selectedCategories.filter(c => c !== "전체"), value]);
+                setSelectedCategories(newSelected.length === 5 ? ["전체"] : newSelected);
+                
             } else {
                 const newSelected = selectedCategories.filter((c) => c !== value);
                 setSelectedCategories(newSelected.length === 0 ? ["전체"] : newSelected);

@@ -85,17 +85,15 @@ function HostPage(){
         const { value, checked } = event.target;
 
         if (value === "전체") {
-        if (checked) {
             setSelectedAge(["전체"]);
         } else {
-            setSelectedAge([]);
-        }
-        } else {
-        if (checked) {
-            setSelectedAge([...selectedAge.filter(c => c !== "전체"), value]);
-        } else {
-            setSelectedAge(selectedAge.filter((c) => c !== value));
-        }
+            if (checked) {
+                setSelectedAge([...selectedAge.filter(c => c !== "전체"), value]);
+                console.log(selectedAge);
+            } else {
+                const newSelected = selectedAge.filter((c) => c !== value);
+                setSelectedAge(newSelected.length === 0 ? ["전체"] : newSelected);
+            }
         }
     };
 
@@ -289,7 +287,7 @@ function HostPage(){
                 <p className="head">메이트 모집하기</p>
                 <p className="body">함께 공연을 즐길 메이트를 모집해볼까요?</p>
 
-                <button className="save">임시저장</button>
+                {/* <button className="save">임시저장</button> */}
                 <button className="post" onClick={handleSubmit}>등록하기</button>
             </div>
             
