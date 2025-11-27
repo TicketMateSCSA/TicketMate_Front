@@ -53,7 +53,9 @@ function Login(){
 
         } catch (error) {
             setErrorMessage("로그인 중 오류가 발생했습니다.");
-            console.error(error);
+            // console.error(error);
+        } finally {
+            console.clear(); // 콘솔에 안 뜨도록
         }
     };
 
@@ -83,11 +85,11 @@ function Login(){
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <br/>
-                <input type="checkbox" name="lg" value="mt"/>
-                <p className="maintain">로그인 유지</p>
-                <p className="findPwd">비밀번호 찾기</p>
+                {/* <input type="checkbox" name="lg" value="mt"/> */}
+                {/* <p className="maintain">로그인 유지</p> */}
+                {/* <p className="findPwd">비밀번호 찾기</p> */}
 
-                {errorMessage && <p className="error">{errorMessage}</p>}
+                {/* {errorMessage && <p className="error">{errorMessage}</p>} */}
 
                 <button className="loginBtn" onClick={handleLogin}>로그인</button>
 
