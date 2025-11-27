@@ -413,7 +413,7 @@ function HostPage(){
                         <input type="checkbox" id="btn1" name="select" value="전체"
                         checked={selectedAge.includes("전체")}
                         onChange={handleChangeAge}
-                        defaultChecked />
+                         />
                         <label htmlFor="btn1">전체</label>
 
                         <input type="checkbox" id="btn2" name="select" value="10대"
@@ -448,7 +448,7 @@ function HostPage(){
                             <input type="radio" id="btn7" name="select2"  value="무관"
                             checked={selectedGender === "무관"}
                             onChange={handleSelectedGender}
-                            defaultChecked/>
+                            />
                             <label htmlFor="btn7">무관</label>
 
                             <input type="radio" id="btn8" name="select2" value="남성"
