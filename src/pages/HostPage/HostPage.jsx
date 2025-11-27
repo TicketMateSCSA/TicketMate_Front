@@ -50,11 +50,23 @@ function HostPage(){
 
     // 핸들러 ---------------------------
     const handleTitle = (e) => {
-        setTitle(e.target.value);
+        const value = e.target.value;
+
+        if (value.length <= 80) {
+            setTitle(value);
+        }else{
+            alert("제목을 80자 이내로 입력해주세요.")
+        }
     }
 
     const handleContent = (e) => {
-        setContent(e.target.value);
+        const value = e.target.value;
+
+        if (value.length <= 1000) {
+            setContent(value);
+        }else{
+            alert("상세 내용을 1000자 이내로 입력해주세요.")
+        }
     }
 
     const handleViewDate = (e) => {
@@ -66,7 +78,13 @@ function HostPage(){
     }
 
     const handleLocTime = (e) => {
-        setLocTime(e.target.value);
+        const value = e.target.value;
+
+        if (value.length <= 30) {
+            setLocTime(value);
+        }else{
+            alert("만남 장소/시간을 30자 이내로 입력해주세요.")
+        }
     }
 
     const handleNumNeed = (e) => {
@@ -78,24 +96,29 @@ function HostPage(){
     }
 
     const handleHashTag = (e) => {
-        setHashTag(e.target.value);
+        const value = e.target.value;
+
+        if (value.length <= 10) {
+            setHashTag(value);
+        }else{
+            alert("태그를 10자 이내로 입력해주세요.")
+        }
     }
 
     const handleChangeAge = (event) => {
         const { value, checked } = event.target;
 
         if (value === "전체") {
-        if (checked) {
             setSelectedAge(["전체"]);
         } else {
-            setSelectedAge([]);
-        }
-        } else {
-        if (checked) {
-            setSelectedAge([...selectedAge.filter(c => c !== "전체"), value]);
-        } else {
-            setSelectedAge(selectedAge.filter((c) => c !== value));
-        }
+            if (checked) {
+                const newSelected = [...selectedAge.filter(c => c !== "전체"), value];
+                setSelectedAge(newSelected.length === 5 ? ["전체"] : newSelected); // 다 찼는지
+
+            } else {
+                const newSelected = selectedAge.filter((c) => c !== value);
+                setSelectedAge(newSelected.length === 0 ? ["전체"] : newSelected);
+            }
         }
     };
 
@@ -212,21 +235,20 @@ function HostPage(){
         // 2. 서버로 데이터를 전송합니다.
         const result = await postData(postURL, dataToSend); 
         
-        console.log('Post Success:', result);
+        // console.log('Post Success:', result);
         alert("메이트 모집글이 성공적으로 등록되었습니다!");
 
-        
-        navigate(`/detail?mate_post_id=${result.result}`)
-
-        // // 3. 성공적으로 전송되면 폼을 초기화합니다.
-        // resetForm(); 
+        // console.log(result.result);
+        navigate(`/detail/${result.result}`)
 
     } catch (error) {
-        console.error('Submission failed:', error);
+        // console.error('Submission failed:', error);
         
         // buildBody에서 발생한 유효성 검사 에러 또는 POST 요청 에러를 사용자에게 보여줍니다.
         // 유효성 검사 에러 메시지가 더 명확하므로 이를 활용합니다.
         alert(`${error.message}`); 
+    } finally {
+        // console.clear();
     }
     };
 
@@ -241,6 +263,7 @@ function HostPage(){
         })
         .then((data) => {
             // console.log(data);
+            console.clear();
             setData(data);
             setLoading(false);
         })
@@ -289,7 +312,7 @@ function HostPage(){
                 <p className="head">메이트 모집하기</p>
                 <p className="body">함께 공연을 즐길 메이트를 모집해볼까요?</p>
 
-                <button className="save">임시저장</button>
+                {/* <button className="save">임시저장</button> */}
                 <button className="post" onClick={handleSubmit}>등록하기</button>
             </div>
             
@@ -311,11 +334,11 @@ function HostPage(){
                         onKeyDown={handleKeyDown}
                     />
 
-                    {open && query && (
+                    {open &&  (
                         <ul className="dropdown-list">
-                            {filtered.length === 0 && (
-                                <li className="dropdown-item disabled">검색 결과 없음</li>
-                            )}
+                            {query && filtered.length == 0 &&
+                            (<li>
+                                검색 결과 없음</li>)}
                             {filtered.map((opt, idx) => (
                                 <li
                                     key={idx}
@@ -354,34 +377,28 @@ function HostPage(){
                         value={title}
                         placeholder='함께 공연 보실 분 구합니다!'
                         onChange={handleTitle}/>
-                    
                     <p className="date">관람 날짜<span className="star">*</span></p>
                     <input
                         className="chooseDate"
                         type="date"
-                        value={selectedShow ? selectedShow.perf_start_date : ""}
+                        value={viewDate || ""}
                         min={selectedShow 
                                 ? (selectedShow.perf_start_date > today ? selectedShow.perf_start_date : today)
                                 : today}
                         max={selectedShow ? selectedShow.perf_end_date : ""}
-                        onChange={(e) => {
-                            handleViewDate(e);
-                            setSelectedShow(prev => ({ ...prev, perf_start_date: e.target.value }))
-                        }}
-                        />
+                        onChange={handleViewDate}
+                    />
                     
                     <p className="time">관람 시간<span className="star">*</span></p>
                     <input
                         className="chooseTime"
                         type="time"
-                        value={selectedShow ? selectedShow.perf_start_time : ""}
+                        value={viewTime || ""}
                         min={selectedShow ? selectedShow.perf_start_time : ""}
                         max={selectedShow ? selectedShow.perf_end_time : ""}
-                        onChange={(e) =>
-                            {handleViewTime(e);
-                            setSelectedShow(prev => ({ ...prev, perf_start_time: e.target.value }))
-                            }}
-                        />
+                        onChange={handleViewTime}
+                    />
+
 
                     <p className="peopleNum">모집 인원<span className="star">*</span></p>
                     <input className="choosePeopleNum" type='number' min={1} 
@@ -457,7 +474,7 @@ function HostPage(){
 onChange={handleContent} />
 
                     <p className="tag">태그</p>
-                    <input value={hashTag} className="writeTag" placeholder='#태그1 #태그2 #태그3'
+                    <input value={hashTag} className="writeTag" placeholder='#태그1 #태그2'
                     onChange={handleHashTag} />
 
                     

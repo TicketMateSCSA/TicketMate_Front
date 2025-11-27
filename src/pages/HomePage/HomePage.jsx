@@ -10,8 +10,9 @@ import noProfile from '../../assets/images/no-profile.png';
 
 const postsUrl = `${import.meta.env.VITE_POSTS_URL}/posts`;
 
-const ageMap = {0: '10대', 1: '20대', 2: '30대', 3: '40대', 4: '50대+'}
+const ageMap = {1: '전체', 2: '10대', 4: '20대', 8: '30대', 16: '40대', 32: '50대+'}
 const genderMap = {0: '무관', 1: '남성', 2: '여성'}
+
 
 function Section({item}){
     const navigate = useNavigate();
@@ -77,12 +78,13 @@ function HomePage(){
         fetch(postsUrl)
         .then((response) => {
             if (!response.ok) {
-            throw new Error('Network response was not ok');
+            // throw new Error('Network response was not ok');
+                console.clear();
             }
             return response.json();
         })
         .then((data) => {
-            console.log(data);
+            // console.log(data);
             setData(data);
             setLoading(false);
         })
