@@ -1,6 +1,6 @@
 import {useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams, useLocation } from "react-router-dom";
 
 import "./DetailPage.css";
 import Navigator from "../../components/Navigator/Navigator";
@@ -125,6 +125,7 @@ function Detail(){
     };
 
     // 버튼 클릭
+    const location = useLocation();
     const handleSubmit = async () => {
         try {
             if (isAuthenticated){
@@ -140,6 +141,8 @@ function Detail(){
                 }
             }else{
                 alert('메이트를 신청하려면 로그인이 필요합니다.');
+                navigate("/login", { state: { from: location, showAlert: true }, replace: true });
+                return; // 더 이상 함수 진행하지 않도록
             }
         
         } catch (error) {
