@@ -106,8 +106,8 @@ function Detail(){
             } else{
 
             const result = await response.json(); // 서버 응답 처리
-            console.log(result);
-            navigate(`/regist/${obj.mate_post_id}`);
+
+            navigate(`/regist/${result?.result?.req_id}`);
             return result;
             }
         } catch (error) {

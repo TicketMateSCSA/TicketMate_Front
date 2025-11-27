@@ -32,7 +32,7 @@ function App() {
             <Route path = "/signin" element={<SigninPage/>}/>
             <Route path = "/search" element={<SearchPage/>}/>
             <Route path = "/detail/:matePostId" element={<DetailPage/>}/>
-            <Route path = "/regist/:matePostId" element={<ProtectedRoute><RegistPage/></ProtectedRoute>}/>
+            <Route path = "/regist/:reqId" element={<ProtectedRoute><RegistPage/></ProtectedRoute>}/>
             <Route path = "/myPage" element={<ProtectedRoute><MyPage/></ProtectedRoute>}/>
             <Route path = "/admin/login" element={<ProtectedRoute><AdminLoginPage/></ProtectedRoute>}/>
             <Route path = "/admin" element={<ProtectedRoute><AdminPage/></ProtectedRoute>}/>

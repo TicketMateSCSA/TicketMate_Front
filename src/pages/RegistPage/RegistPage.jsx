@@ -68,7 +68,7 @@ function RegistSection({item}){
 }
 
 function Regist(){
-    const { matePostId } = useParams();
+    const { reqId } = useParams();
 
     // 버튼 클릭 -----------------------------
     const navigate = useNavigate();
@@ -110,13 +110,13 @@ function Regist(){
 
     const fetchData = async () => {
         try {
-            const response = await fetch(requestUrl + "/" + matePostId);
+            const response = await fetch(requestUrl + "/" + reqId);
             const data = await response.json();
             setReqData(data);
         } catch (err) {
             // console.error(err);
         } finally{
-            console.clear();
+            // console.clear();
         }
     };
 
