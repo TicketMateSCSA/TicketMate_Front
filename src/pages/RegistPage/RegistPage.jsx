@@ -13,6 +13,7 @@ const postsUrl = `${import.meta.env.VITE_POSTS_URL}/posts`;
 const requestUrl = `${import.meta.env.VITE_POSTS_URL}/requests`;
 
 function RegistSection({item}){
+    const navigate = useNavigate();
     
     const stateMapRev = {0: "전체", 1: "모집중", 2: "모집완료"};
     const ageMapRev = {0: '10대', 1: '20대', 2: '30대', 3: '40대', 4: '50대+'}
@@ -27,8 +28,14 @@ function RegistSection({item}){
     dateNtime[1] = dateNtime[1].split(":").slice(0, 2).join(":");
     const slicedDate = dateNtime.slice(0, 2).join(" ");
 
+    // 버튼 클릭
+    const handleClick = async (item) => {
+        // console.log(item.mate_post_id);
+        navigate(`/detail/${item.mate_post_id}`);  
+    }
+
     return (
-        <div className="regist-section-func">
+        <div className="regist-section-func" onClick={() => handleClick(item)}>
             <img className="regist-section-img" 
                 src={item.perf_img_url ? item.perf_img_url : noImage}
                 alt={item.perf_name}/>
@@ -68,7 +75,7 @@ function RegistSection({item}){
 }
 
 function Regist(){
-    const { matePostId } = useParams();
+    const { reqId } = useParams();
 
     // 버튼 클릭 -----------------------------
     const navigate = useNavigate();
@@ -110,11 +117,13 @@ function Regist(){
 
     const fetchData = async () => {
         try {
-            const response = await fetch(requestUrl + "/" + matePostId);
+            const response = await fetch(requestUrl + "/" + reqId);
             const data = await response.json();
             setReqData(data);
         } catch (err) {
-            console.error(err);
+            // console.error(err);
+        } finally{
+            console.clear();
         }
     };
 
@@ -162,7 +171,7 @@ function Regist(){
                         
                         <div className="rdb-body1">
                             <p>공연</p>
-                            <p className="nn">{obj.perf_name}</p>
+                            <p className="nn" style={{display: "block", width: "120px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{obj.perf_name}</p>
                             <p>관람일시</p>
                             <p className="nn">{slicedDate}</p>
 
@@ -197,7 +206,7 @@ function Regist(){
             <div className="regist-recommend">
                 {list
                 ?.filter(item => item.mate_status === 1) // 모집 중인
-                .slice(0, 2) // 상위 6개
+                .slice(0, 2) 
                 .map((item) => (
                     <RegistSection key={item.mate_post_id} item={item}/>
                     ))}

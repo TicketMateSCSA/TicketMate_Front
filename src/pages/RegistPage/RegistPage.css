@@ -277,6 +277,12 @@ div.regist-line{
 
     font-size: 14px;
     font-weight: 500;
+
+    display: block;
+    width: 250px;   
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .rdb-body1{
@@ -285,6 +291,9 @@ div.regist-line{
     top: 85px;
     line-height: 0.6;
     font-size: 11px;
+
+    
+    /* background-color: #000000; */
 }
 
 .rdb-body2{
