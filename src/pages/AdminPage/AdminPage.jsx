@@ -9,13 +9,19 @@ function AdminPage() {
     const [memberList, setMemberList] = useState([]);
     const [postList, setPostList] = useState([]);
 
-    // 회원 로딩 상태 관리
     const [loadingMap, setLoadingMap] = useState({});
-    // 게시글 삭제 로딩 상태 관리
     const [postLoadingMap, setPostLoadingMap] = useState({});
 
     const navigate = useNavigate();
     const goToHomePage = () => navigate("/");
+
+    const goToPostDetail = (mate_post_id) => {
+        navigate(`/detail/${mate_post_id}`);
+    };
+
+    const goToMemberDetail = (m_rep_id) => {
+        navigate(`/admin/member/${m_rep_id}`);
+    };
 
     useEffect(() => {
         const fetchMembers = async () => {
@@ -46,7 +52,6 @@ function AdminPage() {
         fetchPosts();
     }, []);
 
-    // 블랙리스트 추가 / 해제 + 처리일 기록
     const toggleBlacklistStatus = async (m_rep_id, currentStatus) => {
         const confirmed = window.confirm(
             currentStatus === 1
@@ -89,7 +94,6 @@ function AdminPage() {
         }
     };
 
-    // 게시글 삭제 처리 + 처리일 반영 + 로딩
     const deletePost = async (mate_post_id) => {
         const confirmed = window.confirm("정말 삭제하시겠습니까?");
         if (!confirmed) return;
@@ -124,37 +128,37 @@ function AdminPage() {
     };
 
     return (
-        <div className="admin-page-container">
-            <button className="btn btn-home" onClick={goToHomePage}>유저 화면으로 이동</button>
+        <div className="admin_admin-page-container">
+            <button className="admin_btn admin_btn-home" onClick={goToHomePage}>유저 화면으로 이동</button>
 
-            <header className="admin-header">
-                <div className="profile-box">
-                    <div className="profile-img"></div>
-                    <div className="profile-info">
-                        <div className="profile-name">{adminProfile?.mem_name}</div>
-                        <div className="profile-email">{adminProfile?.mem_email}</div>
-                        <div className="profile-role">{adminProfile?.team_name} {adminProfile?.admin_rank}</div>
+            <header className="admin_admin-header">
+                <div className="admin_profile-box">
+                    <div className="admin_profile-img"></div>
+                    <div className="admin_profile-info">
+                        <div className="admin_profile-name">{adminProfile?.mem_name}</div>
+                        <div className="admin_profile-email">{adminProfile?.mem_email}</div>
+                        <div className="admin_profile-role">{adminProfile?.team_name} {adminProfile?.admin_rank}</div>
                     </div>
                 </div>
 
-                <div className="status-box">
-                    <div className="status-item">전체 회원: <span>1234</span></div>
-                    <div className="status-item">블랙리스트 회원: <span>24</span></div>
-                    <div className="status-item">전체 게시글: <span>2341</span></div>
-                    <div className="status-item warning">미처리 신고: <span>31</span></div>
-                    <div className="status-item">오늘 가입 회원: <span>12</span></div>
+                <div className="admin_status-box">
+                    <div className="admin_status-item">전체 회원: <span>1234</span></div>
+                    <div className="admin_status-item">블랙리스트 회원: <span>24</span></div>
+                    <div className="admin_status-item">전체 게시글: <span>2341</span></div>
+                    <div className="admin_status-item admin_warning">미처리 신고: <span>31</span></div>
+                    <div className="admin_status-item">오늘 가입 회원: <span>12</span></div>
                 </div>
             </header>
 
             <main>
 
                 {/* 게시글 관리 */}
-                <section className="section-box">
-                    <div className="section-title">게시글 관리</div>
+                <section className="admin_section-box">
+                    <div className="admin_section-title">게시글 관리</div>
 
-                    <table className="data-table">
+                    <table className="admin_data-table">
                         <thead>
-                            <tr className="table-header-row">
+                            <tr className="admin_table-header-row">
                                 <th>번호</th>
                                 <th>분류</th>
                                 <th>제목</th>
@@ -168,7 +172,7 @@ function AdminPage() {
                         </thead>
                         <tbody>
                             {postList.length > 0 ? postList.map((p) => (
-                                <tr className={`data-row ${p.deleted ? "deleted-row" : ""}`} key={p.mate_post_id}>
+                                <tr className={`admin_data-row ${p.deleted ? "admin_deleted-row" : ""}`} key={p.mate_post_id}>
                                     <td>{p.mate_post_id}</td>
                                     <td>{p.cat_name}</td>
                                     <td>{p.mate_title}</td>
@@ -176,16 +180,19 @@ function AdminPage() {
                                     <td>{p.mem_email || "-"}</td>
                                     <td>{p.report_count}</td>
                                     <td>{p.mate_created_at?.slice(0, 10) || "-"}</td>
-                                    <td className="btn-group">
-                                        <button className="btn blue">상세</button>
+
+                                    <td className="admin_btn-group">
+                                        <button className="admin_btn admin_blue" onClick={() => goToPostDetail(p.mate_post_id)}>
+                                            상세
+                                        </button>
 
                                         {!p.deleted && (
                                             postLoadingMap[p.mate_post_id]
-                                                ? <span className="loading">로딩중...</span>
-                                                : <button className="btn red" onClick={() => deletePost(p.mate_post_id)}>삭제</button>
+                                                ? <span className="admin_loading">로딩중...</span>
+                                                : <button className="admin_btn admin_red" onClick={() => deletePost(p.mate_post_id)}>삭제</button>
                                         )}
 
-                                        {p.deleted && <span className="deleted-text">삭제됨</span>}
+                                        {p.deleted && <span className="admin_deleted-text">삭제됨</span>}
                                     </td>
                                     <td>{p.processed_at?.slice(0, 10) || "-"}</td>
                                 </tr>
@@ -199,12 +206,12 @@ function AdminPage() {
                 </section>
 
                 {/* 회원 관리 */}
-                <section className="section-box">
-                    <div className="section-title">회원 관리</div>
+                <section className="admin_section-box">
+                    <div className="admin_section-title">회원 관리</div>
 
-                    <table className="data-table">
+                    <table className="admin_data-table">
                         <thead>
-                            <tr className="table-header-row">
+                            <tr className="admin_table-header-row">
                                 <th>번호</th>
                                 <th>닉네임</th>
                                 <th>이메일</th>
@@ -218,7 +225,7 @@ function AdminPage() {
                         </thead>
                         <tbody>
                             {memberList.length > 0 ? memberList.map((m) => (
-                                <tr className="data-row" key={m.m_rep_id}>
+                                <tr className="admin_data-row" key={m.m_rep_id}>
                                     <td>{m.m_rep_id}</td>
                                     <td>{m.mem_nn}</td>
                                     <td>{m.mem_email}</td>
@@ -226,16 +233,20 @@ function AdminPage() {
                                     <td>{m.mem_bl === 1 ? "O" : "X"}</td>
                                     <td>{m.m_rep_cont || "-"}</td>
                                     <td>{m.mem_created_at?.slice(0, 10) || "-"}</td>
-                                    <td className="btn-group">
-                                        <button className="btn blue">상세</button>
+
+                                    <td className="admin_btn-group">
+                                        <button className="admin_btn admin_blue" onClick={() => goToMemberDetail(m.m_rep_id)}>
+                                            상세
+                                        </button>
 
                                         {loadingMap[m.m_rep_id]
-                                            ? <span className="loading">로딩중...</span>
+                                            ? <span className="admin_loading">로딩중...</span>
                                             : m.mem_bl === 1
-                                                ? <button className="btn green" onClick={() => toggleBlacklistStatus(m.m_rep_id, 1)}>해제</button>
-                                                : <button className="btn red" onClick={() => toggleBlacklistStatus(m.m_rep_id, 0)}>추가</button>
+                                                ? <button className="admin_btn admin_green" onClick={() => toggleBlacklistStatus(m.m_rep_id, 1)}>해제</button>
+                                                : <button className="admin_btn admin_red" onClick={() => toggleBlacklistStatus(m.m_rep_id, 0)}>추가</button>
                                         }
                                     </td>
+
                                     <td>{m.processed_at?.slice(0, 10) || "-"}</td>
                                 </tr>
                             )) : (
@@ -246,6 +257,7 @@ function AdminPage() {
                         </tbody>
                     </table>
                 </section>
+
             </main>
         </div>
     );
