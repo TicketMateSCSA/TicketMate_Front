@@ -84,11 +84,15 @@ function Navigator() {
                 setData(json);
                 setTotalPage(json?.result?.totalPages || 1);
             } catch (err) {
-                if (err.name !== "AbortError") {
-                    setError(err.message);
-                    setData(null);
-                }
-            } finally {
+                console.error("검색 API 오류:", err);
+
+                // 404 포함 모든 실패 → 검색 결과 없음 처리
+                setData({
+                    result: {
+                        postPreviewDTOList: []
+                    }
+                });
+            }finally {
                 setLoading(false);
             }
         };
@@ -115,16 +119,16 @@ function Navigator() {
     };
 
     const handleKeyDown = (e) => {
-        const currentList = data?.result?.postPreviewDTOList;
+        const currentList = data?.result?.postPreviewDTOList || [];
         if (e.key === "Enter" && currentList?.length > 0) handleSelect(currentList[0]);
     };
 
     const handleButton = () => {
-        const currentList = data?.result?.postPreviewDTOList;
+        const currentList = data?.result?.postPreviewDTOList || [];
         if (currentList?.length > 0) handleSelect(currentList[0]);
     };
 
-    const list = data?.result?.postPreviewDTOList;
+    const list = data?.result?.postPreviewDTOList ?? [];
 
     return (
         <nav>
@@ -145,6 +149,7 @@ function Navigator() {
                     <ul className="dropdown-list2">
                         {loading && <li className="dropdown-item2 disabled">검색 중...</li>}
                         {error && <li className="dropdown-item2 disabled">검색 결과 없음</li>}
+                        
                         {!loading && !error && (
                             <>
                                 {list?.length === 0 ? (

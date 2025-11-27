@@ -29,7 +29,7 @@ function App() {
             {/* 기본 경로 */ }
             <Route path = "/" element={<HomePage/>}/>
             <Route path = "/host" element={<HostPage/>}/>
-            {/* <Route path = "/host" element={<ProtectedRoute><HostPage/></ProtectedRoute>}/> */}
+            <Route path = "/host" element={<ProtectedRoute><HostPage/></ProtectedRoute>}/>
             <Route path = "/login" element={<LoginPage/>}/>
             <Route path = "/signin" element={<SigninPage/>}/>
             <Route path = "/search" element={<SearchPage/>}/>
