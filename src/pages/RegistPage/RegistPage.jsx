@@ -1,8 +1,8 @@
 import "./RegistPage.css";
 
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-
+import { useNavigate,useLocation, useParams } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 import Navigator from "../../components/Navigator/Navigator";
 
 import successIcon from '../../assets/icons/request-success-icon.png';
@@ -14,6 +14,12 @@ const requestUrl = `${import.meta.env.VITE_POSTS_URL}/requests`;
 
 function RegistSection({item}){
     const navigate = useNavigate();
+    const { isAuthenticated, isLoading } = useAuth();    
+    if (!isAuthenticated) {
+    // 로그인 안 됐으면 로그인 페이지로 이동
+        navigate("/login", { replace: true, state: { from:  location.pathname } });
+    }
+    
     
     const stateMapRev = {0: "전체", 1: "모집중", 2: "모집완료"};
     const ageMapRev = {0: '10대', 1: '20대', 2: '30대', 3: '40대', 4: '50대+'}

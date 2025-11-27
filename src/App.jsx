@@ -28,14 +28,16 @@ function App() {
           <Routes>
             {/* 기본 경로 */ }
             <Route path = "/" element={<HomePage/>}/>
-            <Route path = "/host" element={<HostPage/>}/>
-            {/* <Route path = "/host" element={<ProtectedRoute><HostPage/></ProtectedRoute>}/> */}
+            {/* <Route path = "/host" element={<HostPage/>}/> */}
+            <Route path = "/host" element={<ProtectedRoute><HostPage/></ProtectedRoute>}/>
             <Route path = "/login" element={<LoginPage/>}/>
             <Route path = "/signin" element={<SigninPage/>}/>
             <Route path = "/search" element={<SearchPage/>}/>
             <Route path = "/detail/:matePostId" element={<DetailPage/>}/>
             <Route path = "/regist/:reqId" element={<ProtectedRoute><RegistPage/></ProtectedRoute>}/>
+            {/* <Route path = "/regist/:reqId" element={<RegistPage/>}/>  */}
             <Route path = "/myPage" element={<ProtectedRoute><MyPage/></ProtectedRoute>}/>
+             {/* <Route path = "/admin/login" element={<AdminLoginPage/>}/> */}
             <Route path = "/admin/login" element={<ProtectedRoute><AdminLoginPage/></ProtectedRoute>}/>
             <Route path = "/admin" element={<ProtectedRoute><AdminPage/></ProtectedRoute>}/>
             <Route path = "/info" element={<Info/>}/>

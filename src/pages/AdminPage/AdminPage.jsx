@@ -5,6 +5,12 @@ import { apiFetch } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 
 function AdminPage() {
+    const { isAuthenticated, isLoading } = useAuth();    
+    if (!isAuthenticated) {
+    // 로그인 안 됐으면 로그인 페이지로 이동
+        navigate("/login", { replace: true, state: { from: "/admin/login" } });
+    }
+
     const { adminProfile } = useAuth();
     const [memberList, setMemberList] = useState([]);
     const [postList, setPostList] = useState([]);
