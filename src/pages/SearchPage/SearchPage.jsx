@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios'; // 1. Axios import 추가
 
 import "./SearchPage.css";
 import Navigator from "../../components/Navigator/Navigator";
@@ -12,8 +13,23 @@ const filterUrl = `${import.meta.env.VITE_POSTS_URL}/posts/filter`;
 const catUrl = `${import.meta.env.VITE_POSTS_URL}/categories`;
 
 const stateMapRev = {0: "전체", 1: "모집중", 2: "모집완료"};
-const ageMapRev = {0: '10대', 1: '20대', 2: '30대', 3: '40대', 4: '50대+'}
+const ageMapRev = {2: '10대', 4: '20대', 8: '30대', 16: '40대', 32: '50대+'}
 const genderMapRev = {0: '무관', 1: '남성', 2: '여성'}
+
+function DecodeAgeMask({mask}) {
+  const result = [];
+
+  for (const [bit, label] of Object.entries(ageMapRev)) {
+    const bitValue = Number(bit);
+
+    if (mask & bitValue) {
+      result.push(label);
+    }
+  }
+
+  return result.join(" ");
+}
+{/* <DecodeAgeMask mask= {item.mem_age_range}/> */}
 
 function SearchSection({item}){
     const navigate = useNavigate();
@@ -93,26 +109,24 @@ function Search(){
     const [totalPage, setTotalPage] = useState(1); // 페이지 개수
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [errorMsg, setErrorMsg] = useState("");
     
-    // 1. 초기 카테고리 데이터 Fetch (한 번만 실행)
+    // 1. 초기 카테고리 데이터 Fetch
     useEffect(() => {
-        fetch(catUrl)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                // 카테고리 데이터를 전역 상태가 아닌 컴포넌트 상태로 저장
-                setCategoryList(data?.result?.getCategoryDTOList || []);
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get(catUrl);
+                setCategoryList(response.data?.result?.getCategoryDTOList || []);
                 setLoading(false);
-            })
-            .catch((error) => {
-                setError(error.message);
+            } catch (error) {
+                // 카테고리 로딩 실패는 Critical하지 않으므로, console.error만 하고 UI는 로딩 완료로 표시
+                // console.error("카테고리 로딩 실패:", error);
+                setError("카테고리 목록을 불러오지 못했습니다.");
                 setLoading(false);
-            });
+            } finally{
+                console.clear();
+            }
+        };
+        fetchCategories();
     }, []);
 
 
@@ -169,68 +183,69 @@ function Search(){
 
     
     const fetchData = useCallback(async () => {
-        setLoading(true); // 새 데이터 로딩 시작
+        setLoading(true);
         setError(null);
         const queryString = buildQuery();
 
         try {
-            // filterUrl에 쿼리스트링 추가
             const url = `${filterUrl}?${queryString}`
-            const response = await fetch(url);
+            const response = await axios.get(url); 
             
-            // if (!response.ok) {
-            //     throw new Error(`HTTP error! status: ${response.status}`);
-            // }
-
-            const data = await response.json();
-
-            const list = data?.result?.postPreviewDTOList.slice(0, 4) || []; // 4개
+            const data = response.data;
             // console.log(data);
-
-            // TODO
+            const list = data?.result?.postPreviewDTOList || []; 
+            
             const totalCount = data?.result?.totalElements;
-            setTotalPostCount(totalCount); 
+            setTotalPostCount(totalCount || 0); 
             const tPage = data?.result?.totalPages;
-            setTotalPage(tPage);
-
+            setTotalPage(tPage || 1);
+            
             setDataList(list);
             setLoading(false);
         } catch (err) {
-            // console.error("데이터 fetching 오류:", err);
-            setError(err.message);
-            setDataList([]); // 오류 발생 시 목록 초기화
+            if (err.response) {
+                if (err.response.status === 404 || err.response.status === 401) {
+                    // console.warn(`HTTP ${err.response.status} 응답 수신: 데이터 없음 또는 권한 부족으로 처리.`);
+                    
+                    setDataList([]); 
+                    setTotalPostCount(0); 
+                    setTotalPage(1); 
+                } else {
+                    // console.error("서버 응답 오류:", err.response.data);
+                    setError(err.response.data?.message || `HTTP Error: ${err.response.status}`);
+                    setDataList([]); 
+                }
+            } else {
+                // console.error("네트워크 또는 요청 설정 오류:", err.message);
+                setError(err.message);
+                setDataList([]); 
+            }
             setLoading(false);
+        } finally{
+            
+            console.clear();
         }
-    }, [buildQuery]); // buildQuery가 변경될 때만 fetchData 재정의
+    }, [buildQuery]);
 
     useEffect(() => {
+    if (categoryList.length > 0) {
         fetchData();
-        // fetchData가 buildQuery를 의존하므로, buildQuery의 의존성(필터 조건들)이 변경되면
-        // fetchData가 새로운 쿼리로 재요청하게 됩니다.
-    }, [fetchData]);
-
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
-    // console.log(catList);
+    }
+    }, [fetchData, categoryList]); // 카테고리 불러와진 후 실행되도록
 
     const handleChangeCategories = (event) => {
         const { value, checked } = event.target;
-
-        if (value === "전체") {
-        if (checked) {
-            // 전체 체크하면 나머지 해제
+        if (value === "전체") {             
             setSelectedCategories(["전체"]);
         } else {
-            setSelectedCategories([]);
+            if (checked) {
+                setSelectedCategories([...selectedCategories.filter(c => c !== "전체"), value]);
+            } else {
+                const newSelected = selectedCategories.filter((c) => c !== value);
+                setSelectedCategories(newSelected.length === 0 ? ["전체"] : newSelected);
+            }
         }
-        } else {
-        if (checked) {
-            // 나머지 선택하면 전체 해제
-            setSelectedCategories([...selectedCategories.filter(c => c !== "전체"), value]);
-        } else {
-            setSelectedCategories(selectedCategories.filter((c) => c !== value));
-        }
-        }
+        
     };
 
     const handleChangeState = (event) => {
@@ -241,19 +256,17 @@ function Search(){
         const { value, checked } = event.target;
 
         if (value === "전체") {
-        if (checked) {
             setSelectedAge(["전체"]);
         } else {
-            setSelectedAge([]);
-        }
-        } else {
-        if (checked) {
-            setSelectedAge([...selectedAge.filter(c => c !== "전체"), value]);
-        } else {
-            setSelectedAge(selectedAge.filter((c) => c !== value));
-        }
+            if (checked) {
+                setSelectedAge([...selectedAge.filter(c => c !== "전체"), value]);
+            } else {
+                const newSelected = selectedAge.filter((c) => c !== value);
+                setSelectedAge(newSelected.length === 0 ? ["전체"] : newSelected);
+            }
         }
     };
+
 
      const handleChangeGender = (event) => {
         setSelectedGender(event.target.value);
@@ -273,6 +286,16 @@ function Search(){
     const handleChangeSort = (event) => {
         setSelectedSort(event.target.value);
     };
+
+    // 로딩 및 에러 메시지
+    const LoadingSpinner = () => (
+        <div className="flex justify-center items-center py-20">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-indigo-600"></div>
+          <p className="ml-4 text-lg text-indigo-600">목록을 불러오는 중...</p>
+        </div>
+      );
+
+    if (loading) return <LoadingSpinner />;
 
     return (
         <div className="search-page-container">
