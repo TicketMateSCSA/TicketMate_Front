@@ -111,31 +111,35 @@ export const AuthProvider = ({ children }) => {
     // ------ 새로고침 시 세션 복원 ------
     useEffect(() => {
         const restore = async () => {
-            try {
-                // 관리자 세션이 우선
-                const admin = await fetchAdminProfile();
-                if (admin) {
-                    setAdminProfile(admin);
-                    setIsAuthenticated(true);
-                    return;
-                }
-
-                const member = await fetchMyProfile();
-                if (member) {
-                    setUserProfile(member);
-                    setIsAuthenticated(true);
-                    return;
-                }
-
-                setIsAuthenticated(false);
-
-            } catch (e) {
-                setIsAuthenticated(false);
-                setUserProfile(null);
-                setAdminProfile(null);
-            } finally {
-                setIsLoading(false);
+        try {
+            // 1. 일반 회원 프로필을 먼저 확인
+            const member = await fetchMyProfile();
+            if (member) {
+                setUserProfile(member);
+                setIsAuthenticated(true);
+                return;
             }
+
+            // 2. 일반 회원이 아니라면 관리자 프로필 확인
+            const admin = await fetchAdminProfile();
+            if (admin) {
+                setAdminProfile(admin);
+                setIsAuthenticated(true);
+                return;
+            }
+
+            // 3. 둘 다 없음 → 비로그인
+            setIsAuthenticated(false);
+            setUserProfile(null);
+            setAdminProfile(null);
+
+        } catch (e) {
+            setIsAuthenticated(false);
+            setUserProfile(null);
+            setAdminProfile(null);
+        } finally {
+            setIsLoading(false);
+        }
         };
 
         restore();
