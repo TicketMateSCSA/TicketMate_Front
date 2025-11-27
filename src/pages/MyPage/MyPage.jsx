@@ -10,7 +10,7 @@ const myPostURL = `${import.meta.env.VITE_POSTS_URL}/requests/recieved`;
 const myGetURL = `${import.meta.env.VITE_POSTS_URL}/requests/applicants`;
 const myRegistURL = `${import.meta.env.VITE_POSTS_URL}/requests/sent`;
 
-const ageMap = {0: '10대', 1: '20대', 2: '30대', 3: '40대', 4: '50대+'};
+const ageMap = {1: '전체', 2: '10대', 4: '20대', 8: '30대', 16: '40대', 32: '50대+'};
 const genderMap = {0: '무관', 1: '남성', 2: '여성'};
 
 const stateMapRev = {0: "전체", 1: "모집중", 2: "모집완료"};
