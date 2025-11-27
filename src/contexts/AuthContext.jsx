@@ -1,28 +1,46 @@
 import React, { createContext, useState, useContext, useCallback, useEffect } from 'react';
 import { apiFetch } from '../utils/api';
 
-// GET members/me 호출(새로고침 시 세션 확인)
+// 일반 회원 정보 조회
 const fetchMyProfile = async () => {
     const memUrl = `${import.meta.env.VITE_POSTS_URL}/members/me`;
     const res = await apiFetch(memUrl, { method: "GET" });
-    // 서버 응답 구조가 { code, result } 라면 result를 반환
     return res.result || null;
 };
 
-// 1. Context 생성
+// 관리자 정보 조회
+const fetchAdminProfile = async () => {
+    const adminUrl = `${import.meta.env.VITE_POSTS_URL}/admin/me`;
+    const res = await apiFetch(adminUrl, { method: "GET" });
+    return res.result || null;
+};
+
+// AuthContext 생성
 const AuthContext = createContext(null);
 
-// 2. Provider 컴포넌트
 export const AuthProvider = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [userProfile, setUserProfile] = useState(null);
-    const [isLoading, setIsLoading] = useState(true); // 로딩 상태
 
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const [userProfile, setUserProfile] = useState(null);     // 일반 회원
+    const [adminProfile, setAdminProfile] = useState(null);   // 관리자 전용
+
+    // 일반 로그인 성공 처리
     const loginSuccess = useCallback((userData) => {
         setIsAuthenticated(true);
+        setAdminProfile(null);   // 일반 로그인 시 관리자 정보 초기화
         setUserProfile(userData);
     }, []);
 
+    // 관리자 로그인 성공 처리
+    const adminLoginSuccess = useCallback((adminData) => {
+        setIsAuthenticated(true);
+        setUserProfile(null);    // 관리자 로그인 시 회원 정보 초기화
+        setAdminProfile(adminData);
+    }, []);
+
+    // ------ 일반 로그인 ------
     const login = useCallback(async (email, password) => {
         try {
             const loginUrl = `${import.meta.env.VITE_POSTS_URL}/login`;
@@ -35,63 +53,108 @@ export const AuthProvider = ({ children }) => {
             });
 
             if (res.code === "COMMON200") {
-                // 로그인 성공 후 실제 회원 정보 가져오기
                 const memberProfile = await fetchMyProfile();
                 loginSuccess(memberProfile);
-            } else if (res.code === "NON_MEMBER400") {
-                alert(res.message);
-            } else if (res.code === "WRONG_PASSWORD401") {
+            } else {
                 alert(res.message);
             }
 
             return res;
+
         } catch (error) {
-            console.error("예상치 못한 오류:", error);
+            console.error("로그인 오류:", error);
             throw error;
         }
     }, [loginSuccess]);
 
+    // ------ 관리자 로그인 ------
+    const admin_login = useCallback(async (email, password, key) => {
+        try {
+            const loginUrl = `${import.meta.env.VITE_POSTS_URL}/admin/login`;
+            const body = { mem_email: email, mem_password: password, admin_key: key };
+
+            const res = await apiFetch(loginUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+
+            if (res.code === "COMMON200") {
+                const profile = await fetchAdminProfile();
+                adminLoginSuccess(profile);
+            } else {
+                alert(res.message);
+            }
+
+            return res;
+
+        } catch (error) {
+            console.error("관리자 로그인 오류:", error);
+            throw error;
+        }
+    }, [adminLoginSuccess]);
+
+    // ------ 로그아웃 ------
     const logout = useCallback(async () => {
         try {
             const logoutUrl = `${import.meta.env.VITE_POSTS_URL}/logout`;
-            await apiFetch(logoutUrl, { method: "POST" }); // Session 기반이면 쿠키 삭제 등 처리
-        } catch (error) {
-            console.error("로그아웃 실패:", error);
+            await apiFetch(logoutUrl, { method: "POST" });
+        } catch (e) {
+            console.error("로그아웃 오류:", e);
         } finally {
             setIsAuthenticated(false);
             setUserProfile(null);
+            setAdminProfile(null);
         }
     }, []);
 
-    // 새로고침 시 로그인 상태 복구
+    // ------ 새로고침 시 세션 복원 ------
     useEffect(() => {
-        const loadUser = async () => {
+        const restore = async () => {
             try {
-                const memberProfile = await fetchMyProfile();
-                if (memberProfile) {
+                // 관리자 세션이 우선
+                const admin = await fetchAdminProfile();
+                if (admin) {
+                    setAdminProfile(admin);
                     setIsAuthenticated(true);
-                    setUserProfile(memberProfile);
-                } else {
-                    setIsAuthenticated(false);
-                    setUserProfile(null);
+                    return;
                 }
-            } catch (error) {
+
+                const member = await fetchMyProfile();
+                if (member) {
+                    setUserProfile(member);
+                    setIsAuthenticated(true);
+                    return;
+                }
+
+                setIsAuthenticated(false);
+
+            } catch (e) {
                 setIsAuthenticated(false);
                 setUserProfile(null);
+                setAdminProfile(null);
             } finally {
                 setIsLoading(false);
             }
         };
-        loadUser();
+
+        restore();
     }, []);
 
     return (
         <AuthContext.Provider value={{
             isAuthenticated,
-            userProfile,
             isLoading,
-            loginSuccess,
+
+            userProfile,
+            adminProfile,
+
             login,
+            loginSuccess,
+
+            admin_login,
+            adminLoginSuccess,
+
             logout
         }}>
             {children}
@@ -99,5 +162,4 @@ export const AuthProvider = ({ children }) => {
     );
 };
 
-// 4. 사용자 정의 훅
 export const useAuth = () => useContext(AuthContext);
