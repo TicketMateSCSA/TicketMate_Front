@@ -171,7 +171,7 @@ function Regist(){
                         
                         <div className="rdb-body1">
                             <p>공연</p>
-                            <p className="nn">{obj.perf_name}</p>
+                            <p className="nn" style={{display: "block", width: "120px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>{obj.perf_name}</p>
                             <p>관람일시</p>
                             <p className="nn">{slicedDate}</p>
 
