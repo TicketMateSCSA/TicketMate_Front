@@ -109,37 +109,37 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     // ------ 새로고침 시 세션 복원 ------
-    // useEffect(() => {
-    //     const restore = async () => {
-    //         try {
-    //             // 관리자 세션이 우선
-    //             const admin = await fetchAdminProfile();
-    //             if (admin) {
-    //                 setAdminProfile(admin);
-    //                 setIsAuthenticated(true);
-    //                 return;
-    //             }
+    useEffect(() => {
+        const restore = async () => {
+            try {
+                // 관리자 세션이 우선
+                const admin = await fetchAdminProfile();
+                if (admin) {
+                    setAdminProfile(admin);
+                    setIsAuthenticated(true);
+                    return;
+                }
 
-    //             const member = await fetchMyProfile();
-    //             if (member) {
-    //                 setUserProfile(member);
-    //                 setIsAuthenticated(true);
-    //                 return;
-    //             }
+                const member = await fetchMyProfile();
+                if (member) {
+                    setUserProfile(member);
+                    setIsAuthenticated(true);
+                    return;
+                }
 
-    //             setIsAuthenticated(false);
+                setIsAuthenticated(false);
 
-    //         } catch (e) {
-    //             setIsAuthenticated(false);
-    //             setUserProfile(null);
-    //             setAdminProfile(null);
-    //         } finally {
-    //             setIsLoading(false);
-    //         }
-    //     };
+            } catch (e) {
+                setIsAuthenticated(false);
+                setUserProfile(null);
+                setAdminProfile(null);
+            } finally {
+                setIsLoading(false);
+            }
+        };
 
-    //     restore();
-    // }, []);
+        restore();
+    }, []);
 
     return (
         <AuthContext.Provider value={{
