@@ -433,23 +433,23 @@ function MyPage(){
 
     let bgc;
 
-    if (userProfile.mem_score < 10){
+    if (userProfile?.mem_score < 10){
         bgc = "#0fae3f";
-    }else if(userProfile.mem_score < 20){
+    }else if(userProfile?.mem_score < 20){
         bgc = "#05ea4a";
-    }else if(userProfile.mem_score < 30){
+    }else if(userProfile?.mem_score < 30){
         bgc = "#40ff00";
-    }else if(userProfile.mem_score < 40){
+    }else if(userProfile?.mem_score < 40){
         bgc = "#fbff00";
-    }else if(userProfile.mem_score < 50){
+    }else if(userProfile?.mem_score < 50){
         bgc = "#ffd900";
-    }else if(userProfile.mem_score < 60){
+    }else if(userProfile?.mem_score < 60){
         bgc = "#ffa600";
-    }else if(userProfile.mem_score < 70){
+    }else if(userProfile?.mem_score < 70){
         bgc = "#ff8800";
-    }else if(userProfile.mem_score < 80){
+    }else if(userProfile?.mem_score < 80){
         bgc = "#ff3c00";
-    }else if(userProfile.mem_score < 90){
+    }else if(userProfile?.mem_score < 90){
         bgc = "#ff1100";
     }else{
         bgc = "#d40f0f";
@@ -472,21 +472,21 @@ function MyPage(){
                 <div className="mypage-left">
                     <div className='mp-left-box'>
                         <img src={userProfile?.mem_img_url? userProfile.mem_img_url: noProfile}/>
-                        <p className="mp-left-box-name">{userProfile?.mem_nn? userProfile.mem_nn : userProfile.mem_name}</p>
+                        <p className="mp-left-box-name">{userProfile?.mem_nn? userProfile.mem_nn : userProfile?.mem_name}</p>
                         <p className="mp-left-box-email">{userProfile?.mem_email}</p>
                 
                         <div className="mp-left-mate-temp">
-                            <p>메이트 온도 <span style={{fontWeight:"500"}}>{userProfile.mem_score}°</span></p>
+                            <p>메이트 온도 <span style={{fontWeight:"500"}}>{userProfile?.mem_score}°</span></p>
                             <div className="tempBack"></div>
                             <div className="temp"
-                                style={{backgroundColor: bgc, width: `${userProfile.mem_score}%`}}></div>
+                                style={{backgroundColor: bgc, width: `${userProfile?.mem_score}%`}}></div>
                         </div>
 
                         <table>
                             <tbody>
-                                <tr><td>연령대</td><td style={{textAlign:"right"}}>{ageMap[userProfile.mem_age_range]}</td></tr>
-                                <tr><td>성별</td><td style={{textAlign:"right"}}>{genderMap[userProfile.mem_gender]}</td></tr>
-                                <tr><td>메이트 횟수</td><td style={{textAlign:"right"}}>{userProfile.mem_num_of_mates}회</td></tr>
+                                <tr><td>연령대</td><td style={{textAlign:"right"}}>{ageMap[userProfile?.mem_age_range]}</td></tr>
+                                <tr><td>성별</td><td style={{textAlign:"right"}}>{genderMap[userProfile?.mem_gender]}</td></tr>
+                                <tr><td>메이트 횟수</td><td style={{textAlign:"right"}}>{userProfile?.mem_num_of_mates}회</td></tr>
                             </tbody>
                         </table>
 

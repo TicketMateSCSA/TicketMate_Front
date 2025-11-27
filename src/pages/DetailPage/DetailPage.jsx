@@ -129,7 +129,7 @@ function Detail(){
         try {
             if (isAuthenticated){
                 
-                if (userProfile.mem_id == obj.host_id){
+                if (userProfile?.mem_id == obj.host_id){
                     alert('자신의 게시글에는 신청할 수 없습니다.')
                 }else{
                     if (!myContent){
@@ -248,12 +248,12 @@ function Detail(){
                         <div>
                             <p className="right-content-my-info">내 정보</p>
                             <div className="right-left-my-info">
-                                <p>닉네임&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{userProfile.mem_nn? userProfile.mem_nn : userProfile.mem_name}</p>
-                                <p>성별&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{genderMap[userProfile.mem_gender]}</p>
+                                <p>닉네임&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{userProfile?.mem_nn? userProfile?.mem_nn : userProfile?.mem_name}</p>
+                                <p>성별&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{genderMap[userProfile?.mem_gender]}</p>
                             </div>
                             <div className="right-right-my-info">
-                                <p>연령대&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ageMap[userProfile.mem_age_range]}</p>
-                                <p>메이트 온도&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{userProfile.mem_score}°</p>
+                                <p>연령대&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ageMap[userProfile?.mem_age_range]}</p>
+                                <p>메이트 온도&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{userProfile?.mem_score}°</p>
                             </div> 
                         </div>
                     ) : <p className="right-needLogin">메이트를 신청하려면 로그인이 필요합니다.</p>}
