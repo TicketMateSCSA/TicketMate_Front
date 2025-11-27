@@ -56,7 +56,13 @@ function Detail(){
     const [openModalPost, setOpenModalPost] = useState(false);
 
     const handleMyContent = (e) => {
-        setMyContent(e.target.value);
+        const value = e.target.value;
+
+        if (value.length <= 100) {
+            setMyContent(value);
+        }else{
+            alert("신청 메시지를 100자 이내로 입력해주세요.")
+        }
     }
 
     const fetchData = async () => {

@@ -236,11 +236,12 @@ div.gender-btn{
     margin-top: 15px;
     margin-bottom: 0px;
 
-    display: inline-block;     /* inline-block 필요 */
-    width: 100%;   
+    display: block;     /* inline-block 필요 */
+    width: 650px;   
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis;
+    /* background-color: #000000; */
 }
 
 span.search-section-category{

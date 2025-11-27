@@ -50,11 +50,23 @@ function HostPage(){
 
     // 핸들러 ---------------------------
     const handleTitle = (e) => {
-        setTitle(e.target.value);
+        const value = e.target.value;
+
+        if (value.length <= 80) {
+            setTitle(value);
+        }else{
+            alert("제목을 80자 이내로 입력해주세요.")
+        }
     }
 
     const handleContent = (e) => {
-        setContent(e.target.value);
+        const value = e.target.value;
+
+        if (value.length <= 1000) {
+            setContent(value);
+        }else{
+            alert("상세 내용을 1000자 이내로 입력해주세요.")
+        }
     }
 
     const handleViewDate = (e) => {
@@ -66,7 +78,13 @@ function HostPage(){
     }
 
     const handleLocTime = (e) => {
-        setLocTime(e.target.value);
+        const value = e.target.value;
+
+        if (value.length <= 30) {
+            setLocTime(value);
+        }else{
+            alert("만남 장소/시간을 30자 이내로 입력해주세요.")
+        }
     }
 
     const handleNumNeed = (e) => {
@@ -78,7 +96,13 @@ function HostPage(){
     }
 
     const handleHashTag = (e) => {
-        setHashTag(e.target.value);
+        const value = e.target.value;
+
+        if (value.length <= 10) {
+            setHashTag(value);
+        }else{
+            alert("태그를 10자 이내로 입력해주세요.")
+        }
     }
 
     const handleChangeAge = (event) => {
@@ -350,7 +374,6 @@ function HostPage(){
                         value={title}
                         placeholder='함께 공연 보실 분 구합니다!'
                         onChange={handleTitle}/>
-                    
                     <p className="date">관람 날짜<span className="star">*</span></p>
                     <input
                         className="chooseDate"
@@ -453,7 +476,7 @@ function HostPage(){
 onChange={handleContent} />
 
                     <p className="tag">태그</p>
-                    <input value={hashTag} className="writeTag" placeholder='#태그1 #태그2 #태그3'
+                    <input value={hashTag} className="writeTag" placeholder='#태그1 #태그2'
                     onChange={handleHashTag} />
 
                     
