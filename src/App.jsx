@@ -34,12 +34,11 @@ function App() {
             <Route path = "/detail/:matePostId" element={<DetailPage/>}/>
             <Route path = "/regist/:matePostId" element={<ProtectedRoute><RegistPage/></ProtectedRoute>}/>
             <Route path = "/myPage" element={<ProtectedRoute><MyPage/></ProtectedRoute>}/>
-          </Routes>
-        </AppContainer>
-        <Routes>
             <Route path = "/admin/login" element={<ProtectedRoute><AdminLoginPage/></ProtectedRoute>}/>
             <Route path = "/admin" element={<ProtectedRoute><AdminPage/></ProtectedRoute>}/>
-        </Routes>
+          </Routes>
+        </AppContainer>
+
       </BrowserRouter>
     </AuthProvider>
   )
