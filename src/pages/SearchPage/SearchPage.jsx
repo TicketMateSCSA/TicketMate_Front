@@ -247,7 +247,9 @@ function Search(){
             setSelectedAge(["전체"]);
         } else {
             if (checked) {
-                setSelectedAge([...selectedAge.filter(c => c !== "전체"), value]);
+                const newSelected = [...selectedAge.filter(c => c !== "전체"), value];
+                setSelectedAge(newSelected.length === 5 ? ["전체"] : newSelected); // 다 찼는지
+
             } else {
                 const newSelected = selectedAge.filter((c) => c !== value);
                 setSelectedAge(newSelected.length === 0 ? ["전체"] : newSelected);

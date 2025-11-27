@@ -133,12 +133,6 @@ input.searchShow{
     margin: 0;
     font-size: 13px;
 
-    display: inline-block;     /* inline-block 필요 */
-    width: 100%;   
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis;
-
 }
 /* 2-2. 글 관련 */
 .form > .post{
@@ -384,7 +378,7 @@ input.searchShow{
 
 .dropdown-list {
     border: 1px solid #BECBFF;
-    max-height: 150px;
+    max-height: 200px;
     overflow-y: auto;
     position: absolute;
     top: 61.5px;
@@ -394,7 +388,7 @@ input.searchShow{
     z-index: 10;
     padding: 0;
     list-style: none;
-
+    overflow-y: scroll;
     font-size: 13px;
     padding: 2px 8px;
 }

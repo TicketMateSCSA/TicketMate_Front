@@ -88,8 +88,9 @@ function HostPage(){
             setSelectedAge(["전체"]);
         } else {
             if (checked) {
-                setSelectedAge([...selectedAge.filter(c => c !== "전체"), value]);
-                console.log(selectedAge);
+                const newSelected = [...selectedAge.filter(c => c !== "전체"), value];
+                setSelectedAge(newSelected.length === 5 ? ["전체"] : newSelected); // 다 찼는지
+
             } else {
                 const newSelected = selectedAge.filter((c) => c !== value);
                 setSelectedAge(newSelected.length === 0 ? ["전체"] : newSelected);
@@ -210,14 +211,11 @@ function HostPage(){
         // 2. 서버로 데이터를 전송합니다.
         const result = await postData(postURL, dataToSend); 
         
-        console.log('Post Success:', result);
+        // console.log('Post Success:', result);
         alert("메이트 모집글이 성공적으로 등록되었습니다!");
 
-        
-        navigate(`/detail?mate_post_id=${result.result}`)
-
-        // // 3. 성공적으로 전송되면 폼을 초기화합니다.
-        // resetForm(); 
+        // console.log(result.result);
+        navigate(`/detail/${result.result}`)
 
     } catch (error) {
         console.error('Submission failed:', error);
@@ -309,11 +307,11 @@ function HostPage(){
                         onKeyDown={handleKeyDown}
                     />
 
-                    {open && query && (
+                    {open &&  (
                         <ul className="dropdown-list">
-                            {filtered.length === 0 && (
-                                <li className="dropdown-item disabled">검색 결과 없음</li>
-                            )}
+                            {query && filtered.length == 0 &&
+                            (<li>
+                                검색 결과 없음</li>)}
                             {filtered.map((opt, idx) => (
                                 <li
                                     key={idx}
