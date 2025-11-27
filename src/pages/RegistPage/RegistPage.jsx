@@ -13,6 +13,7 @@ const postsUrl = `${import.meta.env.VITE_POSTS_URL}/posts`;
 const requestUrl = `${import.meta.env.VITE_POSTS_URL}/requests`;
 
 function RegistSection({item}){
+    const navigate = useNavigate();
     
     const stateMapRev = {0: "전체", 1: "모집중", 2: "모집완료"};
     const ageMapRev = {0: '10대', 1: '20대', 2: '30대', 3: '40대', 4: '50대+'}
@@ -27,8 +28,14 @@ function RegistSection({item}){
     dateNtime[1] = dateNtime[1].split(":").slice(0, 2).join(":");
     const slicedDate = dateNtime.slice(0, 2).join(" ");
 
+    // 버튼 클릭
+    const handleClick = async (item) => {
+        // console.log(item.mate_post_id);
+        navigate(`/detail/${item.mate_post_id}`);  
+    }
+
     return (
-        <div className="regist-section-func">
+        <div className="regist-section-func" onClick={() => handleClick(item)}>
             <img className="regist-section-img" 
                 src={item.perf_img_url ? item.perf_img_url : noImage}
                 alt={item.perf_name}/>
@@ -116,7 +123,7 @@ function Regist(){
         } catch (err) {
             // console.error(err);
         } finally{
-            // console.clear();
+            console.clear();
         }
     };
 
