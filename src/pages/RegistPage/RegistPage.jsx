@@ -114,7 +114,9 @@ function Regist(){
             const data = await response.json();
             setReqData(data);
         } catch (err) {
-            console.error(err);
+            // console.error(err);
+        } finally{
+            console.clear();
         }
     };
 
@@ -197,7 +199,7 @@ function Regist(){
             <div className="regist-recommend">
                 {list
                 ?.filter(item => item.mate_status === 1) // 모집 중인
-                .slice(0, 2) // 상위 6개
+                .slice(0, 2) 
                 .map((item) => (
                     <RegistSection key={item.mate_post_id} item={item}/>
                     ))}

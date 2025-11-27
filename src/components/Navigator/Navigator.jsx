@@ -112,7 +112,7 @@ function Navigator(){
                 }
 
             } catch (err) {
-                if (err.name === "AbortError") return; // 🔥 취소된 요청은 무시
+                if (err.name === "AbortError") return; 
                 setError(err.message);
                 setData(null);
             } finally {
