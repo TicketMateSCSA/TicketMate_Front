@@ -261,6 +261,7 @@ function HostPage(){
         })
         .then((data) => {
             // console.log(data);
+            console.clear();
             setData(data);
             setLoading(false);
         })
@@ -378,29 +379,24 @@ function HostPage(){
                     <input
                         className="chooseDate"
                         type="date"
-                        value={selectedShow ? selectedShow.perf_start_date : ""}
+                        value={viewDate || ""}
                         min={selectedShow 
                                 ? (selectedShow.perf_start_date > today ? selectedShow.perf_start_date : today)
                                 : today}
                         max={selectedShow ? selectedShow.perf_end_date : ""}
-                        onChange={(e) => {
-                            handleViewDate(e);
-                            setSelectedShow(prev => ({ ...prev, perf_start_date: e.target.value }))
-                        }}
-                        />
+                        onChange={handleViewDate}
+                    />
                     
                     <p className="time">관람 시간<span className="star">*</span></p>
                     <input
                         className="chooseTime"
                         type="time"
-                        value={selectedShow ? selectedShow.perf_start_time : ""}
+                        value={viewTime || ""}
                         min={selectedShow ? selectedShow.perf_start_time : ""}
                         max={selectedShow ? selectedShow.perf_end_time : ""}
-                        onChange={(e) =>
-                            {handleViewTime(e);
-                            setSelectedShow(prev => ({ ...prev, perf_start_time: e.target.value }))
-                            }}
-                        />
+                        onChange={handleViewTime}
+                    />
+
 
                     <p className="peopleNum">모집 인원<span className="star">*</span></p>
                     <input className="choosePeopleNum" type='number' min={1} 

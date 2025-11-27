@@ -129,10 +129,14 @@ function Detail(){
         try {
             if (isAuthenticated){
                 
-                if (!myContent){
-                    alert('신청 메시지를 입력해주세요.')
+                if (userProfile.mem_id == obj.host_id){
+                    alert('자신의 게시글에는 신청할 수 없습니다.')
                 }else{
-                    postData(sendURL + `/${obj.mate_post_id}/apply`);
+                    if (!myContent){
+                        alert('신청 메시지를 입력해주세요.')
+                    }else{
+                        postData(sendURL + `/${obj.mate_post_id}/apply`);
+                    }
                 }
             }else{
                 alert('메이트를 신청하려면 로그인이 필요합니다.');

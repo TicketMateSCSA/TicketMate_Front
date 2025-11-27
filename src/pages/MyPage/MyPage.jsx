@@ -79,7 +79,8 @@ function MyPageSectionMyPost({item}){
                 
                 <table className="mpmp-table">
                     <tbody>
-                        <tr className="myPageMyPost-section-body1"><td style={{width: "53%"}}>공연: {item.perf_name}</td><td style={{width: "47%"}}>장소: {item.perf_loc}</td></tr>
+                        <tr className="myPageMyPost-section-body1"><td style={{ width: "53%", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}} >공연: {item.perf_name}</td><td style={{width: "47%"}}>장소: {item.perf_loc}</td></tr>
+                        
                         <tr className="myPageMyPost-section-body1"><td style={{width: "53%"}}>일시: {slicedDate}</td><td style={{width: "47%"}}>모집 인원: {item.mate_num_of_need} (현재 {item.mate_num_of_confirmed}/{item.mate_num_of_need})</td></tr>
                     </tbody>
                 </table>
@@ -239,7 +240,7 @@ function MyPageSectionRegist({item}){
                 
                 <table className="mpmp-table">
                     <tbody>
-                        <tr className="myPageMyPost-section-body1"><td style={{width: "53%"}}>공연: {item.perf_name}</td><td style={{width: "47%"}}>장소: {item.perf_loc}</td></tr>
+                        <tr className="myPageMyPost-section-body1"><td style={{ width: "53%", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}} >공연: {item.perf_name}</td><td style={{width: "47%"}}>장소: {item.perf_loc}</td></tr>
                         <tr className="myPageMyPost-section-body1"><td style={{width: "53%"}}>일시: {slicedDate}</td><td style={{width: "47%"}}>모집 인원: {item.mate_num_of_need} (현재 {item.mate_num_of_confirmed}/{item.mate_num_of_need})</td></tr>
                     </tbody>
                 </table>

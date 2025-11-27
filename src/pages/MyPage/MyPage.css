@@ -124,6 +124,7 @@ div.box{
     left: 14px;
     font-size: 13px;
     width: 90%;
+    
 }
 
 .mp-left-box > button{
@@ -339,6 +340,7 @@ span.myPageMyPost-section-state{
     position: relative;
     left: 10px;
     width: 300px;
+    table-layout: fixed;
 }
 
 .myPageMyPost-section-img{
@@ -430,4 +432,12 @@ span.myPageMyPost-section-state{
     font-size: 13px;
     padding: 2px 5px;
     height: fit-content; /* 버튼 높이 자동 */
+}
+
+.myPageMyPost-section-title{
+    display: block;
+    width: 290px;   
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
