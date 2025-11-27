@@ -47,6 +47,7 @@ function Navigator() {
     const goToSigninPage = () => navigate("/signin");
     const goToSearchPage = () => navigate("/search");
     const goToMyPage = () => navigate("/myPage");
+    const goToInfoPage = () => navigate("/info");
 
     // 로그아웃
     const handleLogout = () => {
@@ -149,7 +150,7 @@ function Navigator() {
                                 {list?.length === 0 ? (
                                     <li className="dropdown-item2 disabled">검색 결과 없음</li>
                                 ) : (
-                                    list.map((opt, idx) => (
+                                    list?.map((opt, idx) => (
                                         <li key={idx} className="dropdown-item2" onClick={() => handleSelect(opt)}>
                                             <div className="dd-section">
                                                 <img src={opt.perf_img_url ? opt.perf_img_url : noImage} alt="공연 이미지" />
@@ -181,7 +182,7 @@ function Navigator() {
                 <button className={location.pathname === "/" ? "home active" : "home"} onClick={goToHomePage}>홈</button>
                 <button className={location.pathname === "/search" || location.pathname === "/detail" || location.pathname === "/regist" ? "search active" : "search"} onClick={goToSearchPage}>메이트 찾기</button>
                 <button className={location.pathname === "/host" ? "host active" : "host"} onClick={goToHostPage}>메이트 모집하기</button>
-                <button className="info">공연 정보</button>
+                <button className={location.pathname === "/info" ? "info active" : "info"} onClick={goToInfoPage}>공연 정보</button>
 
                 {isAuthenticated && profile ? (
                     <>
