@@ -16,7 +16,7 @@ import AdminLoginPage from "./pages/AdminPage/AdminLoginPage";
 import AdminPage from "./pages/AdminPage/AdminPage";
 import Info from "./pages/InfoPage/InfoPage";
 
-import Onboarding from "./components/OnBoarding/OnBoarding";
+import Onboarding from "./components/Onboarding/Onboarding";
 
 // Context Privider 
 import {AuthProvider} from "./contexts/AuthContext" ; 
