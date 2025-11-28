@@ -41,7 +41,7 @@ function AdminPage() {
                 const url = `${import.meta.env.VITE_POSTS_URL}/admin/posts`;
                 const res = await apiFetch(url, { method: "GET" });
                 if (res.code === "COMMON200") {
-                    setPostList(res.result.reportPostDTOList.slice(0, 5));
+                    setPostList(res?.result?.reportPostDTOList.slice(0, 5));
                 }
             } catch (e) {
                 console.error("게시글 데이터 에러:", e);
