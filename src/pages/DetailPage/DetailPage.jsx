@@ -50,7 +50,7 @@ function Detail(){
 
     const { isAuthenticated, userProfile } = useAuth();
     const [reqData, setReqData] = useState(null);
-    const [myContent, setMyContent] = useState(null);
+    const [myContent, setMyContent] = useState("");
     
     const [openModal, setOpenModal] = useState(false);
     const [openModalPost, setOpenModalPost] = useState(false);
@@ -241,7 +241,8 @@ function Detail(){
                         <p className="right-line-title">신청 메시지<span className="star">*</span></p>
                         <textarea row={10} className="right-message-content" 
                             placeholder="호스트에게 간단한 자기소개와 신청 의사를 전달해주세요. 연락 수단을 전달해도 좋습니다."
-                            onChange={handleMyContent}/>
+                            onChange={handleMyContent}
+                            value={myContent}/>
                     
 
                     { isAuthenticated ? (
