@@ -65,6 +65,11 @@ function Signin() {
             return;
         }
 
+        if (!formData.mem_email.trim().includes("@")) {
+            alert("이메일 형식을 지켜주세요. (@ 포함)");
+            return;
+        }
+
         if (!checks.one || !checks.two) {
             alert("필수 약관에 동의해주세요.");
             return;
