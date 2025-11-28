@@ -73,6 +73,7 @@ function Login(){
                     placeholder="abc@gmail.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter") handleLogin(); }}
                 />
 
                 <p className="name">비밀번호<span className="star">*</span></p>
@@ -83,6 +84,7 @@ function Login(){
                     value={password}
                     autoComplete="off"
                     onChange={(e) => setPassword(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter") handleLogin(); }}
                 />
                 <br/>
                 {/* <input type="checkbox" name="lg" value="mt"/> */}
