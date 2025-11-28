@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./OnBoarding.css";
+import "./Onboarding.css";
 
 const slides = [
   {
