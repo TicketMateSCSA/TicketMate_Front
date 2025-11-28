@@ -1,7 +1,7 @@
 // src/App.jsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AppContainer from "./AppContainer/AppContainer";
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // 페이지 import 
 import HomePage from "./pages/HomePage/HomePage" ; 
@@ -16,15 +16,29 @@ import AdminLoginPage from "./pages/AdminPage/AdminLoginPage";
 import AdminPage from "./pages/AdminPage/AdminPage";
 import Info from "./pages/InfoPage/InfoPage";
 
+import Onboarding from "./components/OnBoarding/OnBoarding";
+
 // Context Privider 
 import {AuthProvider} from "./contexts/AuthContext" ; 
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 
 function App() {
+  const [showOnboard, setShowOnboard] = useState(false);
+  
+  useEffect(() => {
+    const isFirst = localStorage.getItem("isFirstVisit");
+
+    if (!isFirst) {
+      setShowOnboard(true);
+      localStorage.setItem("isFirstVisit", "true");
+    }
+  }, []);
+
   return (
     <AuthProvider>
       <BrowserRouter>
         <AppContainer>
+          {showOnboard && <Onboarding onClose={() => setShowOnboard(false)} />}
           <Routes>
             {/* 기본 경로 */ }
             <Route path = "/" element={<HomePage/>}/>
