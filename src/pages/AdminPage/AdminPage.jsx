@@ -41,10 +41,10 @@ function AdminPage() {
                 console.error("회원 데이터 에러:", e);
             }
         };
-
+        
         const fetchPosts = async () => {
             try {
-                const url = `${import.meta.env.VITE_POSTS_URL}/admin/posts`;
+                const url = `${import.meta.env.VITE_POSTS_URL}/admin/posts/list`;
                 const res = await apiFetch(url, { method: "GET" });
                 if (res.code === "COMMON200") {
                     setPostList(res?.result?.reportPostDTOList.slice(0, 5));
