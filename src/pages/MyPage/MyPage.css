@@ -441,3 +441,8 @@ span.myPageMyPost-section-state{
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.mypage-new{
+    background-color: #BECBFF;
+    border: none;
+}
