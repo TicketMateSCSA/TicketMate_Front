@@ -59,11 +59,21 @@ function Signin() {
 
     // 회원가입 POST 요청
     const handleSignIn = async () => {
+        if (
+            !formData.mem_name.trim() ||
+            !formData.mem_email.trim() ||
+            !formData.mem_pwd.trim()
+        ) {
+            alert("공백만 입력할 수 없습니다. 필수 항목을 올바르게 입력해주세요.");
+            return;
+        }
+            
         // 필수 체크
         if (!formData.mem_name || !formData.mem_email || !formData.mem_pwd) {
             alert("필수 항목을 모두 입력해주세요.");
             return;
         }
+
 
         if (!formData.mem_email.trim().includes("@")) {
             alert("이메일 형식을 지켜주세요. (@ 포함)");
