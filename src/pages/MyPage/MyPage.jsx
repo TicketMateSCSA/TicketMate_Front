@@ -19,6 +19,11 @@ const dbStateMapRev = {0: "대기중", 1: "승인됨", 2: "거절됨"}
 
 function MyPageSectionMyPost({item}){
     const navigate = useNavigate();
+    const { isAuthenticated, isLoading } = useAuth();    
+    if (!isAuthenticated) {
+    // 로그인 안 됐으면 로그인 페이지로 이동
+        navigate("/login", { replace: true, state: { from: "/myPage" } });
+    }
 
     const dateNtime = item.mate_view_date ? item.mate_view_date.split("T") : [];
     dateNtime[0] = dateNtime[0].split("-").splice(0, 3);

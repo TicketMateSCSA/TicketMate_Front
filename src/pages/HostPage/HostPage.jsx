@@ -4,7 +4,8 @@ import {useState, useEffect} from "react";
 import './HostPage.css';
 import Navigator from "../../components/Navigator/Navigator";
 import noImage from '../../assets/images/no-image.png';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from '../../contexts/AuthContext';
 
 const perfURL = `${import.meta.env.VITE_POSTS_URL}/performances`;
 const postURL = `${import.meta.env.VITE_POSTS_URL}/post`;
@@ -252,8 +253,13 @@ function HostPage(){
     }
     };
 
-    
-    useEffect(() => {
+    const { isAuthenticated, isLoading } = useAuth();    
+    if (!isAuthenticated) {
+    // 로그인 안 됐으면 로그인 페이지로 이동
+        navigate("/login", { replace: true, state: { from: "/host" } });
+    }
+
+    useEffect(() => {        
         fetch(perfURL)
         .then((response) => {
             if (!response.ok) {
@@ -271,7 +277,7 @@ function HostPage(){
             setError(error.message);
             setLoading(false);
         });
-    }, []);
+    }, [isAuthenticated, isLoading, navigate, location]);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;

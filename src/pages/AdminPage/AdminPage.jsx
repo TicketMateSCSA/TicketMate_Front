@@ -5,6 +5,12 @@ import { apiFetch } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 
 function AdminPage() {
+    const { isAuthenticated, isLoading } = useAuth();    
+    if (!isAuthenticated) {
+    // 로그인 안 됐으면 로그인 페이지로 이동
+        navigate("/login", { replace: true, state: { from: "/admin/login" } });
+    }
+
     const { adminProfile } = useAuth();
     const [memberList, setMemberList] = useState([]);
     const [postList, setPostList] = useState([]);
@@ -35,13 +41,13 @@ function AdminPage() {
                 console.error("회원 데이터 에러:", e);
             }
         };
-
+        
         const fetchPosts = async () => {
             try {
-                const url = `${import.meta.env.VITE_POSTS_URL}/admin/posts`;
+                const url = `${import.meta.env.VITE_POSTS_URL}/admin/posts/list`;
                 const res = await apiFetch(url, { method: "GET" });
                 if (res.code === "COMMON200") {
-                    setPostList(res.result.reportPostDTOList.slice(0, 5));
+                    setPostList(res?.result?.reportPostDTOList.slice(0, 5));
                 }
             } catch (e) {
                 console.error("게시글 데이터 에러:", e);

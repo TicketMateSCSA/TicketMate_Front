@@ -4,6 +4,11 @@ import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 
 function AdminLoginPage() {
+    const { isAuthenticated, isLoading } = useAuth();    
+        if (!isAuthenticated) {
+        // 로그인 안 됐으면 로그인 페이지로 이동
+            navigate("/login", { replace: true, state: { from: "/admin/login" } });
+        }
 
     const navigate = useNavigate();
     const { admin_login } = useAuth();
