@@ -9,6 +9,7 @@ import noProfile from '../../assets/images/no-profile.png';
 const myPostURL = `${import.meta.env.VITE_POSTS_URL}/requests/recieved`;
 const myGetURL = `${import.meta.env.VITE_POSTS_URL}/requests/applicants`;
 const myRegistURL = `${import.meta.env.VITE_POSTS_URL}/requests/sent`;
+const editURL = `${import.meta.env.VITE_POSTS_URL}/members/me`;
 
 const ageMap = {1: '전체', 2: '10대', 4: '20대', 8: '30대', 16: '40대', 32: '50대+'};
 const genderMap = {0: '무관', 1: '남성', 2: '여성'};
@@ -306,6 +307,13 @@ function MyPage(){
     const [loading, setLoading] = useState(null);
     const [error, setError] = useState(null); 
     
+    // 수정
+    const [isEditing, setIsEditing] = useState(false);
+    // 입력값 저장
+    const [nickname, setNickname] = useState(userProfile?.mem_nn || "");
+    const [age, setAge] = useState(userProfile?.mem_age_range || "");
+    const [gender, setGender] = useState(userProfile?.mem_gender || "");
+
     // 1. 내가 모집한 메이트 불러오기
     useEffect(() => {
         fetch(myPostURL)
@@ -403,6 +411,45 @@ function MyPage(){
     }, []);
     
 
+    // 저장 버튼 클릭 시 백엔드로 보낼 값
+    const handleSave = async() => {
+        if (!nickname.trim()){
+            alert("닉네임을 한 글자 이상 입력해주세요.")
+            return;
+        }
+
+        // fetch 
+        try {
+            const response = await fetch(editURL, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    mem_nn: nickname,
+                    mem_gender: gender,
+                    mem_age_range: age
+                }),
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                alert(`수정 실패: ${errorText}`);
+                return;
+            }
+
+            setIsEditing(false);
+            alert("저장되었습니다.");
+            window.location.reload();
+            
+
+        } catch (err) {
+            console.error(err);
+            alert("서버 오류로 승인하지 못했습니다.");
+        }
+
+    }
+
     const handleClick = (idx) => {
         setActiveIdx(idx);
         switch (idx) {
@@ -472,7 +519,22 @@ function MyPage(){
                 <div className="mypage-left">
                     <div className='mp-left-box'>
                         <img src={userProfile?.mem_img_url? userProfile.mem_img_url: noProfile}/>
-                        <p className="mp-left-box-name">{userProfile?.mem_nn? userProfile.mem_nn : userProfile?.mem_name}</p>
+                        
+                        {!isEditing && (
+                            <p className="mp-left-box-name"
+                                value={nickname}
+                                onChange={(e) => setNickname(e.target.value)}
+                                >{userProfile?.mem_nn? userProfile.mem_nn : userProfile?.mem_name}</p>
+                        )}
+                        {isEditing && (
+                            <p className="mp-left-box-name">
+                                <input 
+                                value={nickname}
+                                onChange={(e) => setNickname(e.target.value)}
+                                />
+                            </p>
+                        )}
+
                         <p className="mp-left-box-email">{userProfile?.mem_email}</p>
                 
                         <div className="mp-left-mate-temp">
@@ -484,13 +546,47 @@ function MyPage(){
 
                         <table>
                             <tbody>
-                                <tr><td>연령대</td><td style={{textAlign:"right"}}>{ageMap[userProfile?.mem_age_range]}</td></tr>
-                                <tr><td>성별</td><td style={{textAlign:"right"}}>{genderMap[userProfile?.mem_gender]}</td></tr>
-                                <tr><td>메이트 횟수</td><td style={{textAlign:"right"}}>{userProfile?.mem_num_of_mates}회</td></tr>
+                                <tr><td>연령대</td>
+                                    <td style={{textAlign:"right"}}>
+                                        {!isEditing && (<div>{ageMap[userProfile?.mem_age_range]}</div>)}
+                                        {isEditing && (<select
+                                                    
+                                                            value={age} 
+                                                            onChange={(e) => setAge(e.target.value)}
+                                                            
+                                                        >   
+                                                            <option value="" disabled hidden>{ageMap[userProfile?.mem_age_range]}</option>
+                                                            <option value="2">10대</option>
+                                                            <option value="4">20대</option>
+                                                            <option value="8">30대</option>
+                                                            <option value="16">40대</option>
+                                                            <option value="32">50대+</option>
+                                                        </select>)}
+                                    
+                                    </td></tr>
+                                <tr><td>성별</td>
+                                    <td style={{textAlign:"right"}}>
+                                        {!isEditing && (<div>{genderMap[userProfile?.mem_gender]}</div>)}
+                                        {isEditing && (
+                                            <select value={gender} onChange={(e) => setGender(e.target.value)}>
+                                            <option value="" disabled hidden>{genderMap[userProfile?.mem_gender]}</option>
+                                            <option value="1">남성</option>
+                                            <option value="2">여성</option>
+                                            </select>
+                                        )}</td></tr>
+
+                                <tr><td>메이트 횟수</td>
+                                    <td style={{textAlign:"right"}}>{userProfile?.mem_num_of_mates}회</td></tr>
                             </tbody>
                         </table>
-
-                        <button>프로필 수정</button>
+                        
+                        {!isEditing && (
+                            <button onClick={() => setIsEditing(true)}>프로필 수정</button>
+                        )}
+                        {isEditing && (
+                            <button onClick={handleSave}>저장하기</button>
+                        )}
+                        
                     </div>
 
                     <table className="left-menu">

@@ -142,11 +142,11 @@ function AdminPage() {
                 </div>
 
                 <div className="admin_status-box">
-                    <div className="admin_status-item">전체 회원: <span>1234</span></div>
-                    <div className="admin_status-item">블랙리스트 회원: <span>24</span></div>
-                    <div className="admin_status-item">전체 게시글: <span>2341</span></div>
-                    <div className="admin_status-item admin_warning">미처리 신고: <span>31</span></div>
-                    <div className="admin_status-item">오늘 가입 회원: <span>12</span></div>
+                    <div className="admin_status-item">전체 회원: <span>-</span></div>
+                    <div className="admin_status-item">블랙리스트 회원: <span>-</span></div>
+                    <div className="admin_status-item">전체 게시글: <span>-</span></div>
+                    <div className="admin_status-item admin_warning">미처리 신고: <span>-</span></div>
+                    <div className="admin_status-item">오늘 가입 회원: <span>-</span></div>
                 </div>
             </header>
 
